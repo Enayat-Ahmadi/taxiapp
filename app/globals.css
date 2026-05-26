@@ -29,7 +29,7 @@
   /* Gradient Color Mappings */
   --hero: linear-gradient(to bottom, #171b20 0%, #252a31 100%);
   --cloud: linear-gradient(135deg, #ecf8f7 0%, #f5f7f9 100%);
-  --sky: linear-gradient(135deg, #e0f2fe 0%, #38bdf8 100%);
+  --sky: linear-gradient(to left, #e0f2fe 0%, #38bdf8 100%);
   --brand: linear-gradient(135deg, #00a991 0%, #007f6d 100%);
 }
 
@@ -89,13 +89,6 @@
   --spacing-safe-bottom: max(1rem, env(safe-area-inset-bottom));
 }
 
-/* Document Reset & Layout Normalization */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 html {
   scroll-behavior: smooth;
 }
@@ -105,3 +98,33 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
 }
+::selection {
+  background-color: var(--info);
+  color: #121212;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--info);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--info);
+}
+/* @supports (padding: max(0px)) {
+  body {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+} */
