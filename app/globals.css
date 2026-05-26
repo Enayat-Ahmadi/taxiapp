@@ -4,31 +4,32 @@
   /* Default App Theme Fallbacks */
   --background: #ffffff;
   --foreground: #171717;
-  
+
   /* Kiwi.com Orbit Color Tokens (Named exactly by their real values) */
-  --teal: #00A991;       /* Core brand teal */
-  --teal-light: #9AE5DA; /* Soft teal */
-  --teal-dark: #005448;  /* Deep branding forest green */
-  --teal-active: #008F7B;/* Pressed/Active state teal */
-  
+  --teal: #00a991; /* Core brand teal */
+  --teal-light: #9ae5da; /* Soft teal */
+  --teal-dark: #005448; /* Deep branding forest green */
+  --teal-active: #008f7b; /* Pressed/Active state teal */
+
   /* Status Colors */
-  --success: #00A355;
-  --error: #D21C1C;
-  --warning: #E77E11;
-  --info: #0070CD;
+  --success: #00a355;
+  --error: #d21c1c;
+  --warning: #e77e11;
+  --info: #0070cd;
 
   /* Neutrals (Cloud & Ink) */
-  --cloud-light: #F5F7F9;  /* Section backgrounds */
-  --cloud-normal: #E8EDF1; /* Dividers & Borders */
-  --white: #FFFFFF;        /* Card background sheets */
+  --cloud-light: #f5f7f9; /* Section backgrounds */
+  --cloud-normal: #e8edf1; /* Dividers & Borders */
+  --white: #ffffff; /* Card background sheets */
 
-  --ink-dark: #252A31;     /* Main text color */
-  --ink-light: #5F738C;    /* Caption & subtext color */
-  --ink-disabled: #BAC7D5; /* Disabled text color */
+  --ink-dark: #252a31; /* Main text color */
+  --ink-light: #5f738c; /* Caption & subtext color */
+  --ink-disabled: #bac7d5; /* Disabled text color */
 
   /* Gradient Color Mappings */
   --hero: linear-gradient(to bottom, #171b20 0%, #252a31 100%);
-  --sky: linear-gradient(135deg, #ecf8f7 0%, #f5f7f9 100%);
+  --cloud: linear-gradient(135deg, #ecf8f7 0%, #f5f7f9 100%);
+  --sky: linear-gradient(135deg, #e0f2fe 0%, #38bdf8 100%);
   --brand: linear-gradient(135deg, #00a991 0%, #007f6d 100%);
 }
 
@@ -36,14 +37,14 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-    
+
     /* Dark mode neutral color inversions */
-    --cloud-light: #171B20; 
-    --cloud-normal: #252A31;
-    --white: #1E242C;
-    
-    --ink-dark: #F8FAFC;
-    --ink-light: #94A3B8;
+    --cloud-light: #171b20;
+    --cloud-normal: #252a31;
+    --white: #1e242c;
+
+    --ink-dark: #f8fafc;
+    --ink-light: #94a3b8;
   }
 }
 
@@ -78,7 +79,9 @@
   --text-color-ink-disabled: var(--ink-disabled);
 
   /* Global Fonts */
-  --font-sans: "Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", sans-serif;
+  --font-sans:
+    "Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto",
+    sans-serif;
 
   /* Custom Elevation Shadows using Ink base values */
   --shadow-elevation-sm: 0 4px 12px rgba(37, 42, 49, 0.08);
