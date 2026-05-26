@@ -8,7 +8,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "TaxiClick - Premium Taxi Booking",
+  title: "EidsvollTaxi - Premium Taxi Booking",
   description:
     "Premium taxi booking service for the discerning traveler. Professional drivers, luxury vehicles, and seamless booking experience.",
   keywords: [
