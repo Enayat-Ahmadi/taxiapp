@@ -20,7 +20,7 @@ export const Button = ({
   ...rest
 }: ButtonProps) => {
   const baseStyle =
-    "font-semibold rounded-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-info focus:ring-offset-2 focus:ring-offset-info";
+    "font-semibold rounded-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-info focus:ring-offset-2 focus:ring-offset-info cursor-pointer";
 
   const variants = {
     primary:

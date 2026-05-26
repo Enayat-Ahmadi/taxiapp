@@ -8,7 +8,7 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-info rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-teal rounded-lg flex items-center justify-center">
               <span className="font-bold text-black">T</span>
             </div>
             <span className="font-bold text-xl text-foreground hidden sm:inline">
@@ -17,7 +17,7 @@ export function Navbar() {
           </Link>
 
           <Link href="#booking">
-            <Button size="sm" className="bg-info text-white">
+            <Button size="sm" className="bg-teal text-white">
               Book Now
             </Button>
           </Link>
