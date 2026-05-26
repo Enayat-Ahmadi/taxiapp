@@ -33,21 +33,6 @@
   --brand: linear-gradient(135deg, #00a991 0%, #007f6d 100%);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-
-    /* Dark mode neutral color inversions */
-    --cloud-light: #171b20;
-    --cloud-normal: #252a31;
-    --white: #1e242c;
-
-    --ink-dark: #f8fafc;
-    --ink-light: #94a3b8;
-  }
-}
-
 /* Register your utility scales directly into the Tailwind v4 compilation engine */
 @theme {
   /* Colors */
@@ -116,7 +101,7 @@ html {
 }
 
 body {
-  background-color: var(--background);
+  background-color: var(--teal);
   color: var(--foreground);
   font-family: var(--font-sans);
 }
