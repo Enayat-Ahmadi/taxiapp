@@ -89,10 +89,6 @@
   --spacing-safe-bottom: max(1rem, env(safe-area-inset-bottom));
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   background-color: var(--background);
   color: var(--foreground);
