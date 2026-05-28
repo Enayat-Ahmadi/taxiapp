@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Button } from "../ui/Button";
+import { Button } from "../ui";
 export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 bg-sky backdrop-blur-md border-b border-slate-700/30">
@@ -16,7 +16,7 @@ export function Navbar() {
             </span>
           </Link>
 
-          <Link href="#booking">
+          <Link href="/booking">
             <Button size="sm" className="bg-teal text-white">
               Book Now
             </Button>

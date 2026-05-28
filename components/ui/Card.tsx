@@ -10,10 +10,10 @@ export const Card = ({
   ...rest
 }: CardProps) => {
   const variants = {
-    default: "bg-teal-dark border border-slate-700/30",
+    default: "bg-cloud border border-slate-700/30",
     glass:
       "bg-teal-dark/50 backdrop-blur-md border border-slate-700/30 shadow-inner-glow",
-    elevated: "bg-teal-darkshadow-elevation-md border border-slate-700/30",
+    elevated: "bg-teal-dark shadow-elevation-md border border-slate-700/30",
   };
   return (
     <div

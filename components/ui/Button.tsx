@@ -24,7 +24,7 @@ export const Button = ({
 
   const variants = {
     primary:
-      "bg-sky text-black hover:shadow-gold-glow hover:scale-105 active:scale-95",
+      "bg-sky text-black hover:shadow-brand hover:scale-105 active:scale-95",
     secondary: "bg-teal-active text-ink-dark hover:bg-teal-light",
     outline: "border border-teal text-ink-light hover:bg-teal-dark/10",
     ghost: "text-ink hover:bg-teal-active",
