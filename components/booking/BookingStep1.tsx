@@ -36,7 +36,11 @@ export default function BookingStep1({ onNext, isLoading }: Step1Props) {
     formState: { errors },
   } = useForm<FormFields>();
   const timeSlots = useMemo(() => getTimeSlots(), []);
-
+  
+  const timeOptions = useMemo(() => 
+    timeSlots.map((slot) => ({ value: slot, label: slot })), 
+    [timeSlots]
+  );
   return (
     <motion.div
       // initial={{ opacity: 0, y: 20 }}
@@ -88,10 +92,7 @@ export default function BookingStep1({ onNext, isLoading }: Step1Props) {
                 required: "Date must be today or in the future",
               })}
               label="Time"
-              options={timeSlots.map((slot) => ({
-                value: slot,
-                label: slot,
-              }))}
+              options={timeOptions}
               error={errors.time?.message}
             />
           </div>
