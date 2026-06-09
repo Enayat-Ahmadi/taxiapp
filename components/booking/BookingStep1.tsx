@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Card, Input, Button, Select } from "../ui";
 import { getTimeSlots } from "@/lib/utils";
 import { useForm } from "react-hook-form";
+import { useMemo } from "react";
 
 type FormFields = {
   pickupLocation: string;
@@ -28,14 +29,13 @@ const LUGGAGE_OPTION = Array.from({ length: 4 }, (_, i) => ({
   label: i === 0 ? "No Luggage" : `${i} ${i === 1 ? "Bag" : "Bags"}`,
 }));
 
-
 export default function BookingStep1({ onNext, isLoading }: Step1Props) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormFields>();
-  const timeSlots = getTimeSlots();
+  const timeSlots = useMemo(() => getTimeSlots(), []);
 
   return (
     <motion.div
