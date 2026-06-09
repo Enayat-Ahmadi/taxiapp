@@ -7,8 +7,8 @@ import { useForm } from "react-hook-form";
 type FormFields = {
   pickupLocation: string;
   destination: string;
-  phoneNumber: number;
-  date: Date;
+  phoneNumber: string;
+  date: string;
   time: string;
   passenger: number;
   luggage: number;
@@ -18,6 +18,17 @@ interface Step1Props {
   isLoading?: boolean;
   initialData?: Partial<FormFields>;
 }
+
+const PASSENGER_OPTIONS = Array.from({ length: 4 }, (_, i) => ({
+  value: i + 1,
+  label: `${i + 1} ${i === 0 ? "Passenger" : "Passengers"}`,
+}));
+const LUGGAGE_OPTION = Array.from({ length: 4 }, (_, i) => ({
+  value: i,
+  label: i === 0 ? "No Luggage" : `${i} ${i === 1 ? "Bag" : "Bags"}`,
+}));
+
+
 export default function BookingStep1({ onNext, isLoading }: Step1Props) {
   const {
     register,
@@ -26,9 +37,6 @@ export default function BookingStep1({ onNext, isLoading }: Step1Props) {
   } = useForm<FormFields>();
   const timeSlots = getTimeSlots();
 
-  function onSubmit(data: FormFields) {
-    console.log(data);
-  }
   return (
     <motion.div
       // initial={{ opacity: 0, y: 20 }}
@@ -38,9 +46,9 @@ export default function BookingStep1({ onNext, isLoading }: Step1Props) {
     >
       <Card className="mb-6">
         <h2 className="text-2xl font-bold mb-2">Trip Details</h2>
-        <p className="mb-6">Tell us where you're going and when</p>
+        <p className="mb-6">Tell us where you&apos;re going and when</p>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onNext)} className="space-y-4">
           <div className="space-y-4">
             <Input
               {...register("pickupLocation", {
@@ -94,10 +102,7 @@ export default function BookingStep1({ onNext, isLoading }: Step1Props) {
                 valueAsNumber: true,
               })}
               label="Passengers"
-              options={Array.from({ length: 4 }, (_, i) => ({
-                value: i + 1,
-                label: `${i + 1} ${i === 0 ? "Passenger" : "Passengers"}`,
-              }))}
+              options={PASSENGER_OPTIONS}
               error={errors.passenger?.message}
             />
             <Select
@@ -106,11 +111,7 @@ export default function BookingStep1({ onNext, isLoading }: Step1Props) {
                 valueAsNumber: true,
               })}
               label="Luggage"
-              options={Array.from({ length: 4 }, (_, i) => ({
-                value: i,
-                label:
-                  i === 0 ? "No Luggage" : `${i} ${i === 1 ? "Bag" : "Bags"}`,
-              }))}
+              options={LUGGAGE_OPTION}
               error={errors.luggage?.message}
             />
           </div>
