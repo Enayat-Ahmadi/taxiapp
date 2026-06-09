@@ -24,7 +24,7 @@ const PASSENGER_OPTIONS = Array.from({ length: 4 }, (_, i) => ({
   value: i + 1,
   label: `${i + 1} ${i === 0 ? "Passenger" : "Passengers"}`,
 }));
-const LUGGAGE_OPTION = Array.from({ length: 4 }, (_, i) => ({
+const LUGGAGE_OPTIONS = Array.from({ length: 4 }, (_, i) => ({
   value: i,
   label: i === 0 ? "No Luggage" : `${i} ${i === 1 ? "Bag" : "Bags"}`,
 }));
@@ -129,7 +129,7 @@ export default function BookingStep1({
                 valueAsNumber: true,
               })}
               label="Luggage"
-              options={LUGGAGE_OPTION}
+              options={LUGGAGE_OPTIONS}
               error={errors.luggage?.message}
             />
           </div>
