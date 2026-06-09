@@ -29,12 +29,18 @@ const LUGGAGE_OPTION = Array.from({ length: 4 }, (_, i) => ({
   label: i === 0 ? "No Luggage" : `${i} ${i === 1 ? "Bag" : "Bags"}`,
 }));
 
-export default function BookingStep1({ onNext, isLoading }: Step1Props) {
+export default function BookingStep1({
+  onNext,
+  isLoading,
+  initialData,
+}: Step1Props) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormFields>();
+  } = useForm<FormFields>({
+    defaultValues: initialData,
+  });
   const timeSlots = useMemo(() => getTimeSlots(), []);
 
   const timeOptions = useMemo(
