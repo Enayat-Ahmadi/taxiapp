@@ -36,10 +36,10 @@ export default function BookingStep1({ onNext, isLoading }: Step1Props) {
     formState: { errors },
   } = useForm<FormFields>();
   const timeSlots = useMemo(() => getTimeSlots(), []);
-  
-  const timeOptions = useMemo(() => 
-    timeSlots.map((slot) => ({ value: slot, label: slot })), 
-    [timeSlots]
+
+  const timeOptions = useMemo(
+    () => timeSlots.map((slot) => ({ value: slot, label: slot })),
+    [timeSlots],
   );
   return (
     <motion.div
@@ -73,6 +73,10 @@ export default function BookingStep1({ onNext, isLoading }: Step1Props) {
             <Input
               {...register("phoneNumber", {
                 required: "phone number is required",
+                pattern: {
+                  value: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/,
+                  message: "Invalid phone number format",
+                },
               })}
               label="Phone Number"
               type="tel"
