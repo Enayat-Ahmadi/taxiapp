@@ -86,14 +86,21 @@ export default function BookingStep1({ onNext, isLoading }: Step1Props) {
           </div>
           <div className="md:grid grid-cols-2 gap-4">
             <Input
-              {...register("date", { required: "date is required" })}
+              {...register("date", {
+                required: "Date is required",
+                validate: (value) => {
+                  const selected = new Date(value).setHours(0, 0, 0, 0);
+                  const today = new Date().setHours(0, 0, 0, 0);
+                  return selected >= today || "Date cannot be in the past";
+                },
+              })}
               type="date"
               label="Date"
               error={errors.date?.message}
             />
             <Select
               {...register("time", {
-                required: "Date must be today or in the future",
+                required: "Time slot is required",
               })}
               label="Time"
               options={timeOptions}
