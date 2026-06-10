@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, number } from "framer-motion";
+import { motion, AnimatePresence} from "framer-motion";
 import { Card } from "../ui";
 import Image from "next/image";
 import { VEHICLES, VehicleType } from "@/lib/constant";
