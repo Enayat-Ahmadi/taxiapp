@@ -36,7 +36,6 @@ export default function BookingStep2({
         distance,
         vehicle.basePricePerKm,
       );
-      console.log(selectedVehicle, estimatedPrice);
       onNext(selectedVehicle, estimatedPrice);
     }
   };

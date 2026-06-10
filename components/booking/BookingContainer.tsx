@@ -48,7 +48,14 @@ export default function BookingContainer() {
     setCurrentStep(3);
   };
   const handleStep3Submit = () => {
-   
+    if (!stepData.step1 || !stepData.step2) return;
+    const bookingData: Booking = {
+      ...stepData.step1,
+      vehicleType: stepData.step2.vehicleType,
+      estimatedPrice: stepData.step2.estimatedPrice,
+      status: "pending",
+    };
+    console.log("finalsubmit", bookingData);
   };
 
   const handlePrevious = () => {
