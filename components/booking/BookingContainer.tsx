@@ -3,25 +3,10 @@
 import { useState } from "react";
 import BookingStep1 from "./BookingStep1";
 import BookingStep2 from "./BookingStep2";
-import { VehicleType } from "@/lib/constant";
-import BookingStep3, { Booking } from "./BookingStep3";
+import { VehicleType } from "@/types";
+import BookingStep3 from "./BookingStep3";
+import { FormFields, Booking, StepData } from "@/types";
 
-type FormFields = {
-  pickupLocation: string;
-  destination: string;
-  phoneNumber: string;
-  date: string;
-  time: string;
-  passengers: number;
-  luggage: number;
-};
-interface StepData {
-  step1?: FormFields;
-  step2?: {
-    vehicleType: VehicleType;
-    estimatedPrice: number;
-  };
-}
 export default function BookingContainer() {
   const [currentStep, setCurrentStep] = useState(1);
   const [stepData, setStepData] = useState<Partial<StepData>>({});

@@ -1,33 +1,16 @@
 "use client";
 import { motion } from "framer-motion";
 import { Card, Input, Button, Select } from "../ui";
-import { getTimeSlots } from "@/lib/utils";
+import { getTimeSlots, PASSENGER_OPTIONS, LUGGAGE_OPTIONS } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { useMemo } from "react";
+import { FormFields } from "@/types";
 
-type FormFields = {
-  pickupLocation: string;
-  destination: string;
-  phoneNumber: string;
-  date: string;
-  time: string;
-  passengers: number;
-  luggage: number;
-};
 interface Step1Props {
   onNext: (data: FormFields) => void;
   isLoading?: boolean;
   initialData?: Partial<FormFields>;
 }
-
-const PASSENGER_OPTIONS = Array.from({ length: 4 }, (_, i) => ({
-  value: i + 1,
-  label: `${i + 1} ${i === 0 ? "Passenger" : "Passengers"}`,
-}));
-const LUGGAGE_OPTIONS = Array.from({ length: 4 }, (_, i) => ({
-  value: i,
-  label: i === 0 ? "No Luggage" : `${i} ${i === 1 ? "Bag" : "Bags"}`,
-}));
 
 export default function BookingStep1({
   onNext,

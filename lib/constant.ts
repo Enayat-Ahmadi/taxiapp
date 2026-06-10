@@ -1,12 +1,4 @@
-export type VehicleType = "comfort" | "premium";
-
-export interface Vehicle {
-  type: VehicleType;
-  seats: number;
-  luggage: number;
-  basePricePerKm: number;
-  image: string;
-}
+import { Vehicle } from "@/types";
 
 export const VEHICLES: Record<"comfort" | "premium", Vehicle> = {
   comfort: {

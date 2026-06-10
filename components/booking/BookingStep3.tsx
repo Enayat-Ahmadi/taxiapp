@@ -1,25 +1,8 @@
 import { motion } from "framer-motion";
 import { Card, Button } from "../ui";
-import { VehicleType } from "@/lib/constant";
 import { formatPrice } from "@/lib/utils";
+import { Booking } from "@/types";
 
-type BookingStatus = "pending" | "confirmed" | "comleted" | "cancelleda";
-export interface Booking {
-  _id?: string;
-  pickupLocation: string;
-  destination: string;
-  date: string;
-  time: string;
-  passengers: number;
-  luggage: number;
-  phoneNumber: string;
-  vehicleType: VehicleType;
-  vegicle?: string;
-  estimatedPrice: number;
-  status: BookingStatus;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
 interface Step3Props {
   booking: Booking;
   onConfirm: () => void;
@@ -32,7 +15,6 @@ export default function BookingStep3({
   onConfirm,
   isLoading,
 }: Step3Props) {
-  console.log(booking);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

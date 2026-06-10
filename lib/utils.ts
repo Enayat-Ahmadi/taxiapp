@@ -29,3 +29,11 @@ export function calculateEstimatedPrice(
 ): number {
   return Math.round(distance * pricePerKM * 100) / 100;
 }
+export const PASSENGER_OPTIONS = Array.from({ length: 4 }, (_, i) => ({
+  value: i + 1,
+  label: `${i + 1} ${i === 0 ? "Passenger" : "Passengers"}`,
+}));
+export const LUGGAGE_OPTIONS = Array.from({ length: 4 }, (_, i) => ({
+  value: i,
+  label: i === 0 ? "No Luggage" : `${i} ${i === 1 ? "Bag" : "Bags"}`,
+}));
