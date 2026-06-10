@@ -3,9 +3,8 @@
 import { useState } from "react";
 import BookingStep1 from "./BookingStep1";
 import BookingStep2 from "./BookingStep2";
-import { VehicleType } from "@/types";
 import BookingStep3 from "./BookingStep3";
-import { FormFields, Booking, StepData } from "@/types";
+import { FormFields, Booking, StepData, VehicleType } from "@/types";
 
 export default function BookingContainer() {
   const [currentStep, setCurrentStep] = useState(1);

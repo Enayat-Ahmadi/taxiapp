@@ -1,4 +1,4 @@
-type BookingStatus = "pending" | "confirmed" | "comleted" | "cancelleda";
+export type BookingStatus = "pending" | "confirmed" | "comleted" | "cancelleda";
 
 export type VehicleType = "standard" | "comfort" | "premium";
 
