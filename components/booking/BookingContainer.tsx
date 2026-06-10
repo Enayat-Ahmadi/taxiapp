@@ -4,6 +4,7 @@ import { useState } from "react";
 import BookingStep1 from "./BookingStep1";
 import BookingStep2 from "./BookingStep2";
 import { VehicleType } from "@/lib/constant";
+import BookingStep3, { Booking } from "./BookingStep3";
 
 type FormFields = {
   pickupLocation: string;
@@ -11,13 +12,13 @@ type FormFields = {
   phoneNumber: string;
   date: string;
   time: string;
-  passenger: number;
+  passengers: number;
   luggage: number;
 };
 interface StepData {
   step1?: FormFields;
   step2?: {
-    vehicleType: string;
+    vehicleType: VehicleType;
     estimatedPrice: number;
   };
 }
@@ -44,6 +45,10 @@ export default function BookingContainer() {
         estimatedPrice,
       },
     }));
+    setCurrentStep(3);
+  };
+  const handleStep3Submit = () => {
+   
   };
 
   const handlePrevious = () => {
@@ -65,6 +70,25 @@ export default function BookingContainer() {
             pickupLocation={stepData.step1?.pickupLocation}
             destination={stepData.step1?.destination}
             onNext={handleStep2Submit}
+            onPrevious={handlePrevious}
+            initialVehicleType={stepData.step2?.vehicleType}
+          />
+        )}
+        {currentStep === 3 && stepData.step1 && stepData.step2 && (
+          <BookingStep3
+            booking={{
+              pickupLocation: stepData.step1.pickupLocation,
+              destination: stepData.step1.destination,
+              date: stepData.step1.date,
+              time: stepData.step1.time,
+              passengers: stepData.step1.passengers,
+              luggage: stepData.step1.luggage,
+              phoneNumber: stepData.step1.phoneNumber,
+              vehicleType: stepData.step2.vehicleType,
+              estimatedPrice: stepData.step2.estimatedPrice,
+              status: "pending",
+            }}
+            onConfirm={handleStep3Submit}
             onPrevious={handlePrevious}
           />
         )}
