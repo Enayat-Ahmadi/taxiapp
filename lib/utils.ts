@@ -15,3 +15,17 @@ export function getTimeSlots(): string[] {
   }
   return slots;
 }
+export function formatPrice(price: number): string {
+  return new Intl.NumberFormat("de-DE", {
+    style: "currency",
+    currency: "EUR",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(price);
+}
+export function calculateEstimatedPrice(
+  distance: number = 15,
+  pricePerKM: number,
+): number {
+  return Math.round(distance * pricePerKM * 100) / 100;
+}
