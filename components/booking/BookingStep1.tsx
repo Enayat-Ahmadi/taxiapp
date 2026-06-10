@@ -11,7 +11,7 @@ type FormFields = {
   phoneNumber: string;
   date: string;
   time: string;
-  passenger: number;
+  passengers: number;
   luggage: number;
 };
 interface Step1Props {
@@ -115,13 +115,13 @@ export default function BookingStep1({
           </div>
           <div className="md:grid grid-cols-2 gap-4">
             <Select
-              {...register("passenger", {
+              {...register("passengers", {
                 required: "At least 1 passenger is required",
                 valueAsNumber: true,
               })}
               label="Passengers"
               options={PASSENGER_OPTIONS}
-              error={errors.passenger?.message}
+              error={errors.passengers?.message}
             />
             <Select
               {...register("luggage", {
