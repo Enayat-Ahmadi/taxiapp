@@ -1,10 +1,10 @@
-import { motion, AnimatePresence} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "../ui";
 import Image from "next/image";
 import { VEHICLES, VehicleType } from "@/lib/constant";
 import { useState } from "react";
 import { Button } from "../ui";
-import { cn } from "@/lib/utils";
+import { cn, formatPrice, calculateEstimatedPrice } from "@/lib/utils";
 
 interface Step2Props {
   pickupLocation?: string;
@@ -12,21 +12,7 @@ interface Step2Props {
   onNext: (VehicleType: VehicleType, price: number) => void;
   isLoading?: boolean;
   onPrevious: () => void;
-}
-
-export function formatPrice(price: number): string {
-  return new Intl.NumberFormat("de-DE", {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(price);
-}
-export function calculateEstimatedPrice(
-  distance: number = 15,
-  pricePerKM: number,
-): number {
-  return Math.round(distance * pricePerKM * 100) / 100;
+  initialVehicleType?: VehicleType;
 }
 
 export default function BookingStep2({
@@ -35,9 +21,10 @@ export default function BookingStep2({
   onNext,
   isLoading,
   onPrevious,
+  initialVehicleType,
 }: Step2Props) {
   const [selectedVehicle, setSelectedVehicle] = useState<VehicleType | null>(
-    null,
+    initialVehicleType || null,
   );
 
   const distance = 15; //KM
