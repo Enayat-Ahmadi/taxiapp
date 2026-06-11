@@ -1,23 +1,7 @@
-import mongoose, { Schema, Document } from "mongoose";
-import type { VehicleType, BookingStatus } from "@/types";
+import mongoose, { Schema } from "mongoose";
+import type { IBooking } from "@/types";
 
-interface IBooking extends Document {
-  _id: mongoose.Types.ObjectId;
-  pickupLocation: string;
-  destination: string;
-  date: string;
-  time: string;
-  passengers: number;
-  luggage: number;
-  phoneNumber: string;
-  vehicleType: VehicleType;
-  estimatedPrice: number;
-  status: BookingStatus;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-const BookinSchema = new Schema<IBooking>(
+const BookingSchema = new Schema<IBooking>(
   {
     pickupLocation: {
       type: String,
@@ -76,5 +60,5 @@ const BookinSchema = new Schema<IBooking>(
 );
 
 const Booking =
-  mongoose.models.Booking || mongoose.model<IBooking>("Booking", BookinSchema);
+  mongoose.models.Booking || mongoose.model<IBooking>("Booking", BookingSchema);
 export default Booking;
