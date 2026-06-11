@@ -41,7 +41,11 @@ export default function BookingStep1({
         <h2 className="text-2xl font-bold mb-2">Trip Details</h2>
         <p className="mb-6">Tell us where you&apos;re going and when</p>
 
-        <form onSubmit={handleSubmit(onNext)} className="space-y-4">
+        <form
+          onSubmit={handleSubmit(onNext)}
+          className="space-y-4"
+          suppressHydrationWarning
+        >
           <div className="space-y-4">
             <Input
               {...register("pickupLocation", {
