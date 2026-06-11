@@ -1,4 +1,4 @@
-export type BookingStatus = "pending" | "confirmed" | "comleted" | "cancelleda";
+export type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled";
 
 export type VehicleType = "standard" | "comfort" | "premium";
 
@@ -9,7 +9,8 @@ export interface Vehicle {
   basePricePerKm: number;
   image: string;
 }
-export interface Booking {
+
+export interface IBooking {
   _id?: string;
   pickupLocation: string;
   destination: string;
@@ -19,11 +20,17 @@ export interface Booking {
   luggage: number;
   phoneNumber: string;
   vehicleType: VehicleType;
-  vegicle?: string;
   estimatedPrice: number;
-  status: BookingStatus;
+  status?: BookingStatus;
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export interface ApiResponse<T = unknown> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  message?: string;
 }
 export interface StepData {
   step1?: FormFields;
@@ -40,4 +47,6 @@ export type FormFields = {
   time: string;
   passengers: number;
   luggage: number;
+  vehicleType: VehicleType;
+  estimatedPrice: number;
 };
