@@ -6,12 +6,20 @@ export async function createBooking(
   data: IBooking,
 ): Promise<IBooking & { _id: string }> {
   await connectDB();
-  const booking = await Booking.create({
+  const newBooking = await Booking.create({
     ...data,
     status: "pending",
   });
   return {
-    ...booking.toObject(),
-    _id: booking._id.toString(),
+    ...newBooking.toObject(),
+    _id: newBooking._id.toString(),
   };
+}
+export async function getAllbooking() {
+  await connectDB();
+  const bookins = await Booking.find().sort({ createdAt: -1 }).lean();
+  return bookins.map((booking) => ({
+    ...booking,
+    _id: booking._id.toString(),
+  })) as IBooking & { _id: string }[];
 }
