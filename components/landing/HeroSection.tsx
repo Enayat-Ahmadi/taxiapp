@@ -62,7 +62,7 @@ export function HeroSection() {
         >
           <Button
             size="lg"
-            onClick={() => (window.location.hash = "booking")}
+            onClick={() => (window.location.pathname = "booking")}
             className="w-full bg-teal text-black hover:shadow-teal-active"
           >
             Book a Ride

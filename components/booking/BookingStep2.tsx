@@ -1,10 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Card } from "../ui";
+import { Card, Button } from "../ui";
 import Image from "next/image";
-import { VEHICLES, VehicleType } from "@/lib/constant";
+import { VEHICLES } from "@/lib/constant";
 import { useState } from "react";
-import { Button } from "../ui";
 import { cn, formatPrice, calculateEstimatedPrice } from "@/lib/utils";
+import { VehicleType } from "@/types";
 
 interface Step2Props {
   pickupLocation?: string;
@@ -40,7 +40,12 @@ export default function BookingStep2({
     }
   };
   return (
-    <motion.div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3 }}
+    >
       <Card className="mb-6">
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-ink-dark mb-2">
