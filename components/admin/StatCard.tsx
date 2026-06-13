@@ -18,21 +18,19 @@ export default function StatCard({
   return (
     <div className="bg-teal/60 border border-slate-700 rounded-lg p-5 hover:border-warning transition-colors">
       <div className="flex items-start text-sm justify-between">
-        <div className="">
-          <p className="text-ink text-sm mb-2">{title}</p>
-          <p className="text-3xl font-bold text-cloud-light">{value}</p>
-          {trend && (
-            <p
-              className={`text-sm mt-2 ${trendUp ? "text-green-400" : "text-red-400"}`}
-            >
-              {trend}
-            </p>
-          )}
-        </div>
+        <p className="text-ink text-sm mb-2">{title}</p>
         <div className="text-ink bg-teal bg-opacity-10 p-3 rounded-lg">
           {icon}
         </div>
       </div>
+      <p className="text-xl font-bold text-cloud-light">{value}</p>
+      {trend && (
+        <p
+          className={`text-sm mt-2 ${trendUp ? "text-green-400" : "text-red-400"}`}
+        >
+          {trend}
+        </p>
+      )}
     </div>
   );
 }
