@@ -12,7 +12,7 @@ export async function createBookingAction(
 ): Promise<ApiResponse<IBooking & { _id: string }>> {
   try {
     const result = await createBooking(bookingData);
-    revalidatePath("/dashboard/bookings");
+    revalidatePath("/booking/create");
     return {
       success: true,
       data: result,

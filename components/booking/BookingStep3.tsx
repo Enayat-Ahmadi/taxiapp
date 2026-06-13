@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 import { Card, Button } from "../ui";
 import { formatPrice } from "@/lib/utils";
-import { Booking } from "@/types";
+import { IBooking } from "@/types";
 
 interface Step3Props {
-  booking: Booking;
+  booking: IBooking;
   onConfirm: () => void;
   onPrevious: () => void;
   isLoading?: boolean;
@@ -33,13 +33,13 @@ export default function BookingStep3({
           <div className="space-y-3">
             <div className="flex justify-between items-start">
               <span className="text-ink">From</span>
-              <span className="text-ink font-medium">
+              <span className="text-ink font-medium capitalize">
                 {booking.pickupLocation}
               </span>
             </div>
             <div className="flex justify-between items-start">
               <span className="text-ink">To</span>
-              <span className="text-ink font-medium">
+              <span className="text-ink font-medium capitalize">
                 {booking.destination}
               </span>
             </div>
