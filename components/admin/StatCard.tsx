@@ -16,7 +16,7 @@ export default function StatCard({
   icon,
 }: StateCardProps) {
   return (
-    <div className="bg-sky border border-slate-700 rounded-lg p-5 hover:border-warning transition-colors">
+    <div className="bg-teal/60 border border-slate-700 rounded-lg p-5 hover:border-warning transition-colors">
       <div className="flex items-start text-sm justify-between">
         <div className="">
           <p className="text-ink text-sm mb-2">{title}</p>

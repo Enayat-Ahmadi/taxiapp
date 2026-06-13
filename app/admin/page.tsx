@@ -8,7 +8,7 @@ export default function Dashboard() {
         <h1 className="text-4xl font-bold text-ink mb-2">Welcome back!</h1>
         <p className="">Here's your business overview</p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
           icon={<FileText className="w-6 h-6" />}
           title="Total Bookings"
