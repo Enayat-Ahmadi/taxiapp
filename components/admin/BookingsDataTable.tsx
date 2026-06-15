@@ -1,12 +1,19 @@
 "use client";
 
-import type { IBooking } from "@/types";
+import type { BookingStatus, IBooking } from "@/types";
 import { Card } from "@/components/ui";
+import { useState } from "react";
+import { updateBookingStatusAction } from "@/actions/booking";
 
 interface BookingsDataTableProps {
   bookings: IBooking[];
 }
-
+const BOOKIG_STATU_OPTIONS: BookingStatus[] = [
+  "pending",
+  "cancelled",
+  "confirmed",
+  "completed",
+];
 const getStatusBadgeColor = (
   status: string,
 ):
@@ -29,7 +36,39 @@ const getStatusBadgeColor = (
   }
 };
 
-export function BookingsDataTable({ bookings }: BookingsDataTableProps) {
+export function BookingsDataTable({
+  bookings: initalBookings,
+}: BookingsDataTableProps) {
+  const [bookings, setBookings] = useState(initalBookings);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const handleStatusChange = async (
+    bookingId: string,
+    newStatus: BookingStatus,
+  ) => {
+    setUpdatingId(bookingId);
+    setError(null);
+    try {
+      const result = await updateBookingStatusAction(bookingId, newStatus);
+      if (!result.success) {
+        throw new Error(result.error || "Failed to update booking status");
+      }
+      setBookings((prev) =>
+        prev.map((booking) =>
+          booking._id === bookingId
+            ? { ...booking, status: newStatus }
+            : booking,
+        ),
+      );
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An error occurred";
+      setError(errorMessage);
+      console.error("Error updating status:", error);
+    } finally {
+      setUpdatingId(null);
+    }
+  };
   if (bookings.length === 0) {
     return (
       <Card className="p-6">
@@ -40,6 +79,11 @@ export function BookingsDataTable({ bookings }: BookingsDataTableProps) {
 
   return (
     <Card className="p-4 md:p-6">
+      {error && (
+        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+          {error}
+        </div>
+      )}
       {/* Mobile Card View */}
       <div className="block lg:hidden space-y-4">
         {bookings.map((booking) => (
@@ -56,13 +100,30 @@ export function BookingsDataTable({ bookings }: BookingsDataTableProps) {
                   {booking.pickupLocation}
                 </p>
               </div>
-              <span
-                className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeColor(
+              <select
+                aria-label="Update booking status"
+                value={booking.status || "pending"}
+                onChange={(e) =>
+                  handleStatusChange(
+                    booking._id!,
+                    e.target.value as BookingStatus,
+                  )
+                }
+                disabled={updatingId === booking._id}
+                className={`px-2 py-1 rounded-full text-xs font-medium border-0 cursor-pointer capitalize ${getStatusBadgeColor(
                   booking.status || "pending",
-                )}`}
+                )} ${updatingId === booking._id ? "opacity-50 cursor-not-allowed" : ""}`}
               >
-                {booking.status || "pending"}
-              </span>
+                {BOOKIG_STATU_OPTIONS.map((status) => (
+                  <option
+                    key={status}
+                    value={status}
+                    className="font-semibold text-ink capitalize"
+                  >
+                    {status}
+                  </option>
+                ))}
+              </select>
             </div>
             <div>
               <p className="text-xs text-gray-500 uppercase tracking-wide">
@@ -178,13 +239,30 @@ export function BookingsDataTable({ bookings }: BookingsDataTableProps) {
                   ${booking.estimatedPrice}
                 </td>
                 <td className="py-3 px-3 lg:px-4">
-                  <span
-                    className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${getStatusBadgeColor(
+                  <select
+                    aria-label="Update booking status"
+                    value={booking.status || "pending"}
+                    onChange={(e) =>
+                      handleStatusChange(
+                        booking._id!,
+                        e.target.value as BookingStatus,
+                      )
+                    }
+                    disabled={updatingId === booking._id}
+                    className={`px-2 py-1 rounded-full text-xs font-medium border-0 cursor-pointer capitalize ${getStatusBadgeColor(
                       booking.status || "pending",
-                    )}`}
+                    )} ${updatingId === booking._id ? "opacity-50 cursor-not-allowed" : ""}`}
                   >
-                    {booking.status || "pending"}
-                  </span>
+                    {BOOKIG_STATU_OPTIONS.map((status) => (
+                      <option
+                        key={status}
+                        value={status}
+                        className="font-semibold text-ink capitalize"
+                      >
+                        {status}
+                      </option>
+                    ))}
+                  </select>
                 </td>
                 <td className="py-3 px-3 lg:px-4 text-gray-900">
                   {booking.phoneNumber}
