@@ -11,7 +11,7 @@ const ADMIN_NAV_ITEMS = [
 export default function AdminSidebar() {
   const pathname = usePathname();
   return (
-    <aside className="w-60 bg-teal/60 border-r border-slate-700 min-h-screen">
+    <aside className="hidden lg:block w-50 bg-teal/60 border-r border-slate-700 min-h-screen">
       <div className="p-6">
         <Link href="/" className="flex items-center gap-2 mb-8">
           <div className="w-8 h-8 bg-teal rounded-lg flex items-center justify-center">
