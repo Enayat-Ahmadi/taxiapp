@@ -4,37 +4,11 @@ import type { BookingStatus, IBooking } from "@/types";
 import { Card } from "@/components/ui";
 import { useState } from "react";
 import { updateBookingStatusAction } from "@/actions/booking";
+import StatusSelect from "./StatusSelect";
 
 interface BookingsDataTableProps {
   bookings: IBooking[];
 }
-const BOOKIG_STATU_OPTIONS: BookingStatus[] = [
-  "pending",
-  "cancelled",
-  "confirmed",
-  "completed",
-];
-const getStatusBadgeColor = (
-  status: string,
-):
-  | "bg-yellow-100 text-yellow-800"
-  | "bg-green-100 text-green-800"
-  | "bg-blue-100 text-blue-800"
-  | "bg-red-100 text-red-800"
-  | "bg-gray-100 text-gray-800" => {
-  switch (status) {
-    case "pending":
-      return "bg-yellow-100 text-yellow-800";
-    case "confirmed":
-      return "bg-blue-100 text-blue-800";
-    case "completed":
-      return "bg-green-100 text-green-800";
-    case "cancelled":
-      return "bg-red-100 text-red-800";
-    default:
-      return "bg-gray-100 text-gray-800";
-  }
-};
 
 export function BookingsDataTable({
   bookings: initalBookings,
@@ -42,10 +16,12 @@ export function BookingsDataTable({
   const [bookings, setBookings] = useState(initalBookings);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
   const handleStatusChange = async (
     bookingId: string,
     newStatus: BookingStatus,
   ) => {
+    if (!bookings) return;
     setUpdatingId(bookingId);
     setError(null);
     try {
@@ -100,30 +76,11 @@ export function BookingsDataTable({
                   {booking.pickupLocation}
                 </p>
               </div>
-              <select
-                aria-label="Update booking status"
-                value={booking.status || "pending"}
-                onChange={(e) =>
-                  handleStatusChange(
-                    booking._id!,
-                    e.target.value as BookingStatus,
-                  )
-                }
-                disabled={updatingId === booking._id}
-                className={`px-2 py-1 rounded-full text-xs font-medium border-0 cursor-pointer capitalize ${getStatusBadgeColor(
-                  booking.status || "pending",
-                )} ${updatingId === booking._id ? "opacity-50 cursor-not-allowed" : ""}`}
-              >
-                {BOOKIG_STATU_OPTIONS.map((status) => (
-                  <option
-                    key={status}
-                    value={status}
-                    className="font-semibold text-ink capitalize"
-                  >
-                    {status}
-                  </option>
-                ))}
-              </select>
+              <StatusSelect
+                booking={booking}
+                onStatusChange={handleStatusChange}
+                updatingId={updatingId}
+              />
             </div>
             <div>
               <p className="text-xs text-gray-500 uppercase tracking-wide">
@@ -239,30 +196,11 @@ export function BookingsDataTable({
                   ${booking.estimatedPrice}
                 </td>
                 <td className="py-3 px-3 lg:px-4">
-                  <select
-                    aria-label="Update booking status"
-                    value={booking.status || "pending"}
-                    onChange={(e) =>
-                      handleStatusChange(
-                        booking._id!,
-                        e.target.value as BookingStatus,
-                      )
-                    }
-                    disabled={updatingId === booking._id}
-                    className={`px-2 py-1 rounded-full text-xs font-medium border-0 cursor-pointer capitalize ${getStatusBadgeColor(
-                      booking.status || "pending",
-                    )} ${updatingId === booking._id ? "opacity-50 cursor-not-allowed" : ""}`}
-                  >
-                    {BOOKIG_STATU_OPTIONS.map((status) => (
-                      <option
-                        key={status}
-                        value={status}
-                        className="font-semibold text-ink capitalize"
-                      >
-                        {status}
-                      </option>
-                    ))}
-                  </select>
+                  <StatusSelect
+                    booking={booking}
+                    onStatusChange={handleStatusChange}
+                    updatingId={updatingId}
+                  />
                 </td>
                 <td className="py-3 px-3 lg:px-4 text-gray-900">
                   {booking.phoneNumber}
