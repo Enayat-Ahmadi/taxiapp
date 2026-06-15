@@ -39,6 +39,7 @@ export default function StatusSelect({
       value={currentStatus}
       onChange={handleCahange}
       disabled={isCurrentlyUpdating}
+      suppressHydrationWarning={true}
       className={`px-2 py-1 rounded-full text-xs font-medium border-0 cursor-pointer capitalize transition-opacity ${
         STATUS_STYLES[currentStatus] || STATUS_STYLES.default
       } ${isCurrentlyUpdating ? "opacity-50 cursor-not-allowed" : ""}`}
