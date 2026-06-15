@@ -1,6 +1,6 @@
 "use server";
-import { IBooking, ApiResponse } from "@/types";
-import { createBooking } from "@/services/booking.service";
+import { IBooking, ApiResponse, BookingStatus } from "@/types";
+import { createBooking, updateBookingStatus } from "@/services/booking.service";
 import { revalidatePath } from "next/cache";
 
 /**
@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache";
  */
 export async function createBookingAction(
   bookingData: IBooking,
-): Promise<ApiResponse<IBooking & { _id: string }>> {
+): Promise<ApiResponse<IBooking>> {
   try {
     const result = await createBooking(bookingData);
     revalidatePath("/booking/create");
@@ -20,6 +20,28 @@ export async function createBookingAction(
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : "Failed to create booking";
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  }
+}
+export async function updateBookingStatusAction(
+  bookingId: string,
+  status: BookingStatus,
+): Promise<ApiResponse<IBooking>> {
+  try {
+    const result = await updateBookingStatus(bookingId, status);
+    revalidatePath("/admin/bookings");
+    return {
+      success: true,
+      data: result,
+    };
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Failed to update booking status";
     return {
       success: false,
       error: errorMessage,
