@@ -5,6 +5,7 @@ import { Card } from "@/components/ui";
 import { useState } from "react";
 import { updateBookingStatusAction } from "@/actions/booking";
 import StatusSelect from "./StatusSelect";
+import MobileCard from "./booking/MobileCard";
 
 interface BookingsDataTableProps {
   bookings: IBooking[];
@@ -62,6 +63,18 @@ export function BookingsDataTable({
       )}
       {/* Mobile Card View */}
       <div className="block lg:hidden space-y-4">
+        {bookings.map((booking) => (
+          <MobileCard key={booking._id} booking={booking}>
+            <StatusSelect
+              booking={booking}
+              onStatusChange={handleStatusChange}
+              updatingId={updatingId}
+            />
+          </MobileCard>
+        ))}
+      </div>
+
+      {/* <div className="block lg:hidden space-y-4">
         {bookings.map((booking) => (
           <div
             key={booking._id}
@@ -135,7 +148,7 @@ export function BookingsDataTable({
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
 
       {/* Desktop Table View */}
       <div className="hidden lg:block overflow-x-auto">
