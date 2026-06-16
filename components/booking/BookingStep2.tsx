@@ -2,9 +2,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Card, Button } from "../ui";
 import Image from "next/image";
 import { VEHICLES } from "@/lib/constant";
-import { useState } from "react";
-import { cn, formatPrice, calculateEstimatedPrice } from "@/lib/utils";
+import { useState, useEffect } from "react";
+import {
+  cn,
+  formatPrice,
+  calculateEstimatedPrice,
+  formatMinutes,
+} from "@/lib/utils";
 import { VehicleType } from "@/types";
+
+interface RouteInfo {
+  distance: number;
+  duration: number;
+  estimatedTime: string;
+}
 
 interface Step2Props {
   pickupLocation?: string;
@@ -26,11 +37,59 @@ export default function BookingStep2({
   const [selectedVehicle, setSelectedVehicle] = useState<VehicleType | null>(
     initialVehicleType || null,
   );
+  const [distance, setDistance] = useState<number | null>(null);
+  const [routeInfo, setRouteInfo] = useState<number>(0);
+  const [loadingRoute, setLoadingRoute] = useState(false);
+  const [routeError, setRouteError] = useState<string>("");
 
-  const distance = 15; //KM
+  useEffect(() => {
+    const fetchDistance = async () => {
+      if (!pickupLocation || !destination) {
+        setDistance(null);
+        return;
+      }
+
+      setLoadingRoute(true);
+      setRouteError("");
+      try {
+        const response = await fetch("/api/bookings/distance", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pickupLocation,
+            destination,
+          }),
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error || "Failed to calculate distance");
+        }
+
+        const data = await response.json();
+        const route = data.data as RouteInfo;
+        setDistance(route.distance);
+        setRouteInfo(route.duration);
+      } catch (error) {
+        console.error("Error fetching route:", error);
+        setRouteError(
+          error instanceof Error
+            ? error.message
+            : "Failed to calculate distance",
+        );
+        setDistance(null);
+      } finally {
+        setLoadingRoute(false);
+      }
+    };
+
+    fetchDistance();
+  }, [pickupLocation, destination]);
 
   const handleContinue = () => {
-    if (selectedVehicle) {
+    if (selectedVehicle && distance !== null) {
       const vehicle = VEHICLES[selectedVehicle];
       const estimatedPrice = calculateEstimatedPrice(
         distance,
@@ -39,6 +98,7 @@ export default function BookingStep2({
       onNext(selectedVehicle, estimatedPrice);
     }
   };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -58,17 +118,28 @@ export default function BookingStep2({
               </>
             )}
           </p>
+          {loadingRoute ? (
+            <p className="text-sm text-success mt-2">Calculating distance...</p>
+          ) : routeError ? (
+            <p className="text-sm text-red-500 mt-2">{routeError}</p>
+          ) : distance !== null ? (
+            <p className="text-sm text-success font-medium mt-2">
+              Distance: {distance} km | {formatMinutes(routeInfo)}
+            </p>
+          ) : null}
         </div>
         <div className="space-y-4 mb-8">
           {Object.entries(VEHICLES).map(([key, vehicle]) => {
             const isSelected = selectedVehicle === key;
             const price = vehicle.basePricePerKm;
-            const estimatePrice = calculateEstimatedPrice(distance, price);
+            const estimatePrice =
+              distance !== null ? calculateEstimatedPrice(distance, price) : 0;
             return (
               <motion.button
                 key={key}
                 onClick={() => setSelectedVehicle(key as VehicleType)}
                 className="w-full text-left"
+                disabled={distance === null || loadingRoute}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -143,17 +214,24 @@ export default function BookingStep2({
             size="lg"
             className="flex-1"
             onClick={onPrevious}
+            disabled={loadingRoute}
           >
             Back
           </Button>
           <Button
             size="lg"
             className="flex-1 bg-teal text-white disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={!selectedVehicle || isLoading}
-            isLoading={isLoading}
+            disabled={
+              !selectedVehicle ||
+              isLoading ||
+              distance === null ||
+              loadingRoute ||
+              !!routeError
+            }
+            isLoading={isLoading || loadingRoute}
             onClick={handleContinue}
           >
-            Continue to Review
+            {loadingRoute ? "Calculating distance..." : "Continue to Review"}
           </Button>
         </div>
       </Card>
