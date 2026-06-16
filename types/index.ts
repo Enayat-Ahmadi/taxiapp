@@ -21,6 +21,8 @@ export interface IBooking {
   phoneNumber: string;
   vehicleType: VehicleType;
   estimatedPrice: number;
+  distance?: number;
+  estimatedTime?: number;
   status?: BookingStatus;
   createdAt?: Date;
   updatedAt?: Date;
