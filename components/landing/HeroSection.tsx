@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui";
+import { useRouter } from "next/navigation";
 
 export function HeroSection() {
+  const router = useRouter();
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -62,7 +64,7 @@ export function HeroSection() {
         >
           <Button
             size="lg"
-            onClick={() => (window.location.pathname = "booking")}
+            onClick={() => router.push("/booking")}
             className="w-full bg-teal text-black hover:shadow-teal-active"
           >
             Book a Ride
