@@ -1,3 +1,4 @@
+import { formatPrice } from "@/lib/utils";
 import { IBooking } from "@/types";
 import React from "react";
 
@@ -38,7 +39,7 @@ export default function BookingTableRow({
         {booking.vehicleType}
       </td>
       <td className="py-3 px-3 lg:px-4 font-medium text-gray-900">
-        ${booking.estimatedPrice}
+        {formatPrice(booking.estimatedPrice)}
       </td>
       <td className="py-3 px-3 lg:px-4">{children}</td>
       <td className="py-3 px-3 lg:px-4 text-gray-900">{booking.phoneNumber}</td>

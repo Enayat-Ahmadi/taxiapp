@@ -48,6 +48,14 @@ const BookingSchema = new Schema<IBooking>(
       required: [true, "Estimated price is required"],
       min: 0,
     },
+    distance: {
+      type: Number,
+      default: null,
+    },
+    estimatedTime: {
+      type: Number,
+      default: null,
+    },
     status: {
       type: String,
       enum: ["pending", "confirmed", "completed", "cancelled"],
