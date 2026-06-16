@@ -15,12 +15,18 @@ export function Navbar() {
               Eidsvoll Taxi
             </span>
           </Link>
-
-          <Link href="/booking">
-            <Button size="sm" className="bg-teal text-white">
-              Book Now
-            </Button>
-          </Link>
+          <div className="flex gap-2">
+            <Link href="/booking">
+              <Button size="sm" className="bg-teal text-white">
+                Book Now
+              </Button>
+            </Link>
+            <Link href="/admin">
+              <Button size="sm" className="bg-teal text-white">
+                Bookings
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </nav>
