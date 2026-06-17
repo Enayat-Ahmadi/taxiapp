@@ -4,12 +4,13 @@ import { Card, Input, Button, Select } from "../ui";
 import { getTimeSlots, PASSENGER_OPTIONS, LUGGAGE_OPTIONS } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { useMemo } from "react";
-import { FormFields } from "@/types";
+import { TripDetailsSchema, TripDetailsInput } from "@/lib/validators";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface Step1Props {
-  onNext: (data: FormFields) => void;
+  onNext: (data: TripDetailsInput) => void;
   isLoading?: boolean;
-  initialData?: Partial<FormFields>;
+  initialData?: Partial<TripDetailsInput>;
 }
 
 export default function BookingStep1({
@@ -21,7 +22,8 @@ export default function BookingStep1({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormFields>({
+  } = useForm<TripDetailsInput>({
+    resolver: zodResolver(TripDetailsSchema),
     defaultValues: initialData,
   });
   const timeSlots = useMemo(() => getTimeSlots(), []);
@@ -30,6 +32,7 @@ export default function BookingStep1({
     () => timeSlots.map((slot) => ({ value: slot, label: slot })),
     [timeSlots],
   );
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -48,29 +51,19 @@ export default function BookingStep1({
         >
           <div className="space-y-4">
             <Input
-              {...register("pickupLocation", {
-                required: "pickup location is required",
-              })}
+              {...register("pickupLocation")}
               label="Pickup Location"
               placeholder="Enter pickup address"
               error={errors.pickupLocation?.message}
             />
             <Input
-              {...register("destination", {
-                required: "destination is required",
-              })}
+              {...register("destination")}
               label="Destination"
               placeholder="Where to?"
               error={errors.destination?.message}
             />
             <Input
-              {...register("phoneNumber", {
-                required: "phone number is required",
-                pattern: {
-                  value: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/,
-                  message: "Invalid phone number format",
-                },
-              })}
+              {...register("phoneNumber")}
               label="Phone Number"
               type="tel"
               placeholder="+49 (123) 123-4567"
@@ -79,22 +72,13 @@ export default function BookingStep1({
           </div>
           <div className="md:grid grid-cols-2 gap-4">
             <Input
-              {...register("date", {
-                required: "Date is required",
-                validate: (value) => {
-                  const selected = new Date(value).setHours(0, 0, 0, 0);
-                  const today = new Date().setHours(0, 0, 0, 0);
-                  return selected >= today || "Date cannot be in the past";
-                },
-              })}
+              {...register("date")}
               type="date"
               label="Date"
               error={errors.date?.message}
             />
             <Select
-              {...register("time", {
-                required: "Time slot is required",
-              })}
+              {...register("time")}
               label="Time"
               options={timeOptions}
               error={errors.time?.message}
@@ -102,19 +86,13 @@ export default function BookingStep1({
           </div>
           <div className="md:grid grid-cols-2 gap-4">
             <Select
-              {...register("passengers", {
-                required: "At least 1 passenger is required",
-                valueAsNumber: true,
-              })}
+              {...register("passengers", { valueAsNumber: true })}
               label="Passengers"
               options={PASSENGER_OPTIONS}
               error={errors.passengers?.message}
             />
             <Select
-              {...register("luggage", {
-                required: "Please select an option",
-                valueAsNumber: true,
-              })}
+              {...register("luggage", { valueAsNumber: true })}
               label="Luggage"
               options={LUGGAGE_OPTIONS}
               error={errors.luggage?.message}
