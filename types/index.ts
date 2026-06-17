@@ -51,6 +51,4 @@ export type FormFields = {
   time: string;
   passengers: number;
   luggage: number;
-  vehicleType: VehicleType;
-  estimatedPrice: number;
 };
