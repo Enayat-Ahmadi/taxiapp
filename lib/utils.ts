@@ -1,3 +1,4 @@
+import { Vehicle } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -24,10 +25,16 @@ export function formatPrice(price: number): string {
   }).format(price);
 }
 export function calculateEstimatedPrice(
-  distance: number = 15,
-  pricePerKM: number,
+  distanceKm: number,
+  durationMins: number,
+  vehicle: Vehicle,
 ): number {
-  return Math.round(distance * pricePerKM * 100) / 100;
+  const price =
+    vehicle.baseFare +
+    distanceKm * vehicle.basePricePerKm +
+    durationMins * vehicle.pricePerMinute;
+
+  return Number(price);
 }
 export const PASSENGER_OPTIONS = Array.from({ length: 4 }, (_, i) => ({
   value: i + 1,

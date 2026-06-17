@@ -7,6 +7,8 @@ export interface Vehicle {
   seats: number;
   luggage: number;
   basePricePerKm: number;
+  pricePerMinute: number;
+  baseFare: number;
   image: string;
 }
 
