@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
           success: false,
           error: "Pickup location and destination are required",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -22,7 +22,6 @@ export async function POST(request: NextRequest) {
       data: {
         distance: route.distance,
         duration: route.duration,
-        estimatedTime: route.estimatedTime,
       },
     });
   } catch (error) {
@@ -35,7 +34,7 @@ export async function POST(request: NextRequest) {
             ? error.message
             : "Failed to calculate distance",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -93,12 +93,13 @@ export default function BookingStep2({
       const vehicle = VEHICLES[selectedVehicle];
       const estimatedPrice = calculateEstimatedPrice(
         distance,
-        vehicle.basePricePerKm,
+        routeInfo,
+        vehicle,
       );
       onNext(selectedVehicle, estimatedPrice);
     }
   };
-
+console.log(routeInfo)
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -131,9 +132,10 @@ export default function BookingStep2({
         <div className="space-y-4 mb-8">
           {Object.entries(VEHICLES).map(([key, vehicle]) => {
             const isSelected = selectedVehicle === key;
-            const price = vehicle.basePricePerKm;
             const estimatePrice =
-              distance !== null ? calculateEstimatedPrice(distance, price) : 0;
+              distance !== null
+                ? calculateEstimatedPrice(distance, routeInfo, vehicle)
+                : 0;
             return (
               <motion.button
                 key={key}
