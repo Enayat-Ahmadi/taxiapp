@@ -99,7 +99,7 @@ export default function BookingStep2({
       onNext(selectedVehicle, estimatedPrice);
     }
   };
-console.log(routeInfo)
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
