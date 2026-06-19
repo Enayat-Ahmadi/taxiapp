@@ -36,37 +36,34 @@ export default function BookingContainer() {
     [],
   );
 
-  const handleStep3Submit = async () => {
+  const handleStep3Submit = useCallback(async () => {
     if (!stepData.step1 || !stepData.step2) return;
+
     setIsLoading(true);
     setErrorMessage(null);
+
     const bookingData: IBooking = {
       ...stepData.step1,
       vehicleType: stepData.step2.vehicleType,
       estimatedPrice: stepData.step2.estimatedPrice,
     };
 
-    try {
-      const res = await createBookingAction(bookingData);
-      if (res.success) {
-        setSuccessMessage(true);
-      } else {
-        setErrorMessage(
-          res.error || "Failed to create booking. Please try again.",
-        );
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      setErrorMessage("An unexpected error occurred. Please try again.");
-    } finally {
-      setIsLoading(false);
+    const res = await createBookingAction(bookingData);
+    if (res.success) {
+      setSuccessMessage(true);
+    } else {
+      setErrorMessage(
+        res.error || "Failed to create booking. Please try again.",
+      );
     }
-  };
+
+    setIsLoading(false);
+  }, [stepData]);
 
   const handlePrevious = useCallback(() => {
     setCurrentStep((prev) => Math.max(1, prev - 1));
   }, []);
-  
+
   if (successMessage) {
     return (
       <div className="min-h-screen flex items-center justify-center py-8 md:px-4">
