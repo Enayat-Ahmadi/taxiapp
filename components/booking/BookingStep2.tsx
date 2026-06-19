@@ -10,12 +10,7 @@ import {
   formatMinutes,
 } from "@/lib/utils";
 import { VehicleType } from "@/types";
-
-interface RouteInfo {
-  distance: number;
-  duration: number;
-  estimatedTime: string;
-}
+import { getDistanceAction } from "@/actions/distance.action";
 
 interface Step2Props {
   pickupLocation?: string;
@@ -44,45 +39,22 @@ export default function BookingStep2({
 
   useEffect(() => {
     const fetchDistance = async () => {
-      if (!pickupLocation || !destination) {
-        setDistance(null);
-        return;
-      }
+      if (!pickupLocation || !destination) return;
 
       setLoadingRoute(true);
       setRouteError("");
-      try {
-        const response = await fetch("/api/bookings/distance", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            pickupLocation,
-            destination,
-          }),
-        });
 
-        if (!response.ok) {
-          const error = await response.json();
-          throw new Error(error.error || "Failed to calculate distance");
-        }
+      const response = await getDistanceAction(pickupLocation, destination);
 
-        const data = await response.json();
-        const route = data.data as RouteInfo;
-        setDistance(route.distance);
-        setRouteInfo(route.duration);
-      } catch (error) {
-        console.error("Error fetching route:", error);
-        setRouteError(
-          error instanceof Error
-            ? error.message
-            : "Failed to calculate distance",
-        );
+      if (response.success) {
+        setDistance(response.data.distance);
+        setRouteInfo(response.data.duration);
+      } else {
+        setRouteError(response.error);
         setDistance(null);
-      } finally {
-        setLoadingRoute(false);
       }
+
+      setLoadingRoute(false);
     };
 
     fetchDistance();
