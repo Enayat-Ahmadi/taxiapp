@@ -26,11 +26,10 @@ export default function BookingStep1({
     resolver: zodResolver(TripDetailsSchema),
     defaultValues: initialData,
   });
-  const timeSlots = useMemo(() => getTimeSlots(), []);
 
   const timeOptions = useMemo(
-    () => timeSlots.map((slot) => ({ value: slot, label: slot })),
-    [timeSlots],
+    () => getTimeSlots().map((slot) => ({ value: slot, label: slot })),
+    [],
   );
 
   return (
@@ -44,11 +43,7 @@ export default function BookingStep1({
         <h2 className="text-2xl font-bold mb-2">Trip Details</h2>
         <p className="mb-6">Tell us where you&apos;re going and when</p>
 
-        <form
-          onSubmit={handleSubmit(onNext)}
-          className="space-y-4"
-          suppressHydrationWarning
-        >
+        <form onSubmit={handleSubmit(onNext)} className="space-y-4">
           <div className="space-y-4">
             <Input
               {...register("pickupLocation")}
@@ -76,6 +71,7 @@ export default function BookingStep1({
               type="date"
               label="Date"
               error={errors.date?.message}
+              suppressHydrationWarning
             />
             <Select
               {...register("time")}
