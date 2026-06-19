@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import BookingStep1 from "./BookingStep1";
 import BookingStep2 from "./BookingStep2";
 import BookingStep3 from "./BookingStep3";
-import { FormFields, IBooking, StepData, VehicleType } from "@/types";
+import { FormFields, StepData, VehicleType } from "@/types";
 import { createBookingAction } from "@/actions/booking";
 import BookingSuccess from "./BookingSuccess";
 
@@ -37,19 +37,27 @@ export default function BookingContainer() {
     [],
   );
 
+  const handlePrevious = useCallback(() => {
+    setCurrentStep((prev) => Math.max(1, prev - 1));
+  }, []);
+
+  const step3Data = useMemo(() => {
+    if (!stepData.step1 || !stepData.step2) return null;
+    return {
+      ...stepData.step1,
+      vehicleType: stepData.step2.vehicleType,
+      estimatedPrice: stepData.step2.estimatedPrice,
+      status: "pending" as const,
+    };
+  }, [stepData]);
+
   const handleStep3Submit = useCallback(async () => {
-    if (!stepData.step1 || !stepData.step2) return;
+    if (!step3Data) return;
 
     setIsLoading(true);
     setErrorMessage(null);
 
-    const bookingData: IBooking = {
-      ...stepData.step1,
-      vehicleType: stepData.step2.vehicleType,
-      estimatedPrice: stepData.step2.estimatedPrice,
-    };
-
-    const res = await createBookingAction(bookingData);
+    const res = await createBookingAction(step3Data);
     if (res.success) {
       setSuccessMessage(true);
     } else {
@@ -59,11 +67,7 @@ export default function BookingContainer() {
     }
 
     setIsLoading(false);
-  }, [stepData]);
-
-  const handlePrevious = useCallback(() => {
-    setCurrentStep((prev) => Math.max(1, prev - 1));
-  }, []);
+  }, [step3Data]);
 
   if (successMessage) return <BookingSuccess />;
 
@@ -90,20 +94,9 @@ export default function BookingContainer() {
             initialVehicleType={stepData.step2?.vehicleType}
           />
         )}
-        {currentStep === 3 && stepData.step1 && stepData.step2 && (
+        {currentStep === 3 && step3Data && (
           <BookingStep3
-            booking={{
-              pickupLocation: stepData.step1.pickupLocation,
-              destination: stepData.step1.destination,
-              date: stepData.step1.date,
-              time: stepData.step1.time,
-              passengers: stepData.step1.passengers,
-              luggage: stepData.step1.luggage,
-              phoneNumber: stepData.step1.phoneNumber,
-              vehicleType: stepData.step2.vehicleType,
-              estimatedPrice: stepData.step2.estimatedPrice,
-              status: "pending",
-            }}
+            booking={step3Data}
             onConfirm={handleStep3Submit}
             onPrevious={handlePrevious}
             isLoading={isLoading}
