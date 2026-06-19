@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import BookingStep1 from "./BookingStep1";
 import BookingStep2 from "./BookingStep2";
 import BookingStep3 from "./BookingStep3";
@@ -14,27 +14,27 @@ export default function BookingContainer() {
   const [successMessage, setSuccessMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleStep1Submit = (formData: FormFields) => {
+  const handleStep1Submit = useCallback((formData: FormFields) => {
     setStepData((prev) => ({
       ...prev,
       step1: formData,
     }));
     setCurrentStep(2);
-  };
+  }, []);
 
-  const handleStep2Submit = (
-    vehicleType: VehicleType,
-    estimatedPrice: number,
-  ) => {
-    setStepData((prev) => ({
-      ...prev,
-      step2: {
-        vehicleType,
-        estimatedPrice,
-      },
-    }));
-    setCurrentStep(3);
-  };
+  const handleStep2Submit = useCallback(
+    (vehicleType: VehicleType, estimatedPrice: number) => {
+      setStepData((prev) => ({
+        ...prev,
+        step2: {
+          vehicleType,
+          estimatedPrice,
+        },
+      }));
+      setCurrentStep(3);
+    },
+    [],
+  );
 
   const handleStep3Submit = async () => {
     if (!stepData.step1 || !stepData.step2) return;
@@ -45,6 +45,7 @@ export default function BookingContainer() {
       vehicleType: stepData.step2.vehicleType,
       estimatedPrice: stepData.step2.estimatedPrice,
     };
+
     try {
       const res = await createBookingAction(bookingData);
       if (res.success) {
@@ -62,11 +63,10 @@ export default function BookingContainer() {
     }
   };
 
-  const handlePrevious = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
+  const handlePrevious = useCallback(() => {
+    setCurrentStep((prev) => Math.max(1, prev - 1));
+  }, []);
+  
   if (successMessage) {
     return (
       <div className="min-h-screen flex items-center justify-center py-8 md:px-4">
