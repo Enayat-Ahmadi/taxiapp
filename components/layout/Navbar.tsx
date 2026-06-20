@@ -1,6 +1,9 @@
 "use client";
+
 import Link from "next/link";
-import { Button } from "../ui";
+import { buttonVariants } from "@/lib/buttonVariants";
+import { ROUTES } from "@/lib/routes";
+
 export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 bg-sky backdrop-blur-md border-b border-slate-700/30">
@@ -16,15 +19,25 @@ export function Navbar() {
             </span>
           </Link>
           <div className="flex gap-2">
-            <Link href="/booking">
-              <Button size="sm" className="bg-teal text-white">
-                Book Now
-              </Button>
+            <Link
+              href={ROUTES.booking}
+              className={buttonVariants(
+                "primary",
+                "sm",
+                "bg-teal text-cloud-light",
+              )}
+            >
+              Book Now
             </Link>
-            <Link href="/admin">
-              <Button size="sm" className="bg-teal text-white">
-                Bookings
-              </Button>
+            <Link
+              href={ROUTES.admin}
+              className={buttonVariants(
+                "primary",
+                "sm",
+                "bg-teal text-cloud-light",
+              )}
+            >
+              Bookings
             </Link>
           </div>
         </div>
