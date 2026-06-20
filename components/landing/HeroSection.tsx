@@ -1,11 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
+import { buttonVariants } from "@/lib/buttonVariants";
 
 export function HeroSection() {
-  const router = useRouter();
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -62,13 +62,16 @@ export function HeroSection() {
           variants={itemVariants}
           className="flex gap-4 justify-center mb-12"
         >
-          <Button
-            size="lg"
-            onClick={() => router.push("/booking")}
-            className="w-full bg-teal text-black hover:shadow-teal-active"
+          <Link
+            href={ROUTES.booking}
+            className={buttonVariants(
+              "primary",
+              "lg",
+              "w-full bg-teal text-cloud-light hover:shadow-teal-active",
+            )}
           >
             Book a Ride
-          </Button>
+          </Link>
         </motion.div>
       </motion.div>
 
