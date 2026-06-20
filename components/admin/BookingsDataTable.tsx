@@ -2,51 +2,23 @@
 
 import type { BookingStatus, IBooking } from "@/types";
 import { Card } from "@/components/ui";
-import { useState } from "react";
-import { updateBookingStatusAction } from "@/actions/booking";
 import StatusSelect from "./booking/StatusSelect";
 import MobileBookingCard from "./booking/MobileBookingCard";
 import BookingTableRow, { BookingTableHeader } from "./booking/BookingTable";
 
 interface BookingsDataTableProps {
   bookings: IBooking[];
+  updatingId: string | null;
+  error: string | null;
+  onStatusChange: (bookingId: string, newStatus: BookingStatus) => void;
 }
 
 export function BookingsDataTable({
-  bookings: initalBookings,
+  bookings,
+  updatingId,
+  error,
+  onStatusChange,
 }: BookingsDataTableProps) {
-  const [bookings, setBookings] = useState(initalBookings);
-  const [updatingId, setUpdatingId] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleStatusChange = async (
-    bookingId: string,
-    newStatus: BookingStatus,
-  ) => {
-    if (!bookings) return;
-    setUpdatingId(bookingId);
-    setError(null);
-    try {
-      const result = await updateBookingStatusAction(bookingId, newStatus);
-      if (!result.success) {
-        throw new Error(result.error || "Failed to update booking status");
-      }
-      setBookings((prev) =>
-        prev.map((booking) =>
-          booking._id === bookingId
-            ? { ...booking, status: newStatus }
-            : booking,
-        ),
-      );
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "An error occurred";
-      setError(errorMessage);
-      console.error("Error updating status:", error);
-    } finally {
-      setUpdatingId(null);
-    }
-  };
   if (bookings.length === 0) {
     return (
       <Card className="p-6">
@@ -68,7 +40,7 @@ export function BookingsDataTable({
           <MobileBookingCard key={booking._id} booking={booking}>
             <StatusSelect
               booking={booking}
-              onStatusChange={handleStatusChange}
+              onStatusChange={onStatusChange}
               updatingId={updatingId}
             />
           </MobileBookingCard>
@@ -86,7 +58,7 @@ export function BookingsDataTable({
               <BookingTableRow key={booking._id} booking={booking}>
                 <StatusSelect
                   booking={booking}
-                  onStatusChange={handleStatusChange}
+                  onStatusChange={onStatusChange}
                   updatingId={updatingId}
                 />
               </BookingTableRow>
