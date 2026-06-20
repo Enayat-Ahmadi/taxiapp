@@ -9,6 +9,7 @@ const variants = {
   secondary: "bg-teal-active text-ink-dark hover:bg-teal-light",
   outline: "border border-teal text-ink-light hover:bg-teal-dark/10",
   ghost: "text-ink hover:bg-teal-active",
+  teal: "bg-teal text-cloud-light hover:bg-teal-dark/90",
 };
 
 const sizes = {

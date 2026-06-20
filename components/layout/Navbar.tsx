@@ -4,6 +4,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/lib/buttonVariants";
 import { ROUTES } from "@/lib/routes";
 
+const liknStyles = buttonVariants("teal", "sm");
 export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 bg-sky backdrop-blur-md border-b border-slate-700/30">
@@ -19,24 +20,10 @@ export function Navbar() {
             </span>
           </Link>
           <div className="flex gap-2">
-            <Link
-              href={ROUTES.booking}
-              className={buttonVariants(
-                "primary",
-                "sm",
-                "bg-teal text-cloud-light",
-              )}
-            >
+            <Link href={ROUTES.booking} className={liknStyles}>
               Book Now
             </Link>
-            <Link
-              href={ROUTES.admin}
-              className={buttonVariants(
-                "primary",
-                "sm",
-                "bg-teal text-cloud-light",
-              )}
-            >
+            <Link href={ROUTES.admin} className={liknStyles}>
               Bookings
             </Link>
           </div>
