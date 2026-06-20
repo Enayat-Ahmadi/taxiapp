@@ -13,9 +13,10 @@ export async function createBooking(data: IBooking): Promise<IBooking> {
     _id: newBooking._id.toString(),
   };
 }
-export async function getAllbooking(): Promise<IBooking[]> {
+export async function getAllbooking(status?: string): Promise<IBooking[]> {
   await connectDB();
-  const bookins = await Booking.find().sort({ createdAt: -1 }).lean();
+  const query = status && status !== "all" ? { status } : {};
+  const bookins = await Booking.find(query).sort({ createdAt: -1 }).lean();
   return bookins.map((booking) => ({
     ...booking,
     _id: booking._id.toString(),
@@ -37,4 +38,3 @@ export async function updateBookingStatus(bookinId: string, status: string) {
     _id: updatedBooking._id.toString(),
   };
 }
-
