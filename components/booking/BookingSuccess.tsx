@@ -1,8 +1,10 @@
-import { Button } from "../ui";
-import { useRouter } from "next/navigation";
+"use client";
+
+import { ROUTES } from "@/lib/routes";
+import Link from "next/link";
+import { buttonVariants } from "@/lib/buttonVariants";
 
 export default function BookingSuccess() {
-  const router = useRouter();
   return (
     <div className="min-h-screen flex flex-col gap-4  items-center justify-center py-8 md:px-4">
       <div className="max-w-2xl mx-auto text-center">
@@ -11,13 +13,12 @@ export default function BookingSuccess() {
         </h1>
         <p className="mt-4 text-gray-600">Your booking has been confirmed.</p>
       </div>
-      <Button
-        variant="outline"
-        onClick={() => router.push("/")}
-        className="text-cloud-light bg-teal"
+      <Link
+        href={ROUTES.home}
+        className={buttonVariants("outline", "md", "text-cloud-light bg-teal")}
       >
         Back to Home
-      </Button>
+      </Link>
     </div>
   );
 }
