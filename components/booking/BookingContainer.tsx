@@ -4,7 +4,13 @@ import { useCallback, useMemo, useState } from "react";
 import BookingStep1 from "./BookingStep1";
 import BookingStep2 from "./BookingStep2";
 import BookingStep3 from "./BookingStep3";
-import { FormFields, StepData, VehicleType } from "@/types";
+import {
+  BookingStatus,
+  FormFields,
+  IBooking,
+  StepData,
+  VehicleType,
+} from "@/types";
 import { createBookingAction } from "@/actions/booking";
 import BookingSuccess from "./BookingSuccess";
 
@@ -47,7 +53,7 @@ export default function BookingContainer() {
       ...stepData.step1,
       vehicleType: stepData.step2.vehicleType,
       estimatedPrice: stepData.step2.estimatedPrice,
-      status: "pending" as const,
+      status: "pending" as BookingStatus,
     };
   }, [stepData]);
 
@@ -57,7 +63,7 @@ export default function BookingContainer() {
     setIsLoading(true);
     setErrorMessage(null);
 
-    const res = await createBookingAction(step3Data);
+    const res = await createBookingAction(step3Data as IBooking);
     if (res.success) {
       setSuccessMessage(true);
     } else {
@@ -96,7 +102,7 @@ export default function BookingContainer() {
         )}
         {currentStep === 3 && step3Data && (
           <BookingStep3
-            booking={step3Data}
+            booking={step3Data as IBooking}
             onConfirm={handleStep3Submit}
             onPrevious={handlePrevious}
             isLoading={isLoading}
