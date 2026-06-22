@@ -20,7 +20,7 @@ const BOOKINGS_STATUS = [
 
 export default function AdminBookingsPage() {
   const [bookings, setBookings] = useState<IBooking[]>([]);
-  const [filter, setFilter] = useState<string>("all");
+  const [filter, setFilter] = useState<BookingStatus | "all">("all");
   const [isLoading, setIsLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);

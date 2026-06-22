@@ -2,7 +2,7 @@
 import { IBooking, ApiResponse, BookingStatus } from "@/types";
 import {
   createBooking,
-  getAllbooking,
+  getAllBookings,
   updateBookingStatus,
 } from "@/services/booking.service";
 import { revalidatePath } from "next/cache";
@@ -54,10 +54,10 @@ export async function updateBookingStatusAction(
 }
 
 export async function getAllbookingsAction(
-  status: string,
+  status?: BookingStatus | "all",
 ): Promise<ApiResponse<IBooking[]>> {
   try {
-    const data = await getAllbooking(status);
+    const data = await getAllBookings(status);
     return { success: true, data };
   } catch (error) {
     const errorMessage =
