@@ -1,12 +1,15 @@
+import { Button } from "@/components/ui";
 import { IBooking } from "@/types";
 
 interface MobileCardProps {
   booking: IBooking;
   children: React.ReactNode;
+  onRequestDelete: (bookingId: string) => void;
 }
 export default function MobileBookingCard({
   booking,
   children,
+  onRequestDelete,
 }: MobileCardProps) {
   return (
     <div className="border border-gray-200 rounded-lg p-4 space-y-3 bg-teal/60 text-ink">
@@ -54,11 +57,20 @@ export default function MobileBookingCard({
           </p>
         </div>
       </div>
-      <div className="pt-2 border-t border-gray-100">
-        <p className="text-xs text-gray-500 uppercase tracking-wide">Phone</p>
-        <p className="text-sm font-medium text-gray-900">
-          {booking.phoneNumber}
-        </p>
+      <div className="flex justify-between pt-2 border-t border-gray-100">
+        <div className="">
+          <p className="text-xs text-gray-500 uppercase tracking-wide">Phone</p>
+          <p className="text-sm font-medium text-gray-900">
+            {booking.phoneNumber}
+          </p>
+        </div>
+        <Button
+          size="sm"
+          onClick={() => onRequestDelete(booking._id)}
+          className="bg-red-600 text-white hover:bg-red-700"
+        >
+          Delete
+        </Button>
       </div>
     </div>
   );
