@@ -5,6 +5,7 @@ import { Button, Card } from "@/components/ui";
 import { useCallback, useEffect, useState } from "react";
 import { IBooking, BookingStatus } from "@/types";
 import {
+  deleteBookingAction,
   getAllBookingsAction,
   updateBookingStatusAction,
 } from "@/actions/booking";
@@ -81,6 +82,19 @@ export default function AdminBookingsPage() {
     [],
   );
 
+  const handleDeleteBooking = useCallback(async (bookingId: string) => {
+    try {
+      const result = await deleteBookingAction(bookingId);
+      if (!result.success) {
+        console.error(result.error);
+      }
+      setBookings((prev) => prev.filter((b) => b._id !== bookingId));
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }, []);
+
   return (
     <div className="space-y-6">
       <Card>
@@ -113,6 +127,7 @@ export default function AdminBookingsPage() {
         <BookingsDataTable
           bookings={bookings}
           onStatusChange={handleStatusChange}
+          onDeleteBooking={handleDeleteBooking}
           error={error}
           updatingId={updatingId}
         />

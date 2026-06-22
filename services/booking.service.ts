@@ -27,11 +27,25 @@ export async function getAllBookings(
   })) as IBooking[];
 }
 
+export async function deleteBooking(bookingId: string): Promise<void> {
+  await connectDB();
+  
+  if (!mongoose.Types.ObjectId.isValid(bookingId)) {
+    throw new Error("Invalid booking id");
+  }
+
+  const result = await Booking.findByIdAndDelete(bookingId);
+  if (!result) {
+    throw new Error("Booking not found");
+  }
+}
+
 export async function updateBookingStatus(
   bookingId: string,
   status: BookingStatus,
 ): Promise<IBooking> {
   await connectDB();
+
   if (!mongoose.Types.ObjectId.isValid(bookingId)) {
     throw new Error("Invalid booking id");
   }

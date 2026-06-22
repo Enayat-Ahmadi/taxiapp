@@ -1,10 +1,12 @@
 import { formatPrice } from "@/lib/utils";
 import { IBooking } from "@/types";
 import React from "react";
+import { Button } from "@/components/ui";
 
 interface DesktopCardProps {
   booking: IBooking;
   children: React.ReactNode;
+  onDelete?: (bookingId: string) => void;
 }
 const TABLE_HEAD = [
   "Pickup",
@@ -15,10 +17,12 @@ const TABLE_HEAD = [
   "Price",
   "Status",
   "Phone",
+  "Action",
 ];
 export default function BookingTableRow({
   booking,
   children,
+  onDelete,
 }: DesktopCardProps) {
   return (
     <tr className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
@@ -43,6 +47,15 @@ export default function BookingTableRow({
       </td>
       <td className="py-3 px-3 lg:px-4">{children}</td>
       <td className="py-3 px-3 lg:px-4 text-gray-900">{booking.phoneNumber}</td>
+      <td className="py-3 px-3 lg:px-4">
+        <Button
+          size="sm"
+          onClick={() => onDelete?.(booking._id)}
+          className="bg-red-600 text-white hover:bg-red-700"
+        >
+          Delete
+        </Button>
+      </td>
     </tr>
   );
 }

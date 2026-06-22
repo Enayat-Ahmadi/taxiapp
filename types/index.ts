@@ -13,7 +13,7 @@ export interface Vehicle {
 }
 
 export interface IBooking {
-  _id?: string;
+  _id: string;
   pickupLocation: string;
   destination: string;
   date: string;

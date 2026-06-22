@@ -5,12 +5,15 @@ import { Card } from "@/components/ui";
 import StatusSelect from "./booking/StatusSelect";
 import MobileBookingCard from "./booking/MobileBookingCard";
 import BookingTableRow, { BookingTableHeader } from "./booking/BookingTable";
+import { DeleteConfirmModal } from "./DeleteConfirmModal";
+import { useState } from "react";
 
 interface BookingsDataTableProps {
   bookings: IBooking[];
   updatingId: string | null;
   error: string | null;
   onStatusChange: (bookingId: string, newStatus: BookingStatus) => void;
+  onDeleteBooking: (bookingId: string) => Promise<void>;
 }
 
 export function BookingsDataTable({
@@ -18,7 +21,37 @@ export function BookingsDataTable({
   updatingId,
   error,
   onStatusChange,
+  onDeleteBooking,
 }: BookingsDataTableProps) {
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedBookingId, setSelectedBookingId] = useState<string | null>(
+    null,
+  );
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const selectedBooking = bookings.find((b) => b._id === selectedBookingId);
+
+  const handleRequestDelete = (bookingId: string) => {
+    setSelectedBookingId(bookingId);
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async (bookingId: string) => {
+    setIsDeleting(true);
+    try {
+      await onDeleteBooking(bookingId);
+      setDeleteModalOpen(false);
+      setSelectedBookingId(null);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteModalOpen(false);
+    setSelectedBookingId(null);
+  };
+
   if (bookings.length === 0) {
     return (
       <Card className="p-6">
@@ -37,7 +70,11 @@ export function BookingsDataTable({
       {/* Mobile Card View */}
       <div className="block lg:hidden space-y-4">
         {bookings.map((booking) => (
-          <MobileBookingCard key={booking._id} booking={booking}>
+          <MobileBookingCard
+            key={booking._id}
+            onRequestDelete={handleRequestDelete}
+            booking={booking}
+          >
             <StatusSelect
               booking={booking}
               onStatusChange={onStatusChange}
@@ -55,7 +92,11 @@ export function BookingsDataTable({
           </thead>
           <tbody>
             {bookings.map((booking) => (
-              <BookingTableRow key={booking._id} booking={booking}>
+              <BookingTableRow
+                key={booking._id}
+                booking={booking}
+                onDelete={handleRequestDelete}
+              >
                 <StatusSelect
                   booking={booking}
                   onStatusChange={onStatusChange}
@@ -66,6 +107,16 @@ export function BookingsDataTable({
           </tbody>
         </table>
       </div>
+
+      <DeleteConfirmModal
+        isOpen={deleteModalOpen}
+        bookingId={selectedBookingId || ""}
+        pickupLocation={selectedBooking?.pickupLocation}
+        destination={selectedBooking?.destination}
+        isLoading={isDeleting}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
     </Card>
   );
 }
