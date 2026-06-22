@@ -1,9 +1,9 @@
-import { getAllbooking } from "@/services/booking.service";
+import { getAllBookings } from "@/services/booking.service";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const bookings = await getAllbooking();
+    const bookings = await getAllBookings();
     return NextResponse.json(
       {
         success: true,
