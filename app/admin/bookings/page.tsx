@@ -25,24 +25,6 @@ export default function AdminBookingsPage() {
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const loadBookings = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const res = await getAllBookingsAction(filter);
-      if (!res.success) {
-        setError(res.error ?? "Failed to fetch bookings");
-        return;
-      }
-      setBookings(res.data ?? []);
-    } catch (error) {
-      setError(
-        error instanceof Error ? error.message : "Failed to fetch bookings",
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  }, [filter]);
 
   useEffect(() => {
     let ignore = false;
@@ -74,7 +56,7 @@ export default function AdminBookingsPage() {
     return () => {
       ignore = true;
     };
-  }, [loadBookings, filter]);
+  }, [ filter]);
 
   const handleStatusChange = useCallback(
     async (bookingId: string, newStatus: BookingStatus) => {
