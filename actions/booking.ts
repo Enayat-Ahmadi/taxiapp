@@ -1,6 +1,10 @@
 "use server";
 import { IBooking, ApiResponse, BookingStatus } from "@/types";
-import { createBooking, updateBookingStatus } from "@/services/booking.service";
+import {
+  createBooking,
+  getAllBookings,
+  updateBookingStatus,
+} from "@/services/booking.service";
 import { revalidatePath } from "next/cache";
 
 /**
@@ -46,5 +50,18 @@ export async function updateBookingStatusAction(
       success: false,
       error: errorMessage,
     };
+  }
+}
+
+export async function getAllBookingsAction(
+  status?: BookingStatus | "all",
+): Promise<ApiResponse<IBooking[]>> {
+  try {
+    const data = await getAllBookings(status);
+    return { success: true, data };
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to fetch bookings";
+    return { success: false, error: errorMessage };
   }
 }

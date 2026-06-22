@@ -1,17 +1,122 @@
-import { getAllbooking } from "@/services/booking.service";
+"use client";
+
 import { BookingsDataTable } from "@/components/admin/BookingsDataTable";
+import { Button } from "@/components/ui";
+import { useCallback, useEffect, useState } from "react";
+import { IBooking, BookingStatus } from "@/types";
+import {
+  getAllBookingsAction,
+  updateBookingStatusAction,
+} from "@/actions/booking";
+import { cn } from "@/lib/utils";
+
+const BOOKINGS_STATUS = [
+  "all",
+  "pending",
+  "confirmed",
+  "completed",
+  "cancelled",
+] as const;
+
+export default function AdminBookingsPage() {
+  const [bookings, setBookings] = useState<IBooking[]>([]);
+  const [filter, setFilter] = useState<BookingStatus | "all">("all");
+  const [isLoading, setIsLoading] = useState(true);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
 
-export default async function AdminBookingsPage() {
-  const bookings = await getAllbooking();
+  useEffect(() => {
+    let ignore = false;
+
+    async function fetchBookings() {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await getAllBookingsAction(filter);
+        if (ignore) return;
+        if (!response.success) {
+          setError(response.error ?? "Failed to fetch bookings");
+          return;
+        }
+
+        setBookings(response.data ?? []);
+      } catch (error) {
+        if (ignore) return;
+        setError(
+          error instanceof Error ? error.message : "Failed to fetch bookings",
+        );
+      } finally {
+        if (!ignore) {
+          setIsLoading(false);
+        }
+      }
+    }
+    fetchBookings();
+    return () => {
+      ignore = true;
+    };
+  }, [ filter]);
+
+  const handleStatusChange = useCallback(
+    async (bookingId: string, newStatus: BookingStatus) => {
+      setUpdatingId(bookingId);
+      setError(null);
+      try {
+        const result = await updateBookingStatusAction(bookingId, newStatus);
+        if (!result.success)
+          throw new Error(result.error || "Failed to update booking status");
+        setBookings((prev) =>
+          prev.map((booking) =>
+            booking._id === bookingId
+              ? { ...booking, status: newStatus }
+              : booking,
+          ),
+        );
+      } catch (error) {
+        setError(error instanceof Error ? error.message : "An error occurred");
+      } finally {
+        setUpdatingId(null);
+      }
+    },
+    [],
+  );
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Bookings</h1>
-        <p className="text-gray-600 mt-1">Manage and track all customer bookings</p>
+        <div className="flex gap-2 m-2">
+          {BOOKINGS_STATUS.map((status) => (
+            <Button
+              key={status}
+              onClick={() => setFilter(status)}
+              size="sm"
+              className={cn(
+                "bg-teal capitalize",
+                filter === status
+                  ? "bg-success text-cloud-light font-medium"
+                  : "hover:bg-success/30",
+              )}
+            >
+              {status}
+            </Button>
+          ))}
+        </div>
       </div>
-      <BookingsDataTable bookings={bookings} />
+      {error && <p className="text-center text-sm text-danger">{error}</p>}
+      {isLoading ? (
+        <p className="py-8 text-center text-gray-500">Loading bookings...</p>
+      ) : bookings.length === 0 ? (
+        <p className="py-8 text-center text-warning">No bookings found.</p>
+      ) : (
+        <BookingsDataTable
+          bookings={bookings}
+          onStatusChange={handleStatusChange}
+          error={error}
+          updatingId={updatingId}
+        />
+      )}
     </div>
   );
 }
