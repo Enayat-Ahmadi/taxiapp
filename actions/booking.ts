@@ -2,6 +2,7 @@
 import { IBooking, ApiResponse, BookingStatus } from "@/types";
 import {
   createBooking,
+  deleteBooking,
   getAllBookings,
   updateBookingStatus,
 } from "@/services/booking.service";
@@ -63,5 +64,24 @@ export async function getAllBookingsAction(
     const errorMessage =
       error instanceof Error ? error.message : "Failed to fetch bookings";
     return { success: false, error: errorMessage };
+  }
+}
+
+export async function deleteBookingAction(
+  bookingId: string,
+): Promise<ApiResponse<null>> {
+  try {
+    await deleteBooking(bookingId);
+    return {
+      success: true,
+      data: null,
+    };
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to delete booking";
+    return {
+      success: false,
+      error: errorMessage,
+    };
   }
 }
