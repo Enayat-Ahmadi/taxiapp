@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, FileText } from "lucide-react";
+import { BarChart3, FileText, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ADMIN_NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: BarChart3 },
   { href: "/admin/bookings", label: "Bookings", icon: FileText },
+  { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 export default function AdminNav({ onClick }: { onClick?: () => void }) {
   const pathname = usePathname();
