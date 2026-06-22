@@ -5,7 +5,7 @@ import { Button } from "@/components/ui";
 import { useCallback, useEffect, useState } from "react";
 import { IBooking, BookingStatus } from "@/types";
 import {
-  getAllbookingsAction,
+  getAllBookingsAction,
   updateBookingStatusAction,
 } from "@/actions/booking";
 import { cn } from "@/lib/utils";
@@ -29,7 +29,7 @@ export default function AdminBookingsPage() {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await getAllbookingsAction(filter);
+      const res = await getAllBookingsAction(filter);
       if (!res.success) {
         setError(res.error ?? "Failed to fetch bookings");
         return;
@@ -51,7 +51,7 @@ export default function AdminBookingsPage() {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await getAllbookingsAction(filter);
+        const response = await getAllBookingsAction(filter);
         if (ignore) return;
         if (!response.success) {
           setError(response.error ?? "Failed to fetch bookings");

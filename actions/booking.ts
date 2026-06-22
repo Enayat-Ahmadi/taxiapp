@@ -53,7 +53,7 @@ export async function updateBookingStatusAction(
   }
 }
 
-export async function getAllbookingsAction(
+export async function getAllBookingsAction(
   status?: BookingStatus | "all",
 ): Promise<ApiResponse<IBooking[]>> {
   try {
