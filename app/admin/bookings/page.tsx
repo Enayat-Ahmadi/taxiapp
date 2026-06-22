@@ -82,19 +82,18 @@ export default function AdminBookingsPage() {
     [],
   );
 
-  const handleDeleteBooking = async (bookingId: string) => {
+  const handleDeleteBooking = useCallback(async (bookingId: string) => {
     try {
       const result = await deleteBookingAction(bookingId);
       if (!result.success) {
         console.error(result.error);
-        throw new Error(result.error || "Failed to delete booking");
       }
       setBookings((prev) => prev.filter((b) => b._id !== bookingId));
     } catch (error) {
       console.error(error);
       throw error;
     }
-  };
+  }, []);
 
   return (
     <div className="space-y-6">

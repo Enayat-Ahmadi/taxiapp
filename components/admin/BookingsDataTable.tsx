@@ -24,7 +24,9 @@ export function BookingsDataTable({
   onDeleteBooking,
 }: BookingsDataTableProps) {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [selectedBookingId, setSelectedBookingId] = useState<string | null>(null);
+  const [selectedBookingId, setSelectedBookingId] = useState<string | null>(
+    null,
+  );
   const [isDeleting, setIsDeleting] = useState(false);
 
   const selectedBooking = bookings.find((b) => b._id === selectedBookingId);

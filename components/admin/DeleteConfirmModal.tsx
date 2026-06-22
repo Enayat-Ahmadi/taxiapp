@@ -32,7 +32,7 @@ export function DeleteConfirmModal({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-lg max-w-sm w-full mx-4 p-6 space-y-4">
         <h2 className="text-lg font-semibold text-gray-900">Delete Booking?</h2>
-        
+
         <p className="text-sm text-gray-600">
           Are you sure you want to delete this booking?
         </p>
@@ -48,9 +48,7 @@ export function DeleteConfirmModal({
           </div>
         )}
 
-        <p className="text-xs text-gray-500">
-          This action cannot be undone.
-        </p>
+        <p className="text-xs text-gray-500">This action cannot be undone.</p>
 
         <div className="flex gap-3 pt-4">
           <Button
