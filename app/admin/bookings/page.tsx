@@ -1,7 +1,7 @@
 "use client";
 
 import { BookingsDataTable } from "@/components/admin/BookingsDataTable";
-import { Button } from "@/components/ui";
+import { Button, Card } from "@/components/ui";
 import { useCallback, useEffect, useState } from "react";
 import { IBooking, BookingStatus } from "@/types";
 import {
@@ -24,7 +24,6 @@ export default function AdminBookingsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-
 
   useEffect(() => {
     let ignore = false;
@@ -56,7 +55,7 @@ export default function AdminBookingsPage() {
     return () => {
       ignore = true;
     };
-  }, [ filter]);
+  }, [filter]);
 
   const handleStatusChange = useCallback(
     async (bookingId: string, newStatus: BookingStatus) => {
@@ -84,9 +83,10 @@ export default function AdminBookingsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
+      <Card>
         <h1 className="text-3xl font-bold text-gray-900">Bookings</h1>
-        <div className="flex gap-2 m-2">
+
+        <div className="flex flex-wrap gap-2 mt-2">
           {BOOKINGS_STATUS.map((status) => (
             <Button
               key={status}
@@ -103,7 +103,7 @@ export default function AdminBookingsPage() {
             </Button>
           ))}
         </div>
-      </div>
+      </Card>
       {error && <p className="text-center text-sm text-danger">{error}</p>}
       {isLoading ? (
         <p className="py-8 text-center text-gray-500">Loading bookings...</p>
