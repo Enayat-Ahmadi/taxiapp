@@ -16,7 +16,7 @@ export const vehicleSchema = z.object({
     .min(2, "Manufacturer is required")
     .max(50, "Manufacturer is too long"),
 
-  model: z
+  vehicleModel: z
     .string()
     .trim()
     .min(1, "Model is required")

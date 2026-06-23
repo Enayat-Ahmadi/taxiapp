@@ -2,8 +2,6 @@ import mongoose, { Schema, Document } from "mongoose";
 import { VehicleType } from "@/types";
 import { VEHICLE_TYPES } from "@/lib/constant";
 
-
-
 export interface IVehicle extends Document {
   registrationNumber: string;
   manufacturer: string;
@@ -74,7 +72,5 @@ const vehicleSchema = new Schema<IVehicle>(
   },
 );
 
-const Vehicle =
+export const Vehicle =
   mongoose.models.Vehicle || mongoose.model<IVehicle>("Vehicle", vehicleSchema);
-
-export default Vehicle;

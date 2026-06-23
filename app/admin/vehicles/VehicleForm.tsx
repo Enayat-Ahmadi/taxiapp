@@ -16,7 +16,14 @@ const VEHICLE_TYPES: IVEHICLE_TYPES[] = [
   { value: "premium", label: "Premium" },
 ];
 
-export default function VehicleForm({ initialData }) {
+interface VehicleFormProps {
+  initialData?: VehicleFormData;
+  onSubmit: (data: VehicleFormData) => Promise<void>;
+}
+export default function VehicleForm({
+  initialData,
+  onSubmit,
+}: VehicleFormProps) {
   const {
     register,
     handleSubmit,
@@ -25,12 +32,10 @@ export default function VehicleForm({ initialData }) {
     resolver: zodResolver(vehicleSchema),
     defaultValues: initialData,
   });
-  const handleAddVehicle = (data: VehicleFormData) => {
-    console.log(data);
-  };
+
   return (
     <Card>
-      <form onSubmit={handleSubmit(handleAddVehicle)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid gap-4 md:grid-cols-2">
           <Input
             label="Registration Number"
@@ -46,8 +51,8 @@ export default function VehicleForm({ initialData }) {
 
           <Input
             label="Model"
-            {...register("model")}
-            error={errors.model?.message}
+            {...register("vehicleModel")}
+            error={errors.vehicleModel?.message}
           />
 
           <Input

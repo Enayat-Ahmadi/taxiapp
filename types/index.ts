@@ -1,6 +1,6 @@
 export type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled";
 
-export type VehicleType = "comfort" | "premium";
+export type VehicleType = "standard" | "comfort" | "premium";
 
 export interface Vehicle {
   type: VehicleType;

@@ -20,3 +20,9 @@ export const VEHICLES: Record<"comfort" | "premium", Vehicle> = {
     image: "/premium.jpg",
   },
 };
+
+export const VEHICLE_TYPES = [
+  "standard",
+  "comfort",
+  "premium",
+] as const;
