@@ -78,7 +78,7 @@ export default function Dashboard() {
           icon={<BarChart3 className="w-6 h-6" />}
           title="Completed Bookings"
           value={stats?.completedBookings}
-          trend={`${((10 / 20) * 100).toFixed(1)}% completion`}
+          trend={`${((stats?.completedBookings / stats.totalBookings) * 100).toFixed(1)}% completion`}
           trendUp
         />
         <StatCard
@@ -90,7 +90,7 @@ export default function Dashboard() {
           icon={<FileText className="w-6 h-6" />}
           title="Cancelled Bookings"
           value={stats?.cancelledBookings}
-          trend={`${((3 / 10) * 100).toFixed(1)}% cancellation rate`}
+          trend={`${((stats.cancelledBookings / stats.totalBookings) * 100).toFixed(1)}% cancellation rate`}
         />
       </div>
     </div>
