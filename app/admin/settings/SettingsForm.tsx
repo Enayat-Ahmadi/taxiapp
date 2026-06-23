@@ -11,19 +11,24 @@ import {
 import CompanySection from "./CompanySection";
 import PricingSection from "./PricingSection";
 import { updateSettingsAction } from "@/actions/settings";
+import { ISettings } from "@/models/settings";
 
-export default function SettingsForm() {
+type SettingsProps = {
+  settings?: ISettings | null;
+};
+export default function SettingsForm({ settings }: SettingsProps) {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<SettingsFormData>({
     resolver: zodResolver(settingsSchema),
+    defaultValues: settings ?? undefined,
   });
 
   const onSubmit = async (data: SettingsFormData) => {
     const result = await updateSettingsAction(data);
-    
+
     if (result.success) {
       alert("Settings updated successfully");
     } else {
