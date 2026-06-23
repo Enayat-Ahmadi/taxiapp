@@ -4,13 +4,17 @@ import { SettingsFormData } from "@/lib/validations/settings";
 
 export async function updateSettings(data: SettingsFormData) {
   await connectDB();
-  const updateSettings = await Settings.findOneAndUpdate({}, data, {
+  const updatedSettings = await Settings.findOneAndUpdate({}, data, {
     new: true,
     runValidators: true,
     upsert: true,
   });
-  if (!updateSettings) {
-    throw new Error("Failed to update settings");
-  }
-  return updateSettings.toObject();
+  if (!updateSettings) throw new Error("Failed to update settings");
+
+  return {
+    ...updatedSettings.toObject(),
+    _id: updatedSettings._id.toString(),
+    createdAt: updatedSettings.createdAt.toISOString(),
+    updatedAt: updatedSettings.updatedAt.toISOString(),
+  };
 }

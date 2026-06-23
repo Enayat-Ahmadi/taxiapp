@@ -1,15 +1,19 @@
-import { updateSettings } from "@/services/settings.service";
-import { SettingsFormData } from "@/lib/validations/settings";
+"use server";
 
-type ActionResponse =
-  | { success: true; data: unknown }
+import { updateSettings } from "@/services/settings.service";
+import { SettingsFormData, settingsSchema } from "@/lib/validations/settings";
+
+type ActionResponse<T> =
+  | { success: true; data: T }
   | { success: false; error: string };
 
 export async function updateSettingsAction(
   data: SettingsFormData,
-): Promise<ActionResponse> {
+): Promise<ActionResponse<SettingsFormData>> {
   try {
-    const result = await updateSettings(data);
+    const validated = settingsSchema.parse(data);
+    const result = await updateSettings(validated);
+
     return {
       success: true,
       data: result,

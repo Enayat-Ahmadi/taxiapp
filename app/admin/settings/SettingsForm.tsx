@@ -10,6 +10,7 @@ import {
 } from "@/lib/validations/settings";
 import CompanySection from "./CompanySection";
 import PricingSection from "./PricingSection";
+import { updateSettingsAction } from "@/actions/settings";
 
 export default function SettingsForm() {
   const {
@@ -20,9 +21,16 @@ export default function SettingsForm() {
     resolver: zodResolver(settingsSchema),
   });
 
-  const onSubmit = (data: SettingsFormData) => {
-    console.log(data);
+  const onSubmit = async (data: SettingsFormData) => {
+    const result = await updateSettingsAction(data);
+    
+    if (result.success) {
+      alert("Settings updated successfully");
+    } else {
+      alert(result.error);
+    }
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 mt-2">
       <Card>
