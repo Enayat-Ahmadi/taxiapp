@@ -1,8 +1,44 @@
+"use client";
+
 import StatCard from "@/components/admin/StatCard";
 import { formatPrice } from "@/lib/utils";
 import { BarChart3, FileText, Car, Users } from "lucide-react";
+import { useEffect, useState } from "react";
+import { getBookingStatsAction } from "@/actions/booking";
+import { BookingStats } from "@/services/booking.service";
 
 export default function Dashboard() {
+  const [stats, setStats] = useState<BookingStats | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const result = await getBookingStatsAction();
+        if (!result.success) {
+          setError(result.error);
+          return;
+        }
+        setStats(result.data);
+      } catch (error) {
+        setError(
+          error instanceof Error
+            ? error.message
+            : "Failed to load booking statistics",
+        );
+      }
+    };
+    fetchStats();
+  }, []);
+  if (error) {
+    return (
+      <div className="rounded-md border border-red-200 bg-red-50 p-4 text-red-700">
+        {error}
+      </div>
+    );
+  }
+  if (!stats) {
+    return <p>Loading...</p>;
+  }
   return (
     <div className="space-y-8 ">
       <div>
@@ -13,7 +49,7 @@ export default function Dashboard() {
         <StatCard
           icon={<FileText className="w-6 h-6" />}
           title="Total Bookings"
-          value="10"
+          value={stats?.totalBookings}
         />
         <StatCard
           icon={<BarChart3 className="w-6 h-6" />}
@@ -41,19 +77,19 @@ export default function Dashboard() {
         <StatCard
           icon={<BarChart3 className="w-6 h-6" />}
           title="Completed Bookings"
-          value="10"
+          value={stats?.completedBookings}
           trend={`${((10 / 20) * 100).toFixed(1)}% completion`}
           trendUp
         />
         <StatCard
           icon={<FileText className="w-6 h-6" />}
           title="Pending Bookings"
-          value="10"
+          value={stats?.pendingBookings}
         />
         <StatCard
           icon={<FileText className="w-6 h-6" />}
           title="Cancelled Bookings"
-          value="3"
+          value={stats?.cancelledBookings}
           trend={`${((3 / 10) * 100).toFixed(1)}% cancellation rate`}
         />
       </div>
