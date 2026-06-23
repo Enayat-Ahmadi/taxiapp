@@ -13,8 +13,16 @@ interface ActionResult<T> {
 export async function addVehicleAction(
   data: VehicleFormData,
 ): Promise<ActionResult<IVehicle>> {
+  
+  const result = vehicleSchema.safeParse(data);
+  if (!result.success) {
+    return {
+      success: false,
+      error: result.error?.issues[0]?.message ?? "Invalid vehicle data",
+    };
+  }
+  const validated = result.data;
   try {
-    const validated = vehicleSchema.parse(data);
     const result = await addVehicle(validated);
     revalidatePath("/admin/vehicles");
     return {
