@@ -4,7 +4,7 @@ import { Card, Input, Button, Select } from "../ui";
 import { getTimeSlots, PASSENGER_OPTIONS, LUGGAGE_OPTIONS } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { useMemo } from "react";
-import { TripDetailsSchema, TripDetailsInput } from "@/lib/validators";
+import { TripDetailsSchema, TripDetailsInput } from "@/lib/validations/bookings";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface Step1Props {
