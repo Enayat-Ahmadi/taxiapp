@@ -1,6 +1,9 @@
+import { getSettingsAction } from "@/actions/settings";
 import SettingsForm from "./SettingsForm";
 
-export default function Settings() {
+export default async function Settings() {
+  const settings = await getSettingsAction();
+  console.log(settings);
   return (
     <div>
       <h1 className="text-3xl font-bold text-ink mb-2">Settings</h1>
