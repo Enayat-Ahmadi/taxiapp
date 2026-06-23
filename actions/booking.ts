@@ -7,6 +7,7 @@ import {
   updateBookingStatus,
 } from "@/services/booking.service";
 import { revalidatePath } from "next/cache";
+import { getBookingStats, BookingStats } from "@/services/booking.service";
 
 /**
  * Server action to create a booking.
@@ -82,6 +83,31 @@ export async function deleteBookingAction(
     return {
       success: false,
       error: errorMessage,
+    };
+  }
+}
+
+type ActionResponse<T> =
+  | { success: true; data: T }
+  | { success: false; error: string };
+
+export async function getBookingStatsAction(): Promise<
+  ActionResponse<BookingStats>
+> {
+  try {
+    const stats = await getBookingStats();
+
+    return {
+      success: true,
+      data: stats,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to fetch booking statistics",
     };
   }
 }

@@ -63,3 +63,36 @@ export async function updateBookingStatus(
     _id: updatedBooking._id.toString(),
   };
 }
+
+
+export interface BookingStats {
+  totalBookings: number;
+  confirmedBookings: number;
+  completedBookings: number;
+  cancelledBookings: number;
+  pendingBookings: number;
+}
+export async function getBookingStats(): Promise<BookingStats> {
+  await connectDB();
+  const [
+    totalBookings,
+    confirmedBookings,
+    completedBookings,
+    cancelledBookings,
+    pendingBookings,
+  ] = await Promise.all([
+    Booking.countDocuments(),
+    Booking.countDocuments({ status: "confirmed" }),
+    Booking.countDocuments({ status: "completed" }),
+    Booking.countDocuments({ status: "cancelled" }),
+    Booking.countDocuments({ status: "pending" }),
+  ]);
+
+  return {
+    totalBookings,
+    completedBookings,
+    confirmedBookings,
+    cancelledBookings,
+    pendingBookings,
+  };
+}
