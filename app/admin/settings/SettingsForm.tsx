@@ -15,16 +15,16 @@ export default function SettingsForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<SettingsFormData>({
     resolver: zodResolver(settingsSchema),
   });
 
-  const handleFormSubmit = (data: SettingsFormData) => {
+  const onSubmit = (data: SettingsFormData) => {
     console.log(data);
   };
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-2 mt-2">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 mt-2">
       <Card>
         <CompanySection register={register} errors={errors} />
       </Card>
@@ -32,11 +32,12 @@ export default function SettingsForm() {
         <PricingSection register={register} errors={errors} />
       </Card>
       <Button
+        disabled={isSubmitting}
         type="submit"
         className="flex items-center gap-2 bg-teal mt-2 text-cloud-light"
       >
         <Save className="w-5 h-5" />
-        Save Settings
+        {isSubmitting ? "Saving..." : "Save Settings"}
       </Button>
     </form>
   );
