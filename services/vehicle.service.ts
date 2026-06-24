@@ -15,10 +15,23 @@ export async function getVehicleById(id: string): Promise<VehicleDto | null> {
   await connectDB();
   const vehicle = await Vehicle.findById(id).lean();
   if (!vehicle) return null;
-  return {
-    ...vehicle,
-    id: vehicle._id.toString(),
-  };
+
+  return toVehicleDto(vehicle);
+}
+
+export async function updateVehicle(
+  id: string,
+  data: VehicleFormData,
+): Promise<VehicleDto> {
+  await connectDB();
+  const updatedVehicle = await Vehicle.findByIdAndUpdate(id, data, {
+    new: true,
+    runValidators: true,
+  });
+  if (!updatedVehicle) {
+    throw new Error("Vehicle not found");
+  }
+  return toVehicleDto(updatedVehicle);
 }
 
 export async function addVehicle(data: VehicleFormData): Promise<VehicleDto> {
