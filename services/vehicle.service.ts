@@ -4,6 +4,13 @@ import { VehicleFormData } from "@/lib/validations/vehicles";
 import { toVehicleDto } from "@/lib/utils";
 import { VehicleDto } from "@/types/vehicle";
 
+export async function getVehicles(): Promise<VehicleDto[]> {
+  await connectDB();
+  const vehicles = await Vehicle.find().sort({ createdAt: -1 }).lean();
+
+  return vehicles.map(toVehicleDto);
+}
+
 export async function addVehicle(data: VehicleFormData): Promise<VehicleDto> {
   await connectDB();
   try {
