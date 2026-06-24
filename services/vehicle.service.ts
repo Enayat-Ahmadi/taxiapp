@@ -11,6 +11,16 @@ export async function getVehicles(): Promise<VehicleDto[]> {
   return vehicles.map(toVehicleDto);
 }
 
+export async function getVehicleById(id: string): Promise<VehicleDto | null> {
+  await connectDB();
+  const vehicle = await Vehicle.findById(id).lean();
+  if (!vehicle) return null;
+  return {
+    ...vehicle,
+    id: vehicle._id.toString(),
+  };
+}
+
 export async function addVehicle(data: VehicleFormData): Promise<VehicleDto> {
   await connectDB();
   try {
