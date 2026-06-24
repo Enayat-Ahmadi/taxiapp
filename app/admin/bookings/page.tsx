@@ -3,7 +3,7 @@
 import { BookingsDataTable } from "@/components/admin/BookingsDataTable";
 import { Button, Card } from "@/components/ui";
 import { useCallback, useEffect, useState } from "react";
-import { IBooking, BookingStatus } from "@/types";
+import { IBooking, BookingStatus } from "@/types/booking";
 import {
   deleteBookingAction,
   getAllBookingsAction,

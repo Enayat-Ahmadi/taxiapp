@@ -1,8 +1,8 @@
 import { connectDB } from "@/lib/db";
 import Booking from "@/models/booking";
-import { IBooking } from "@/types";
+import { IBooking } from "@/types/booking";
 import mongoose from "mongoose";
-import { BookingStatus } from "@/types";
+import { BookingStatus } from "@/types/booking";
 
 export async function createBooking(data: IBooking): Promise<IBooking> {
   await connectDB();
@@ -29,7 +29,7 @@ export async function getAllBookings(
 
 export async function deleteBooking(bookingId: string): Promise<void> {
   await connectDB();
-  
+
   if (!mongoose.Types.ObjectId.isValid(bookingId)) {
     throw new Error("Invalid booking id");
   }
@@ -63,7 +63,6 @@ export async function updateBookingStatus(
     _id: updatedBooking._id.toString(),
   };
 }
-
 
 export interface BookingStats {
   totalBookings: number;

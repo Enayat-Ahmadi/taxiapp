@@ -1,6 +1,6 @@
 "use client";
 
-import type { BookingStatus, IBooking } from "@/types";
+import type { BookingStatus, IBooking } from "@/types/booking";
 import { Card } from "@/components/ui";
 import StatusSelect from "./booking/StatusSelect";
 import MobileBookingCard from "./booking/MobileBookingCard";

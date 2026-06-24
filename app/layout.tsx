@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -36,7 +37,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="bg-sky text-foreground antialiased">
-        <div className="min-h-screen flex flex-col">{children}</div>
+        <div className="min-h-screen flex flex-col">
+          {children}
+          <Toaster richColors position="top-right" />
+        </div>
       </body>
     </html>
   );

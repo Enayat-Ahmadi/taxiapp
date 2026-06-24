@@ -1,4 +1,4 @@
-import { Vehicle } from "@/types";
+import { Vehicle, VehicleDto } from "@/types/vehicle";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -60,4 +60,21 @@ export function formatMinutes(totalMinutes: number): string {
   }
 
   return parts.join(" ");
+}
+
+export function toVehicleDto(vehicle: VehicleDto) {
+  return {
+    _id: vehicle._id.toString(),
+    registrationNumber: vehicle.registrationNumber,
+    manufacturer: vehicle.manufacturer,
+    vehicleModel: vehicle.vehicleModel,
+    year: vehicle.year,
+    color: vehicle.color,
+    type: vehicle.type,
+    seats: vehicle.seats,
+    luggageCapacity: vehicle.luggageCapacity,
+    basePricePerKm: vehicle.basePricePerKm,
+    createdAt: vehicle.createdAt,
+    updatedAt: vehicle.updatedAt,
+  };
 }

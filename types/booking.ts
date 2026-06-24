@@ -1,16 +1,7 @@
+import { VehicleType } from "./vehicle";
+
 export type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled";
 
-export type VehicleType = "comfort" | "premium";
-
-export interface Vehicle {
-  type: VehicleType;
-  seats: number;
-  luggage: number;
-  basePricePerKm: number;
-  pricePerMinute: number;
-  baseFare: number;
-  image: string;
-}
 
 export interface IBooking {
   _id: string;
@@ -52,3 +43,5 @@ export type FormFields = {
   passengers: number;
   luggage: number;
 };
+
+
