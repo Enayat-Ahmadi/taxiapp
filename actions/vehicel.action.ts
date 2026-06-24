@@ -1,7 +1,7 @@
 "use server";
 
 import { VehicleFormData, vehicleSchema } from "@/lib/validations/vehicles";
-import { addVehicle } from "@/services/vehicle.service";
+import { addVehicle, getVehicles } from "@/services/vehicle.service";
 import { revalidatePath } from "next/cache";
 import { VehicleDto } from "@/types/vehicle";
 
@@ -10,6 +10,19 @@ interface ActionResult<T> {
   data?: T;
   error?: string;
 }
+
+export async function getVehiclesAction(): Promise<ActionResult<VehicleDto[]>> {
+  try {
+    const result = await getVehicles();
+    return { success: true, data: result };
+  } catch (error) {
+    console.error("Failed to fetch vehicles:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to fetch vehicles";
+    return { success: false, error: errorMessage };
+  }
+}
+
 export async function addVehicleAction(
   data: VehicleFormData,
 ): Promise<ActionResult<VehicleDto>> {
