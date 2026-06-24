@@ -5,6 +5,7 @@ import { vehicleSchema, VehicleFormData } from "@/lib/validations/vehicles";
 import { VehicleType } from "@/types/vehicle";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface IVEHICLE_TYPES {
   value: VehicleType;
@@ -19,6 +20,7 @@ const VEHICLE_TYPES: IVEHICLE_TYPES[] = [
 interface VehicleFormProps {
   initialData?: VehicleFormData;
   onSubmit: (data: VehicleFormData) => Promise<void>;
+  isEditing?: boolean;
 }
 export default function VehicleForm({
   initialData,
@@ -27,15 +29,36 @@ export default function VehicleForm({
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isDirty },
   } = useForm({
     resolver: zodResolver(vehicleSchema),
     defaultValues: initialData,
   });
 
+  const submitHandler = async (data: VehicleFormData) => {
+    if (!isDirty) {
+      toast("No changes");
+      return;
+    }
+
+    await onSubmit(data);
+  };
+  const isEditing = !!initialData;
+
+  const buttonText = !isDirty
+    ? isEditing
+      ? "No changes"
+      : "FillForm"
+    : isSubmitting
+      ? isEditing
+        ? "Updating..."
+        : "Adding..."
+      : isEditing
+        ? "Update Vehicle"
+        : "Add Vehicle";
   return (
     <Card>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(submitHandler)} className="space-y-4">
         <div className="grid gap-4 md:grid-cols-2">
           <Input
             label="Registration Number"
@@ -100,10 +123,10 @@ export default function VehicleForm({
 
         <Button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || (isEditing && !isDirty)}
           className="bg-teal text-cloud-light hover:bg-teal/60"
         >
-          {isSubmitting ? "Adding..." : "Add Vehicle"}
+          {buttonText}
         </Button>
       </form>
     </Card>
