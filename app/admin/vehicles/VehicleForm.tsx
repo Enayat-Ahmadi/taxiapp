@@ -19,10 +19,12 @@ const VEHICLE_TYPES: IVEHICLE_TYPES[] = [
 interface VehicleFormProps {
   initialData?: VehicleFormData;
   onSubmit: (data: VehicleFormData) => Promise<void>;
+  isEditing?: boolean;
 }
 export default function VehicleForm({
   initialData,
   onSubmit,
+  isEditing,
 }: VehicleFormProps) {
   const {
     register,
@@ -32,7 +34,13 @@ export default function VehicleForm({
     resolver: zodResolver(vehicleSchema),
     defaultValues: initialData,
   });
-
+  const buttonText = isEditing
+    ? isSubmitting
+      ? "Updating..."
+      : "Update Vehicle"
+    : isSubmitting
+      ? "Adding..."
+      : "Add Vehicle";
   return (
     <Card>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -103,7 +111,7 @@ export default function VehicleForm({
           disabled={isSubmitting}
           className="bg-teal text-cloud-light hover:bg-teal/60"
         >
-          {isSubmitting ? "Adding..." : "Add Vehicle"}
+          {buttonText}
         </Button>
       </form>
     </Card>
