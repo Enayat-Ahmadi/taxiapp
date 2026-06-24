@@ -97,7 +97,8 @@ export async function deleteVehicleAction(
     console.error(error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to delete vehicle",
+      error:
+        error instanceof Error ? error.message : "Failed to delete vehicle",
     };
   }
 }

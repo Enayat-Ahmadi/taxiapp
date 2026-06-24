@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui";
 import { VehicleDto } from "@/types/vehicle";
 import Link from "next/link";
+import { buttonVariants } from "@/lib/buttonVariants";
+import { Edit2, Trash2 } from "lucide-react";
 
 interface MobileVehicleCardProps {
   vehicle: VehicleDto;
@@ -74,16 +76,19 @@ export default function MobileVehicleCard({
       </div>
 
       <div className="flex justify-end gap-2 pt-3 border-t border-gray-100">
-        <Link href={`/admin/vehicles/${vehicle._id}`}>
-          <Button size="sm">Edit</Button>
+        <Link
+          href={`/admin/vehicles/${vehicle._id}`}
+          className={buttonVariants("outline", "md", "rounded-full")}
+        >
+          <Edit2 className="w-4 h-4" />
         </Link>
         <Button
           size="sm"
-          variant="primary"
+          variant="outline"
           onClick={() => onRequestDelete(vehicle._id)}
-          className="bg-red-600 text-white hover:bg-red-700"
+          className="hover:bg-error hover:text-cloud-light rounded-full"
         >
-          Delete
+          <Trash2 className="w-4 h-4" />
         </Button>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { formatPrice } from "@/lib/utils";
 import { IBooking } from "@/types/booking";
 import React from "react";
 import { Button } from "@/components/ui";
+import { Trash2 } from "lucide-react";
 
 interface DesktopCardProps {
   booking: IBooking;
@@ -50,10 +51,11 @@ export default function BookingTableRow({
       <td className="py-3 px-3 lg:px-4">
         <Button
           size="sm"
+          variant="outline"
           onClick={() => onDelete?.(booking._id)}
-          className="bg-red-600 text-white hover:bg-red-700"
+          className="hover:bg-error hover:text-cloud-light rounded-full"
         >
-          Delete
+          <Trash2 className="w-4 h-4" />
         </Button>
       </td>
     </tr>

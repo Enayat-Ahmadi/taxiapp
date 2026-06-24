@@ -1,11 +1,15 @@
 "use client";
 
-import { addVehicleAction, getVehiclesAction, deleteVehicleAction } from "@/actions/vehicel.action";
+import {
+  addVehicleAction,
+  getVehiclesAction,
+  deleteVehicleAction,
+} from "@/actions/vehicel.action";
 import VehicleForm from "./VehicleForm";
 import { VehicleFormData } from "@/lib/validations/vehicles";
 import { useState, useEffect, useCallback } from "react";
 import { Plus } from "lucide-react";
-import { Button, Card } from "@/components/ui";
+import { Button,} from "@/components/ui";
 import { toast } from "sonner";
 import VehicleTable from "./VehicleList";
 import { VehicleDto } from "@/types/vehicle";
@@ -98,17 +102,14 @@ export default function Vehicles() {
         <h1 className="text-3xl font-bold text-ink">Vehicles Management</h1>
         <Button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 bg-teal"
+          className="flex items-center gap-2 bg-teal mt-2"
         >
           {!showForm && <Plus className="w-5 h-5" />}
           {showForm ? "Cancel" : "Add Vehicle"}
         </Button>
       </div>
       {showForm && <VehicleForm onSubmit={handleCreateVehicle} />}
-      <VehicleTable
-        vehicles={vehicels}
-        onRequestDelete={handleRequestDelete}
-      />
+      <VehicleTable vehicles={vehicels} onRequestDelete={handleRequestDelete} />
 
       <DeleteConfirmModal
         isOpen={deleteModalOpen}
