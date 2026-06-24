@@ -7,7 +7,7 @@ export default async function EditVehiclePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  console.log("params", params);
+
   const vehicle = await getVehicleById(id);
   if (!vehicle) {
     return <div>vehicel not found</div>;

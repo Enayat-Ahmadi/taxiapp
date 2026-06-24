@@ -22,7 +22,6 @@ export default function EditVehicleClient({
   return (
     <VehicleForm
       initialData={vehicle}
-      isEditing
       onSubmit={handleUpdateVehicle}
     />
   );
