@@ -2,7 +2,7 @@
 
 import { Button, Card, Input, Select } from "@/components/ui";
 import { vehicleSchema, VehicleFormData } from "@/lib/validations/vehicles";
-import { VehicleType } from "@/types";
+import { VehicleType } from "@/types/vehicle";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 

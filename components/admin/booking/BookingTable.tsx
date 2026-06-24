@@ -1,5 +1,5 @@
 import { formatPrice } from "@/lib/utils";
-import { IBooking } from "@/types";
+import { IBooking } from "@/types/booking";
 import React from "react";
 import { Button } from "@/components/ui";
 

@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { VEHICLES } from "@/lib/constant";
 import { useState, useEffect } from "react";
 import { calculateEstimatedPrice, formatMinutes } from "@/lib/utils";
-import { VehicleType } from "@/types";
+import { VehicleType } from "@/types/vehicle";
 import { getDistanceAction } from "@/actions/distance.action";
 import VehicelCard from "../VehicleCard";
 

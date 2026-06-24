@@ -9,8 +9,8 @@ import {
   FormFields,
   IBooking,
   StepData,
-  VehicleType,
-} from "@/types";
+} from "@/types/booking";
+import { VehicleType } from "@/types/vehicle";
 import { createBookingAction } from "@/actions/booking";
 import BookingSuccess from "./BookingSuccess";
 

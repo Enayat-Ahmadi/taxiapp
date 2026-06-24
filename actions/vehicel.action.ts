@@ -1,9 +1,9 @@
 "use server";
 
 import { VehicleFormData, vehicleSchema } from "@/lib/validations/vehicles";
-import { IVehicle } from "@/models/vehicle";
 import { addVehicle } from "@/services/vehicle.service";
 import { revalidatePath } from "next/cache";
+import { VehicleDto } from "@/types/vehicle";
 
 interface ActionResult<T> {
   success: boolean;
@@ -12,8 +12,7 @@ interface ActionResult<T> {
 }
 export async function addVehicleAction(
   data: VehicleFormData,
-): Promise<ActionResult<IVehicle>> {
-  
+): Promise<ActionResult<VehicleDto>> {
   const result = vehicleSchema.safeParse(data);
   if (!result.success) {
     return {
@@ -23,11 +22,11 @@ export async function addVehicleAction(
   }
   const validated = result.data;
   try {
-    const result = await addVehicle(validated);
+    const vehicle = await addVehicle(validated);
     revalidatePath("/admin/vehicles");
     return {
       success: true,
-      data: result,
+      data: vehicle,
     };
   } catch (error) {
     console.error(error);

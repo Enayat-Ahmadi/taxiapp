@@ -1,4 +1,4 @@
-import { Vehicle } from "@/types";
+import { Vehicle } from "@/types/vehicle";
 
 export const VEHICLES: Record<"comfort" | "premium", Vehicle> = {
   comfort: {
@@ -21,8 +21,4 @@ export const VEHICLES: Record<"comfort" | "premium", Vehicle> = {
   },
 };
 
-export const VEHICLE_TYPES = [
-  "standard",
-  "comfort",
-  "premium",
-] as const;
+export const VEHICLE_TYPES = ["standard", "comfort", "premium"] as const;

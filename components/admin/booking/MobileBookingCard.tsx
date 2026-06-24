@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui";
-import { IBooking } from "@/types";
+import { IBooking } from "@/types/booking";
 
 interface MobileCardProps {
   booking: IBooking;

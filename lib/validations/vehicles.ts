@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { VehicleType } from "@/types";
+import { VehicleType } from "@/types/vehicle";
 
 export const VEHICLE_TYPES = ["standard", "comfort", "premium"] as const;
 

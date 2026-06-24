@@ -1,5 +1,5 @@
 import { type ChangeEvent } from "react";
-import { IBooking, BookingStatus } from "@/types";
+import { IBooking, BookingStatus } from "@/types/booking";
 
 const BOOKING_STATUS_OPTIONS: BookingStatus[] = [
   "pending",

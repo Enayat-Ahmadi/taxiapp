@@ -2,8 +2,9 @@ import { connectDB } from "@/lib/db";
 import { Vehicle } from "@/models/vehicle";
 import { VehicleFormData } from "@/lib/validations/vehicles";
 import { toVehicleDto } from "@/lib/utils";
+import { VehicleDto } from "@/types/vehicle";
 
-export async function addVehicle(data: VehicleFormData) {
+export async function addVehicle(data: VehicleFormData): Promise<VehicleDto> {
   await connectDB();
   try {
     const vehicle = await Vehicle.create(data);

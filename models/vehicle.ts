@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { VehicleType } from "@/types";
+import { VehicleType } from "@/types/vehicle";
 import { VEHICLE_TYPES } from "@/lib/constant";
 
 export interface IVehicle extends Document {
