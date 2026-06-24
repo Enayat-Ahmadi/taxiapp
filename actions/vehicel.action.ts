@@ -1,7 +1,11 @@
 "use server";
 
 import { VehicleFormData, vehicleSchema } from "@/lib/validations/vehicles";
-import { addVehicle, getVehicles } from "@/services/vehicle.service";
+import {
+  addVehicle,
+  getVehicles,
+  updateVehicle,
+} from "@/services/vehicle.service";
 import { revalidatePath } from "next/cache";
 import { VehicleDto } from "@/types/vehicle";
 
@@ -46,6 +50,35 @@ export async function addVehicleAction(
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to add vehicle",
+    };
+  }
+}
+
+export async function updatedVehicleAction(
+  id: string,
+  data: VehicleFormData,
+): Promise<ActionResult<VehicleDto>> {
+  const result = vehicleSchema.safeParse(data);
+  if (!result.success) {
+    return {
+      success: false,
+      error: result.error?.issues[0]?.message ?? "Invalid vehicle data",
+    };
+  }
+  try {
+    const vehicle = await updateVehicle(id, data);
+    revalidatePath("/admin/vehicles");
+    revalidatePath(`/admin/vehicles/${id}`);
+    return {
+      success: true,
+      data: vehicle,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "Failed to update vehicle",
     };
   }
 }
