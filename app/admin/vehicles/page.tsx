@@ -6,18 +6,25 @@ import { VehicleFormData } from "@/lib/validations/vehicles";
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui";
+import { toast } from "sonner";
 
 export default function Vehicles() {
   const [showForm, setShowForm] = useState(false);
-  const handleAddVehicle = async (data: VehicleFormData) => {
-    const res = await addVehicleAction(data);
-    if (res.success) {
-      alert("vehicle added successfully");
-      console.log(res.data);
-    } else {
-      alert("somthing went wrong");
+
+  const handleCreateVehicle = async (data: VehicleFormData) => {
+    try {
+      const res = await addVehicleAction(data);
+      if (!res.success) {
+        toast.error(res.error ?? "Failed to add vehicle");
+        return;
+      }
+      setShowForm(false);
+      toast.success("Vehicle added successfully");
+    } catch {
+      toast.error("Something went wrong");
     }
   };
+
   return (
     <div className="space-y-6">
       <div className="md:flex items-center justify-between">
@@ -30,7 +37,7 @@ export default function Vehicles() {
           {showForm ? "Cancel" : "Add Vehicle"}
         </Button>
       </div>
-      {showForm && <VehicleForm onSubmit={handleAddVehicle} />}
+      {showForm && <VehicleForm onSubmit={handleCreateVehicle} />}
     </div>
   );
 }
