@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { calculateEstimatedPrice, formatMinutes } from "@/lib/utils";
 import { VehicleType } from "@/types/vehicle";
 import { getDistanceAction } from "@/actions/distance.action";
-import VehicelCard from "../VehicleCard";
+import VehicelCard from "./VehicleCard";
 
 interface Step2Props {
   pickupLocation?: string;

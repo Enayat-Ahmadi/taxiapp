@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { Card } from "./ui";
+import { Card } from "../ui";
 import { cn, formatPrice } from "@/lib/utils";
 import { VehicleType, Vehicle } from "@/types/vehicle";
 import { memo } from "react";
