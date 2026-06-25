@@ -6,7 +6,7 @@ import React from "react";
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   size?: "sm" | "md" | "lg";
-  variant?: "primary" | "secondary" | "outline" | "ghost";
+  variant?: "primary" | "secondary" | "outline" | "ghost" | "teal";
   isLoading?: boolean;
 }
 
@@ -28,6 +28,7 @@ export const Button = ({
     secondary: "bg-teal-active text-ink-dark hover:bg-teal-light",
     outline: "border border-teal text-ink-light hover:bg-teal-dark/10",
     ghost: "text-ink hover:bg-teal-active",
+    teal: "bg-teal text-cloud-light hover:bg-teal-dark/90",
   };
   const sizes = {
     sm: "px-4 py-2 text-sm",
