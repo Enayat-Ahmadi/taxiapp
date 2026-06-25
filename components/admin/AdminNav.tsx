@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, FileText, Settings, Car } from "lucide-react";
+import { BarChart3, FileText, Settings, Car, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ADMIN_NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: BarChart3 },
   { href: "/admin/bookings", label: "Bookings", icon: FileText },
   { href: "/admin/vehicles", label: "Vehicles", icon: Car },
+  { href: "/admin/drivers", label: "Drivers", icon: Users },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 export default function AdminNav({ onClick }: { onClick?: () => void }) {
