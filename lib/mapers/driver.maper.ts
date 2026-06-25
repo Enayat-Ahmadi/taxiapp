@@ -8,7 +8,7 @@ export function mapDriver(driver: IDriver): DriverDto {
     phoneNumber: driver.phoneNumber,
     email: driver.email,
     licenseNumber: driver.licenseNumber,
-    licenseExpiry: driver.licenseExpire,
+    licenseExpire: driver.licenseExpire,
     status: driver.status,
     createdAt: driver.createdAt,
     updatedAt: driver.updatedAt,

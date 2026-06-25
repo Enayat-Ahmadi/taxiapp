@@ -4,6 +4,7 @@ import { Button, Card, Input, Select } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { DriverFormData, driverSchema } from "@/lib/validations/drivers";
+import { DriverDto } from "@/types/driver";
 
 const DRIVER_STATUS = [
   { value: "active", label: "Active" },
@@ -11,7 +12,7 @@ const DRIVER_STATUS = [
 ];
 
 interface DriverFormProps {
-  initialData?: DriverFormData;
+  initialData?: DriverDto;
   onSubmit: (data: DriverFormData) => Promise<void>;
 }
 

@@ -54,7 +54,7 @@ export default function DesktopDriverTable({
             </td>
 
             <td className="px-4 py-3 text-gray-900">
-              {new Date(driver.licenseExpiry).toLocaleDateString()}
+              {new Date(driver.licenseExpire).toLocaleDateString()}
             </td>
 
             <td className="px-4 py-3">
