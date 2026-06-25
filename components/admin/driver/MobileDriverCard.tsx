@@ -69,7 +69,7 @@ export default function MobileDriverCard({
             License Expiry
           </p>
           <p className="text-sm font-medium text-gray-900">
-            {new Date(driver.licenseExpiry).toLocaleDateString()}
+            {new Date(driver.licenseExpire).toLocaleDateString()}
           </p>
         </div>
       </div>

@@ -4,7 +4,7 @@ export interface DriverDto {
   phoneNumber: string;
   email: string;
   licenseNumber: string;
-  licenseExpire: Date;
+  licenseExpire: string | Date;
   status: "active" | "inactive";
   createdAt: Date;
   updatedAt: Date;
