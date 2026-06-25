@@ -5,6 +5,7 @@ import {
   addVehicle,
   getVehicles,
   updateVehicle,
+  deleteVehicle,
 } from "@/services/vehicle.service";
 import { revalidatePath } from "next/cache";
 import { VehicleDto } from "@/types/vehicle";
@@ -79,6 +80,25 @@ export async function updatedVehicleAction(
       success: false,
       error:
         error instanceof Error ? error.message : "Failed to update vehicle",
+    };
+  }
+}
+
+export async function deleteVehicleAction(
+  id: string,
+): Promise<ActionResult<void>> {
+  try {
+    await deleteVehicle(id);
+    revalidatePath("/admin/vehicles");
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "Failed to delete vehicle",
     };
   }
 }

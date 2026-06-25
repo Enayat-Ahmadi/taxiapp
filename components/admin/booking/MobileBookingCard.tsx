@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui";
 import { IBooking } from "@/types/booking";
+import { Trash2 } from "lucide-react";
 
 interface MobileCardProps {
   booking: IBooking;
@@ -66,10 +67,11 @@ export default function MobileBookingCard({
         </div>
         <Button
           size="sm"
+          variant="outline"
           onClick={() => onRequestDelete(booking._id)}
-          className="bg-red-600 text-white hover:bg-red-700"
+          className="hover:bg-error hover:text-cloud-light rounded-full"
         >
-          Delete
+          <Trash2 className="w-4 h-4" />
         </Button>
       </div>
     </div>

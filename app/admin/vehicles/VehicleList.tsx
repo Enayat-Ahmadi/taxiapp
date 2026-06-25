@@ -1,74 +1,47 @@
 "use client";
 
 import { VehicleDto } from "@/types/vehicle";
-import { Button } from "@/components/ui";
-import Link from "next/link";
+import { Card } from "@/components/ui";
+import MobileVehicleCard from "@/components/admin/vehicle/MobileVehicleCard";
+import DesktopVehicleTable from "@/components/admin/vehicle/DesktopVehicleTable";
 
 interface VehicleTableProps {
   vehicles: VehicleDto[];
+  onRequestDelete: (vehicleId: string) => void;
 }
 
-export default function VehicleTable({ vehicles }: VehicleTableProps) {
+export default function VehicleTable({
+  vehicles,
+  onRequestDelete,
+}: VehicleTableProps) {
   if (!vehicles.length) {
     return (
-      <div className="rounded-lg border p-8 text-center">No vehicles found</div>
+      <Card className="p-8 text-center">
+        <p className="text-center text-warning">No vehicles found</p>
+      </Card>
     );
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border">
-      <table className="w-full">
-        <thead>
-          <tr className="border-b bg-muted">
-            <th className="px-4 py-3 text-left">Registration</th>
-            <th className="px-4 py-3 text-left">Manufacturer</th>
-            <th className="px-4 py-3 text-left">Model</th>
-            <th className="px-4 py-3 text-left">Type</th>
-            <th className="px-4 py-3 text-left">Year</th>
-            <th className="px-4 py-3 text-left">Color</th>
-            <th className="px-4 py-3 text-left">Seats</th>
-            <th className="px-4 py-3 text-left">Luggage</th>
-            <th className="px-4 py-3 text-left">Price/KM</th>
-            <th className="px-4 py-3 text-right">Actions</th>
-          </tr>
-        </thead>
+    <Card className="p-4 md:p-6">
+      {/* Mobile Card View */}
+      <div className="block lg:hidden space-y-4">
+        {vehicles.map((vehicle) => (
+          <MobileVehicleCard
+            key={vehicle._id}
+            vehicle={vehicle}
+            onRequestDelete={onRequestDelete}
+          />
+        ))}
+      </div>
 
-        <tbody>
-          {vehicles.map((vehicle) => (
-            <tr key={vehicle._id} className="border-b hover:bg-muted/50">
-              <td className="px-4 py-3">{vehicle.registrationNumber}</td>
-
-              <td className="px-4 py-3">{vehicle.manufacturer}</td>
-
-              <td className="px-4 py-3">{vehicle.vehicleModel}</td>
-
-              <td className="px-4 py-3 capitalize">{vehicle.type}</td>
-
-              <td className="px-4 py-3">{vehicle.year}</td>
-
-              <td className="px-4 py-3">{vehicle.color}</td>
-
-              <td className="px-4 py-3">{vehicle.seats}</td>
-
-              <td className="px-4 py-3">{vehicle.luggageCapacity}</td>
-
-              <td className="px-4 py-3">€{vehicle.basePricePerKm}</td>
-
-              <td className="px-4 py-3">
-                <div className="flex justify-end gap-2">
-                  <Link href={`/admin/vehicles/${vehicle._id}`}>
-                    <Button size="sm">Edit</Button>
-                  </Link>
-
-                  <Button size="sm" variant="primary">
-                    Delete
-                  </Button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+      {/* Desktop Table View */}
+      <div className="hidden lg:block overflow-x-auto">
+        <DesktopVehicleTable
+          vehicles={vehicles}
+          onRequestDelete={onRequestDelete}
+        />
+      </div>
+    </Card>
   );
 }

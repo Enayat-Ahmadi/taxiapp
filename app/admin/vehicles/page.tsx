@@ -1,6 +1,10 @@
 "use client";
 
-import { addVehicleAction, getVehiclesAction } from "@/actions/vehicel.action";
+import {
+  addVehicleAction,
+  getVehiclesAction,
+  deleteVehicleAction,
+} from "@/actions/vehicel.action";
 import VehicleForm from "./VehicleForm";
 import { VehicleFormData } from "@/lib/validations/vehicles";
 import { useState, useEffect, useCallback } from "react";
@@ -10,10 +14,18 @@ import { toast } from "sonner";
 import VehicleTable from "./VehicleList";
 import { VehicleDto } from "@/types/vehicle";
 
+import { ConfirmModal } from "@/components/ui/DeleteConfirmModal";
+
 export default function Vehicles() {
   const [showForm, setShowForm] = useState(false);
   const [vehicels, setVehicles] = useState<VehicleDto[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(
+    null,
+  );
+  const [isDeleting, setIsDeleting] = useState(false);
+
 
   const loadVehicles = useCallback(async () => {
     try {
@@ -50,6 +62,36 @@ export default function Vehicles() {
     }
   };
 
+  const handleRequestDelete = (vehicleId: string) => {
+    setSelectedVehicleId(vehicleId);
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async (vehicleId: string) => {
+    setIsDeleting(true);
+    try {
+      const result = await deleteVehicleAction(vehicleId);
+      if (!result.success) {
+        toast.error(result.error ?? "Failed to delete vehicle");
+        return;
+      }
+      setVehicles((prev) => prev.filter((v) => v._id !== vehicleId));
+      setDeleteModalOpen(false);
+      setSelectedVehicleId(null);
+      toast.success("Vehicle deleted successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteModalOpen(false);
+    setSelectedVehicleId(null);
+  };
+
   if (loading) {
     return <div>Loading vehicles...</div>;
   }
@@ -60,14 +102,27 @@ export default function Vehicles() {
         <h1 className="text-3xl font-bold text-ink">Vehicles Management</h1>
         <Button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 bg-teal"
+          className="flex items-center gap-2 bg-teal mt-2"
         >
           {!showForm && <Plus className="w-5 h-5" />}
           {showForm ? "Cancel" : "Add Vehicle"}
         </Button>
       </div>
       {showForm && <VehicleForm onSubmit={handleCreateVehicle} />}
-      <VehicleTable vehicles={vehicels} />
+      <VehicleTable vehicles={vehicels} onRequestDelete={handleRequestDelete} />
+
+      <ConfirmModal
+        isOpen={deleteModalOpen}
+        title="Delete Vehicle?"
+        description="This vehicle will be permanently removed."
+        confirmText="Delete"
+        isLoading={isDeleting}
+        onConfirm={async () => {
+          if (!selectedVehicleId) return;
+          await handleConfirmDelete(selectedVehicleId);
+        }}
+        onCancel={handleCancelDelete}
+      />
     </div>
   );
 }

@@ -50,3 +50,11 @@ export async function addVehicle(data: VehicleFormData): Promise<VehicleDto> {
     throw new Error("Failed to create vehicle");
   }
 }
+
+export async function deleteVehicle(id: string): Promise<void> {
+  await connectDB();
+  const result = await Vehicle.findByIdAndDelete(id);
+  if (!result) {
+    throw new Error("Vehicle not found");
+  }
+}
