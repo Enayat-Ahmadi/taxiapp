@@ -5,7 +5,7 @@ import { Card } from "@/components/ui";
 import StatusSelect from "./booking/StatusSelect";
 import MobileBookingCard from "./booking/MobileBookingCard";
 import BookingTableRow, { BookingTableHeader } from "./booking/BookingTable";
-import { DeleteConfirmModal } from "./DeleteConfirmModal";
+import { ConfirmModal } from "../ui/DeleteConfirmModal";
 import { useState } from "react";
 
 interface BookingsDataTableProps {
@@ -28,8 +28,6 @@ export function BookingsDataTable({
     null,
   );
   const [isDeleting, setIsDeleting] = useState(false);
-
-  const selectedBooking = bookings.find((b) => b._id === selectedBookingId);
 
   const handleRequestDelete = (bookingId: string) => {
     setSelectedBookingId(bookingId);
@@ -108,13 +106,16 @@ export function BookingsDataTable({
         </table>
       </div>
 
-      <DeleteConfirmModal
+      <ConfirmModal
+        title="Delete Booking?"
+        description="Are you sure you want to delete this booking?"
+        confirmText="Delete"
         isOpen={deleteModalOpen}
-        bookingId={selectedBookingId || ""}
-        pickupLocation={selectedBooking?.pickupLocation}
-        destination={selectedBooking?.destination}
         isLoading={isDeleting}
-        onConfirm={handleConfirmDelete}
+        onConfirm={async () => {
+          if (!selectedBookingId) return;
+          await handleConfirmDelete(selectedBookingId);
+        }}
         onCancel={handleCancelDelete}
       />
     </Card>

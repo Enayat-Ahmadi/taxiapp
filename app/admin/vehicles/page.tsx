@@ -9,11 +9,12 @@ import VehicleForm from "./VehicleForm";
 import { VehicleFormData } from "@/lib/validations/vehicles";
 import { useState, useEffect, useCallback } from "react";
 import { Plus } from "lucide-react";
-import { Button,} from "@/components/ui";
+import { Button } from "@/components/ui";
 import { toast } from "sonner";
 import VehicleTable from "./VehicleList";
 import { VehicleDto } from "@/types/vehicle";
-import { DeleteConfirmModal } from "@/components/admin/DeleteConfirmModal";
+
+import { ConfirmModal } from "@/components/ui/DeleteConfirmModal";
 
 export default function Vehicles() {
   const [showForm, setShowForm] = useState(false);
@@ -25,7 +26,6 @@ export default function Vehicles() {
   );
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const selectedVehicle = vehicels.find((v) => v._id === selectedVehicleId);
 
   const loadVehicles = useCallback(async () => {
     try {
@@ -111,13 +111,16 @@ export default function Vehicles() {
       {showForm && <VehicleForm onSubmit={handleCreateVehicle} />}
       <VehicleTable vehicles={vehicels} onRequestDelete={handleRequestDelete} />
 
-      <DeleteConfirmModal
+      <ConfirmModal
         isOpen={deleteModalOpen}
-        itemName={selectedVehicle?.registrationNumber ?? "this vehicle"}
-        isDeleting={isDeleting}
-        onConfirm={() =>
-          selectedVehicleId && handleConfirmDelete(selectedVehicleId)
-        }
+        title="Delete Vehicle?"
+        description="This vehicle will be permanently removed."
+        confirmText="Delete"
+        isLoading={isDeleting}
+        onConfirm={async () => {
+          if (!selectedVehicleId) return;
+          await handleConfirmDelete(selectedVehicleId);
+        }}
         onCancel={handleCancelDelete}
       />
     </div>
