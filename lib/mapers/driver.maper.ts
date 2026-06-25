@@ -3,7 +3,7 @@ import { DriverDto } from "@/types/driver";
 
 export function mapDriver(driver: IDriver): DriverDto {
   return {
-    id: driver._id.toString(),
+    id: driver._id.toString() ?? driver._id,
     fullName: driver.fullName,
     phoneNumber: driver.phoneNumber,
     email: driver.email,
