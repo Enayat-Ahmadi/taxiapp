@@ -15,7 +15,7 @@ export interface IDriver extends Document {
 
 const stringFields = { type: String, required: true, trim: true };
 
-export const DriverSchem = new Schema<IDriver>(
+export const driverSchema = new Schema<IDriver>(
   {
     fullName: stringFields,
     phoneNumber: stringFields,
@@ -43,5 +43,7 @@ export const DriverSchem = new Schema<IDriver>(
   { timestamps: true },
 );
 
-export const Driver =
-  mongoose.models.Driver || mongoose.model<IDriver>("Driver", DriverSchem);
+const Driver =
+  mongoose.models.Driver || mongoose.model<IDriver>("Driver", driverSchema);
+
+export default Driver;

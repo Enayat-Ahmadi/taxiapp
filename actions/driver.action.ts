@@ -1,3 +1,5 @@
+"use server";
+
 import { DriverFormData } from "@/lib/validations/drivers";
 import { IDriver } from "@/models/driver";
 import { addDriver } from "@/services/driver.service";

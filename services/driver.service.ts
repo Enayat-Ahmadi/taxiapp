@@ -1,6 +1,6 @@
 import { connectDB } from "@/lib/db";
 import { DriverFormData } from "@/lib/validations/drivers";
-import { Driver } from "@/models/driver";
+import Driver from "@/models/driver";
 
 export async function addDriver(data: DriverFormData) {
   await connectDB();
