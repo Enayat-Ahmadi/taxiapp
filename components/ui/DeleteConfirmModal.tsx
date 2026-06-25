@@ -30,18 +30,12 @@ export function ConfirmModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="mx-4 w-full max-w-sm rounded-lg bg-white p-6 shadow-lg">
-        <h2 className="text-lg font-semibold">{title}</h2>
+      <div className="mx-4 w-full max-w-sm rounded-lg bg-sky-200 p-6 shadow-lg">
+        <h2 className="text-lg font-semibold text-error">{title}</h2>
 
-        <p className="mt-2 text-sm text-gray-600">
-          {description}
-        </p>
+        <p className="mt-2 text-sm text-error">{description}</p>
 
-        {children && (
-          <div className="mt-4">
-            {children}
-          </div>
-        )}
+        {children && <div className="mt-4">{children}</div>}
 
         <div className="mt-6 flex gap-3">
           <Button
@@ -50,6 +44,7 @@ export function ConfirmModal({
             disabled={isLoading}
             className="flex-1"
             variant="outline"
+            size="sm"
           >
             {cancelText}
           </Button>
@@ -57,6 +52,7 @@ export function ConfirmModal({
           <Button
             type="button"
             variant="teal"
+            size="sm"
             onClick={onConfirm}
             disabled={isLoading}
             className="flex-1"
