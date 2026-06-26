@@ -1,36 +1,172 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Chauffeur Booking System
+
+A modern full-stack chauffeur booking platform built with **Next.js 15**, **TypeScript**, and **MongoDB**. The application allows customers to create transportation bookings while providing administrators with a dashboard to manage bookings, vehicles, and drivers.
+
+## Features
+
+### Customer
+
+* Create transportation bookings
+* Multi-step booking form
+* Vehicle selection
+* Price estimation
+* Booking confirmation
+* Responsive user interface
+
+### Admin Dashboard
+
+* Dashboard with booking statistics
+* Manage bookings
+* Update booking status
+* Delete bookings
+* Manage vehicles
+* Manage drivers
+* View booking analytics
+
+## Tech Stack
+
+### Frontend
+
+* Next.js 15 (App Router)
+* React
+* TypeScript
+* Tailwind CSS
+* Framer Motion
+* Lucide React
+* Sonner
+
+### Backend
+
+* Next.js Server Actions
+* MongoDB
+* Mongoose
+
+### Validation
+
+* Zod
+
+## Project Structure
+
+```
+src/
+│
+├── actions/          # Server Actions
+├── app/              # App Router pages
+├── components/       # Reusable UI components
+├── lib/              # Utilities and helpers
+├── models/           # Mongoose models
+├── services/         # Business logic
+├── types/            # Shared TypeScript types
+└── validations/      # Zod schemas
+```
 
 ## Getting Started
 
-First, run the development server:
+### Clone the repository
+
+```bash
+git clone https://github.com/your-username/chauffeur-booking.git
+
+cd chauffeur-booking
+```
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Configure environment variables
+
+Create a `.env.local` file.
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+```
+
+### Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Available Scripts
 
-## Learn More
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Start the development server.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Create a production build.
 
-## Deploy on Vercel
+```bash
+npm run start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Start the production server.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run lint
+```
+
+Run ESLint.
+
+## Architecture
+
+The application follows a layered architecture:
+
+```
+UI Components
+      │
+      ▼
+Server Actions
+      │
+      ▼
+Service Layer
+      │
+      ▼
+Database (MongoDB)
+```
+
+This separation keeps business logic independent from the UI and makes the application easier to maintain and test.
+
+## Current Features
+
+* Booking management
+* Booking status updates
+* Booking statistics
+* Driver management
+* Vehicle management
+* Responsive admin dashboard
+* Type-safe APIs
+* Form validation using Zod
+* Server-side data mutations
+* Automatic cache revalidation
+
+## Future Improvements
+
+* Authentication and authorization
+* Customer accounts
+* Email notifications
+* Payment integration
+* Booking calendar
+* File uploads
+* Advanced reporting
+* Search and filtering
+* Pagination
+* Unit and integration tests
+
+## License
+
+This project is available for learning and portfolio purposes.
