@@ -3,7 +3,7 @@ export type VehicleType = "standard" | "comfort" | "premium";
 export interface Vehicle {
   type: VehicleType;
   seats: number;
-  luggage: number;
+  luggageCapacity: number;
   basePricePerKm: number;
   pricePerMinute: number;
   baseFare: number;

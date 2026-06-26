@@ -2,7 +2,7 @@ import { ApiResponse } from "@/types/booking";
 
 export function errorResponse<T>(
   error: unknown,
-  fallbackMessage = "Somthing went wrong",
+  fallbackMessage = "Something went wrong",
 ): ApiResponse<T> {
   return {
     success: false,

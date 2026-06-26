@@ -1,20 +1,24 @@
 import { connectDB } from "@/lib/db";
+import { BOOKING_STATUSES } from "@/lib/constant";
 import Booking from "@/models/booking";
 import { IBooking } from "@/types/booking";
 import mongoose from "mongoose";
 import { BookingStatus } from "@/types/booking";
 
+/** Create a new booking with status set to "pending". */
 export async function createBooking(data: IBooking): Promise<IBooking> {
   await connectDB();
   const newBooking = await Booking.create({
     ...data,
-    status: "pending",
+    status: BOOKING_STATUSES.PENDING,
   });
   return {
     ...newBooking.toObject(),
     _id: newBooking._id.toString(),
   };
 }
+
+/** Retrieve all bookings, optionally filtered by status. */
 export async function getAllBookings(
   status?: BookingStatus | "all",
 ): Promise<IBooking[]> {
@@ -27,6 +31,7 @@ export async function getAllBookings(
   })) as IBooking[];
 }
 
+/** Delete a booking by its ID. */
 export async function deleteBooking(bookingId: string): Promise<void> {
   await connectDB();
 
@@ -40,6 +45,7 @@ export async function deleteBooking(bookingId: string): Promise<void> {
   }
 }
 
+/** Update the status of an existing booking. */
 export async function updateBookingStatus(
   bookingId: string,
   status: BookingStatus,
@@ -71,27 +77,38 @@ export interface BookingStats {
   cancelledBookings: number;
   pendingBookings: number;
 }
+
+/** Get booking counts grouped by status using a single aggregation query. */
 export async function getBookingStats(): Promise<BookingStats> {
   await connectDB();
-  const [
-    totalBookings,
-    confirmedBookings,
-    completedBookings,
-    cancelledBookings,
-    pendingBookings,
-  ] = await Promise.all([
-    Booking.countDocuments(),
-    Booking.countDocuments({ status: "confirmed" }),
-    Booking.countDocuments({ status: "completed" }),
-    Booking.countDocuments({ status: "cancelled" }),
-    Booking.countDocuments({ status: "pending" }),
+  const [result] = await Booking.aggregate<BookingStats>([
+    {
+      $group: {
+        _id: null,
+        totalBookings: { $sum: 1 },
+        confirmedBookings: {
+          $sum: { $cond: [{ $eq: ["$status", BOOKING_STATUSES.CONFIRMED] }, 1, 0] },
+        },
+        completedBookings: {
+          $sum: { $cond: [{ $eq: ["$status", BOOKING_STATUSES.COMPLETED] }, 1, 0] },
+        },
+        cancelledBookings: {
+          $sum: { $cond: [{ $eq: ["$status", BOOKING_STATUSES.CANCELLED] }, 1, 0] },
+        },
+        pendingBookings: {
+          $sum: { $cond: [{ $eq: ["$status", BOOKING_STATUSES.PENDING] }, 1, 0] },
+        },
+      },
+    },
   ]);
 
-  return {
-    totalBookings,
-    completedBookings,
-    confirmedBookings,
-    cancelledBookings,
-    pendingBookings,
-  };
+  return (
+    result ?? {
+      totalBookings: 0,
+      confirmedBookings: 0,
+      completedBookings: 0,
+      cancelledBookings: 0,
+      pendingBookings: 0,
+    }
+  );
 }
