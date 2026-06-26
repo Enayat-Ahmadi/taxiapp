@@ -2,7 +2,7 @@
 
 import { DriverFormData } from "@/lib/validations/drivers";
 import DriverForm from "../DriverForm";
-import { updateDriverAction } from "@/actions/driver.action";
+import { updateDriverAction } from "@/actions/drivers.action";
 import { DriverDto } from "@/types/driver";
 import { toast } from "sonner";
 

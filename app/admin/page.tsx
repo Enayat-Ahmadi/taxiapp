@@ -4,7 +4,7 @@ import StatCard from "@/components/admin/StatCard";
 import { formatPrice } from "@/lib/utils";
 import { BarChart3, FileText, Car, Users } from "lucide-react";
 import { useEffect, useState } from "react";
-import { getBookingStatsAction } from "@/actions/booking";
+import { getBookingStatsAction } from "@/actions/bookings.action";
 import { BookingStats } from "@/services/booking.service";
 import Spinner from "@/components/ui/Spinner";
 

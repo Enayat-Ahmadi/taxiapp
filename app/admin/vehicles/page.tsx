@@ -4,7 +4,7 @@ import {
   addVehicleAction,
   getVehiclesAction,
   deleteVehicleAction,
-} from "@/actions/vehicle.action";
+} from "@/actions/vehicles.action";
 import VehicleForm from "./VehicleForm";
 import { VehicleFormData } from "@/lib/validations/vehicles";
 import { useState, useEffect, useCallback } from "react";

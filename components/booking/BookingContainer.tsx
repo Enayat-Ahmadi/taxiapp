@@ -11,7 +11,7 @@ import {
   StepData,
 } from "@/types/booking";
 import { VehicleType } from "@/types/vehicle";
-import { createBookingAction } from "@/actions/booking";
+import { createBookingAction } from "@/actions/bookings.action";
 import BookingSuccess from "./BookingSuccess";
 
 export default function BookingContainer() {

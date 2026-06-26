@@ -1,4 +1,4 @@
-import { getSettingsAction } from "@/actions/settings";
+import { getSettingsAction } from "@/actions/settings.action";
 import SettingsForm from "./SettingsForm";
 
 export default async function Settings() {
