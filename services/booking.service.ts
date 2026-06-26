@@ -1,10 +1,10 @@
 import { connectDB } from "@/lib/db";
 import Booking from "@/models/booking";
-import { IBooking } from "@/types/booking";
+import { CreateBookingInput, IBooking } from "@/types/booking";
 import mongoose from "mongoose";
 import { BookingStatus } from "@/types/booking";
 
-export async function createBooking(data: IBooking): Promise<IBooking> {
+export async function createBooking(data: CreateBookingInput): Promise<IBooking> {
   await connectDB();
   const newBooking = await Booking.create({
     ...data,

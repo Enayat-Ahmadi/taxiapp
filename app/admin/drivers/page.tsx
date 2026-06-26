@@ -2,11 +2,11 @@
 
 import { Button } from "@/components/ui";
 import DriverForm from "./DriverForm";
-import { addDriverAction, deleteDriverAction } from "@/actions/driver.action";
+import { addDriverAction, deleteDriverAction } from "@/actions/drivers.action";
 import { Plus } from "lucide-react";
 import { DriverFormData } from "@/lib/validations/drivers";
 import { toast } from "sonner";
-import { getDriversAction } from "@/actions/driver.action";
+import { getDriversAction } from "@/actions/drivers.action";
 import { useCallback, useEffect, useState } from "react";
 import { DriverDto } from "@/types/driver";
 import DriverTable from "./DriverList";

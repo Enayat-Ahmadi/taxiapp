@@ -30,6 +30,7 @@ const PassengersSchema = z
   .int("Must be a whole number")
   .min(1, "Al least 1 passenger required")
   .max(4, "Maximum 4 passenger allowed");
+
 const LuggageSchema = z
   .number()
   .int("Must be a whole number")
@@ -56,17 +57,19 @@ export const VehicleSelectionSchema = z.object({
     .finite("Invalid price "),
 });
 
-export const BookingSchema = z.object({
-  pickupLocation: LocationSchema,
-  destination: LocationSchema,
-  date: DateSchema,
-  time: TimeSchema,
-  passengers: PassengersSchema,
-  lugguge: LuggageSchema,
+export const BookingSchema = TripDetailsSchema.extend({
+  vehicleType: z.enum(["standard", "comfort", "premium"], {
+    message: "Please select a valid vehicle type",
+  }),
   estimatedPrice: z
     .number()
     .positive("Price must be greater than 0")
     .finite("Invalid price"),
+  distance: z.number().nonnegative("Distance cannot be negative").optional(),
+  estimatedTime: z
+    .number()
+    .nonnegative("Estimated time cannot be negative")
+    .optional(),
 });
 
 export type TripDetailsInput = z.infer<typeof TripDetailsSchema>;

@@ -11,10 +11,26 @@ import { revalidatePath } from "next/cache";
 import { VehicleDto } from "@/types/vehicle";
 import { errorResponse } from "@/lib/errors";
 
-interface ActionResult<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
+type ActionResult<T> =
+  | { success: true; data?: T }
+  | { success: false; error: string };
+
+function validateVehicleInput(data: VehicleFormData):
+  | { success: true; data: VehicleFormData }
+  | { success: false; error: string } {
+  const validatedResult = vehicleSchema.safeParse(data);
+  if (!validatedResult.success) {
+    return {
+      success: false,
+      error:
+        validatedResult.error?.issues[0]?.message ?? "Invalid vehicle data",
+    };
+  }
+
+  return {
+    success: true,
+    data: validatedResult.data,
+  };
 }
 
 export async function getVehiclesAction(): Promise<ActionResult<VehicleDto[]>> {
@@ -30,16 +46,13 @@ export async function getVehiclesAction(): Promise<ActionResult<VehicleDto[]>> {
 export async function addVehicleAction(
   data: VehicleFormData,
 ): Promise<ActionResult<VehicleDto>> {
-  const result = vehicleSchema.safeParse(data);
-  if (!result.success) {
-    return {
-      success: false,
-      error: result.error?.issues[0]?.message ?? "Invalid vehicle data",
-    };
+  const validatedResult = validateVehicleInput(data);
+  if (!validatedResult.success) {
+    return validatedResult;
   }
-  const validated = result.data;
+
   try {
-    const vehicle = await addVehicle(validated);
+    const vehicle = await addVehicle(validatedResult.data);
     revalidatePath("/admin/vehicles");
     return {
       success: true,
@@ -51,19 +64,17 @@ export async function addVehicleAction(
   }
 }
 
-export async function updatedVehicleAction(
+export async function updateVehicleAction(
   id: string,
   data: VehicleFormData,
 ): Promise<ActionResult<VehicleDto>> {
-  const result = vehicleSchema.safeParse(data);
-  if (!result.success) {
-    return {
-      success: false,
-      error: result.error?.issues[0]?.message ?? "Invalid vehicle data",
-    };
+  const validatedResult = validateVehicleInput(data);
+  if (!validatedResult.success) {
+    return validatedResult;
   }
+
   try {
-    const vehicle = await updateVehicle(id, data);
+    const vehicle = await updateVehicle(id, validatedResult.data);
     revalidatePath("/admin/vehicles");
     revalidatePath(`/admin/vehicles/${id}`);
     return {

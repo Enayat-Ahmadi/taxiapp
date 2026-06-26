@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { VehicleType } from "@/types/vehicle";
-import { VEHICLE_TYPES } from "@/lib/constant";
+import { VEHICLE_TYPES } from "@/lib/constants/vehicles";
 
 export interface IVehicle extends Document {
   registrationNumber: string;

@@ -10,7 +10,7 @@ import {
 } from "@/lib/validations/settings";
 import CompanySection from "./CompanySection";
 import PricingSection from "./PricingSection";
-import { updateSettingsAction } from "@/actions/settings";
+import { updateSettingsAction } from "@/actions/settings.action";
 import { ISettings } from "@/models/settings";
 
 type SettingsProps = {

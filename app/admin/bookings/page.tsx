@@ -8,7 +8,7 @@ import {
   deleteBookingAction,
   getAllBookingsAction,
   updateBookingStatusAction,
-} from "@/actions/booking";
+} from "@/actions/bookings.action";
 import { cn } from "@/lib/utils";
 import Spinner from "@/components/ui/Spinner";
 

@@ -1,5 +1,5 @@
 import { connectDB } from "@/lib/db";
-import { mapDriver } from "@/lib/mapers/driver.maper";
+import { mapDriver } from "@/lib/mappers/driver.mapper";
 import { DriverFormData } from "@/lib/validations/drivers";
 import Driver from "@/models/driver";
 import { DriverDto } from "@/types/driver";

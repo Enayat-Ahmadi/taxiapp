@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Card, Button } from "../ui";
 import { useMemo } from "react";
-import { VEHICLES } from "@/lib/constant";
+import { VEHICLES } from "@/lib/constants/vehicles";
 import { useState, useEffect } from "react";
 import { calculateEstimatedPrice, formatMinutes } from "@/lib/utils";
 import { VehicleType } from "@/types/vehicle";

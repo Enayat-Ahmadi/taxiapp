@@ -15,6 +15,23 @@ type ActionResult<T = void> =
   | { success: true; data?: T }
   | { success: false; error: string };
 
+function validateDriverInput(data: DriverFormData):
+  | { success: true; data: DriverFormData }
+  | { success: false; error: string } {
+  const validatedResult = driverSchema.safeParse(data);
+  if (!validatedResult.success) {
+    return {
+      success: false,
+      error: validatedResult.error?.issues[0]?.message ?? "Invalid driver data",
+    };
+  }
+
+  return {
+    success: true,
+    data: validatedResult.data,
+  };
+}
+
 export async function getDriversAction(): Promise<ActionResult<DriverDto[]>> {
   try {
     const drivers = await getDrivers();
@@ -30,8 +47,13 @@ export async function getDriversAction(): Promise<ActionResult<DriverDto[]>> {
 export async function addDriverAction(
   data: DriverFormData,
 ): Promise<ActionResult<DriverDto>> {
+  const validatedResult = validateDriverInput(data);
+  if (!validatedResult.success) {
+    return validatedResult;
+  }
+
   try {
-    const result = await addDriver(data);
+    const result = await addDriver(validatedResult.data);
     revalidatePath("/admin/drivers");
 
     return {
@@ -39,9 +61,6 @@ export async function addDriverAction(
       data: result,
     };
   } catch (error) {
-    if (!(error instanceof Error)) {
-      console.error(error);
-    }
     return errorResponse(error);
   }
 }
@@ -50,12 +69,9 @@ export async function updateDriverAction(
   id: string,
   data: DriverFormData,
 ): Promise<ActionResult<DriverDto>> {
-  const validatedResult = driverSchema.safeParse(data);
+  const validatedResult = validateDriverInput(data);
   if (!validatedResult.success) {
-    return {
-      success: false,
-      error: validatedResult.error?.issues[0]?.message ?? "Invalid driver data",
-    };
+    return validatedResult;
   }
 
   try {
