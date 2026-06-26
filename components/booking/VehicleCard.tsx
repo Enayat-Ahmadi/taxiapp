@@ -60,7 +60,7 @@ const VehicelCard = memo(function VehicelCard({
               </h3>
               <div className="flex gap-4 text-xs text-ink">
                 <span>👥 {vehicle.seats} seats</span>
-                <span>🎒 {vehicle.luggage} bags</span>
+                <span>🎒 {vehicle.luggageCapacity} bags</span>
               </div>
             </div>
             <div className="text-right">

@@ -2,8 +2,8 @@ import { VehicleType } from "./vehicle";
 
 export type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled";
 
-export interface IBooking {
-  _id: string;
+/** Fields required when creating a new booking. */
+export interface CreateBookingInput {
   pickupLocation: string;
   destination: string;
   date: string;
@@ -13,11 +13,16 @@ export interface IBooking {
   phoneNumber: string;
   vehicleType: VehicleType;
   estimatedPrice: number;
-  distance?: number;
-  estimatedTime?: number;
-  status?: BookingStatus;
-  createdAt?: Date;
-  updatedAt?: Date;
+  distance: number;
+  estimatedTime: number;
+}
+
+/** A persisted booking including database-assigned fields. */
+export interface IBooking extends CreateBookingInput {
+  _id: string;
+  status: BookingStatus;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export type ApiResponse<T = void> =

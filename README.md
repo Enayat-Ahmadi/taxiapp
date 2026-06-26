@@ -78,10 +78,20 @@ npm install
 
 ### Configure environment variables
 
-Create a `.env.local` file.
+Copy the example file and fill in your values:
+
+```bash
+cp .env.local.example .env.local
+```
+
+Then edit `.env.local`:
 
 ```env
+# Required
 MONGODB_URI=your_mongodb_connection_string
+
+# Optional — comma-separated list of allowed dev origins (defaults to localhost:3000)
+ALLOWED_DEV_ORIGINS=localhost:3000,192.168.1.100
 ```
 
 ### Run the development server

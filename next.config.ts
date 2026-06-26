@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  allowedDevOrigins: ["172.20.10.14", "localhost:3000"],
+  allowedDevOrigins: (
+    process.env.ALLOWED_DEV_ORIGINS || "localhost:3000"
+  ).split(","),
   experimental: {},
 };
 

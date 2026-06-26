@@ -91,7 +91,7 @@ export async function calculateRoute(
     return {
       distance: distanceKm,
       duration: durationMinutes,
-      estimatedTime: `${durationMinutes} min${distanceKm} km`,
+      estimatedTime: `${durationMinutes} min, ${distanceKm} km`,
     };
   } catch (error) {
     console.error("Route calculation error:", error);
