@@ -30,6 +30,7 @@ const PassengersSchema = z
   .int("Must be a whole number")
   .min(1, "Al least 1 passenger required")
   .max(4, "Maximum 4 passenger allowed");
+  
 const LuggageSchema = z
   .number()
   .int("Must be a whole number")
