@@ -10,6 +10,7 @@ import {
   updateBookingStatusAction,
 } from "@/actions/booking";
 import { cn } from "@/lib/utils";
+import Spinner from "@/components/ui/Spinner";
 
 const BOOKINGS_STATUS = [
   "all",
@@ -120,7 +121,7 @@ export default function AdminBookingsPage() {
       </Card>
       {error && <p className="text-center text-sm text-danger">{error}</p>}
       {isLoading ? (
-        <p className="py-8 text-center text-gray-500">Loading bookings...</p>
+        <Spinner size="lg" text="Loading bookings..." />
       ) : bookings.length === 0 ? (
         <p className="py-8 text-center text-warning">No bookings found.</p>
       ) : (

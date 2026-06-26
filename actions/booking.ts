@@ -5,33 +5,32 @@ import {
   deleteBooking,
   getAllBookings,
   updateBookingStatus,
+  getBookingStats,
+  BookingStats,
 } from "@/services/booking.service";
 import { revalidatePath } from "next/cache";
-import { getBookingStats, BookingStats } from "@/services/booking.service";
+import { errorResponse } from "@/lib/errors";
 
 /**
- * Server action to create a booking.
- * This delegates to the API route for consistent error handling and validation.
+ * Server action for creating a booking.
+ * Delegates the business logic to the booking service.
  */
+
 export async function createBookingAction(
   bookingData: IBooking,
 ): Promise<ApiResponse<IBooking>> {
   try {
     const result = await createBooking(bookingData);
-    revalidatePath("/booking/create");
+
     return {
       success: true,
       data: result,
     };
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Failed to create booking";
-    return {
-      success: false,
-      error: errorMessage,
-    };
+    return errorResponse(error);
   }
 }
+
 export async function updateBookingStatusAction(
   bookingId: string,
   status: BookingStatus,
@@ -44,14 +43,7 @@ export async function updateBookingStatusAction(
       data: result,
     };
   } catch (error) {
-    const errorMessage =
-      error instanceof Error
-        ? error.message
-        : "Failed to update booking status";
-    return {
-      success: false,
-      error: errorMessage,
-    };
+    return errorResponse(error);
   }
 }
 
@@ -62,37 +54,27 @@ export async function getAllBookingsAction(
     const data = await getAllBookings(status);
     return { success: true, data };
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Failed to fetch bookings";
-    return { success: false, error: errorMessage };
+    return errorResponse(error);
   }
 }
 
 export async function deleteBookingAction(
   bookingId: string,
-): Promise<ApiResponse<null>> {
+): Promise<ApiResponse<void>> {
   try {
     await deleteBooking(bookingId);
+    revalidatePath("/admin/bookings");
+
     return {
       success: true,
-      data: null,
     };
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Failed to delete booking";
-    return {
-      success: false,
-      error: errorMessage,
-    };
+    return errorResponse(error);
   }
 }
 
-type ActionResponse<T> =
-  | { success: true; data: T }
-  | { success: false; error: string };
-
 export async function getBookingStatsAction(): Promise<
-  ActionResponse<BookingStats>
+  ApiResponse<BookingStats>
 > {
   try {
     const stats = await getBookingStats();
@@ -102,12 +84,6 @@ export async function getBookingStatsAction(): Promise<
       data: stats,
     };
   } catch (error) {
-    return {
-      success: false,
-      error:
-        error instanceof Error
-          ? error.message
-          : "Failed to fetch booking statistics",
-    };
+    return errorResponse(error);
   }
 }

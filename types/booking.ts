@@ -2,7 +2,6 @@ import { VehicleType } from "./vehicle";
 
 export type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled";
 
-
 export interface IBooking {
   _id: string;
   pickupLocation: string;
@@ -21,12 +20,10 @@ export interface IBooking {
   updatedAt?: Date;
 }
 
-export interface ApiResponse<T = unknown> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  message?: string;
-}
+export type ApiResponse<T = void> =
+  | { success: true; data?: T }
+  | { success: false; error: string };
+
 export interface StepData {
   step1?: FormFields;
   step2?: {
@@ -43,5 +40,3 @@ export type FormFields = {
   passengers: number;
   luggage: number;
 };
-
-
