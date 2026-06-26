@@ -20,6 +20,11 @@ export interface IBooking {
   updatedAt?: Date;
 }
 
+export type CreateBookingInput = Omit<
+  IBooking,
+  "_id" | "status" | "createdAt" | "updatedAt"
+>;
+
 export type ApiResponse<T = void> =
   | { success: true; data?: T }
   | { success: false; error: string };

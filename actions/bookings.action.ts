@@ -1,6 +1,12 @@
 "use server";
 
-import { IBooking, ApiResponse, BookingStatus } from "@/types/booking";
+import {
+  IBooking,
+  ApiResponse,
+  BookingStatus,
+  CreateBookingInput,
+} from "@/types/booking";
+import { BookingSchema } from "@/lib/validations/bookings";
 import {
   createBooking,
   deleteBooking,
@@ -18,10 +24,19 @@ import { errorResponse } from "@/lib/errors";
  */
 
 export async function createBookingAction(
-  bookingData: IBooking,
+  bookingData: CreateBookingInput,
 ): Promise<ApiResponse<IBooking>> {
+  const validatedResult = BookingSchema.safeParse(bookingData);
+  if (!validatedResult.success) {
+    return {
+      success: false,
+      error:
+        validatedResult.error.issues[0]?.message ?? "Invalid booking data",
+    };
+  }
+
   try {
-    const result = await createBooking(bookingData);
+    const result = await createBooking(validatedResult.data);
 
     return {
       success: true,
