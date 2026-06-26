@@ -6,6 +6,7 @@ import { BarChart3, FileText, Car, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getBookingStatsAction } from "@/actions/booking";
 import { BookingStats } from "@/services/booking.service";
+import Spinner from "@/components/ui/Spinner";
 
 export default function Dashboard() {
   const [stats, setStats] = useState<BookingStats | null>(null);
@@ -37,7 +38,7 @@ export default function Dashboard() {
     );
   }
   if (!stats) {
-    return <p>Loading...</p>;
+    return <Spinner size="lg" text="Loading stats..." />
   }
   return (
     <div className="space-y-8 ">

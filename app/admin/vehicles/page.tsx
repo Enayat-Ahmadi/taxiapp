@@ -15,6 +15,7 @@ import VehicleTable from "./VehicleList";
 import { VehicleDto } from "@/types/vehicle";
 
 import { ConfirmModal } from "@/components/ui/DeleteConfirmModal";
+import Spinner from "@/components/ui/Spinner";
 
 export default function Vehicles() {
   const [showForm, setShowForm] = useState(false);
@@ -25,7 +26,6 @@ export default function Vehicles() {
     null,
   );
   const [isDeleting, setIsDeleting] = useState(false);
-
 
   const loadVehicles = useCallback(async () => {
     try {
@@ -93,7 +93,7 @@ export default function Vehicles() {
   };
 
   if (loading) {
-    return <div>Loading vehicles...</div>;
+    return <Spinner size="lg" text="Loading vehicles..." />;
   }
 
   return (
