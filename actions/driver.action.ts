@@ -15,7 +15,7 @@ type ActionResult<T = void> =
   | { success: true; data?: T }
   | { success: false; error: string };
 
-export async function getDriversAction() {
+export async function getDriversAction(): Promise<ActionResult<DriverDto[]>> {
   try {
     const drivers = await getDrivers();
     return {
@@ -66,7 +66,7 @@ export async function updateDriverAction(
       data: driver,
     };
   } catch (error) {
-   return errorResponse(error);
+    return errorResponse(error);
   }
 }
 
@@ -80,6 +80,6 @@ export async function deleteDriverAction(
       success: true,
     };
   } catch (error) {
-   return errorResponse(error);
+    return errorResponse(error);
   }
 }

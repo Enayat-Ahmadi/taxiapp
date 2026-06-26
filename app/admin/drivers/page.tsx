@@ -25,7 +25,7 @@ export default function DriverPage() {
       setLoading(true);
       const res = await getDriversAction();
       if (!res.success) {
-        throw res.error;
+        toast.error(res.error);
         return;
       }
       setDrivers(res.data ?? []);
