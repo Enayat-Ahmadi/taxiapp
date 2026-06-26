@@ -9,6 +9,7 @@ import {
 } from "@/services/driver.service";
 import { revalidatePath } from "next/cache";
 import { DriverDto } from "@/types/driver";
+import { errorResponse } from "@/lib/errors";
 
 type ActionResult<T = void> =
   | { success: true; data?: T }
@@ -22,11 +23,7 @@ export async function getDriversAction() {
       data: drivers,
     };
   } catch (error) {
-    console.error(error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : "Failed to fetch drivers",
-    };
+    return errorResponse(error);
   }
 }
 
@@ -45,10 +42,7 @@ export async function addDriverAction(
     if (!(error instanceof Error)) {
       console.error(error);
     }
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : "Failed to add driver",
-    };
+    return errorResponse(error);
   }
 }
 
@@ -72,10 +66,7 @@ export async function updateDriverAction(
       data: driver,
     };
   } catch (error) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : "Failed to update driver",
-    };
+   return errorResponse(error);
   }
 }
 
@@ -89,9 +80,6 @@ export async function deleteDriverAction(
       success: true,
     };
   } catch (error) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : "Failed to delete driver",
-    };
+   return errorResponse(error);
   }
 }

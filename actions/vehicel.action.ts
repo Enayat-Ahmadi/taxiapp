@@ -9,6 +9,7 @@ import {
 } from "@/services/vehicle.service";
 import { revalidatePath } from "next/cache";
 import { VehicleDto } from "@/types/vehicle";
+import { errorResponse } from "@/lib/errors";
 
 interface ActionResult<T> {
   success: boolean;
@@ -22,9 +23,7 @@ export async function getVehiclesAction(): Promise<ActionResult<VehicleDto[]>> {
     return { success: true, data: result };
   } catch (error) {
     console.error("Failed to fetch vehicles:", error);
-    const errorMessage =
-      error instanceof Error ? error.message : "Failed to fetch vehicles";
-    return { success: false, error: errorMessage };
+    return errorResponse(error);
   }
 }
 
@@ -48,10 +47,7 @@ export async function addVehicleAction(
     };
   } catch (error) {
     console.error(error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : "Failed to add vehicle",
-    };
+    return errorResponse(error);
   }
 }
 
@@ -76,11 +72,7 @@ export async function updatedVehicleAction(
     };
   } catch (error) {
     console.error(error);
-    return {
-      success: false,
-      error:
-        error instanceof Error ? error.message : "Failed to update vehicle",
-    };
+    return errorResponse(error);
   }
 }
 
@@ -95,10 +87,6 @@ export async function deleteVehicleAction(
     };
   } catch (error) {
     console.error(error);
-    return {
-      success: false,
-      error:
-        error instanceof Error ? error.message : "Failed to delete vehicle",
-    };
+    return errorResponse(error);
   }
 }

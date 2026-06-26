@@ -18,7 +18,7 @@ export default function Dashboard() {
           setError(result.error);
           return;
         }
-        setStats(result.data);
+        setStats(result.data ?? null);
       } catch (error) {
         setError(
           error instanceof Error
