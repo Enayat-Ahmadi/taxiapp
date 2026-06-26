@@ -2,7 +2,7 @@
 
 import { VehicleFormData } from "@/lib/validations/vehicles";
 import { toast } from "sonner";
-import { updatedVehicleAction } from "@/actions/vehicel.action";
+import { updatedVehicleAction } from "@/actions/vehicle.action";
 import { VehicleDto } from "@/types/vehicle";
 import VehicleForm from "../VehicleForm";
 

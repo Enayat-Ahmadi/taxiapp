@@ -27,7 +27,7 @@ A modern full-stack chauffeur booking platform built with **Next.js 15**, **Type
 
 ### Frontend
 
-* Next.js 15 (App Router)
+* Next.js 16 (App Router)
 * React
 * TypeScript
 * Tailwind CSS
@@ -48,17 +48,28 @@ A modern full-stack chauffeur booking platform built with **Next.js 15**, **Type
 ## Project Structure
 
 ```
-src/
-│
-├── actions/          # Server Actions
-├── app/              # App Router pages
+.
+├── actions/          # Server actions for mutations and server-only reads
+├── app/              # App Router pages, layouts, and API routes
 ├── components/       # Reusable UI components
-├── lib/              # Utilities and helpers
+├── contexts/         # React context providers
+├── lib/              # Utilities, helpers, constants, validation, and mapping logic
 ├── models/           # Mongoose models
-├── services/         # Business logic
+├── public/           # Static assets served directly
+├── services/         # Database and business logic
 ├── types/            # Shared TypeScript types
-└── validations/      # Zod schemas
+└── README.md         # Project overview and usage notes
 ```
+
+## Where Things Belong
+
+* Put route pages and nested layouts in [app/](app).
+* Put shared UI pieces in [components/](components).
+* Put database access and business rules in [services/](services).
+* Put server actions in [actions/](actions).
+* Put validation schemas, constants, and helper functions in [lib/](lib).
+* Put Mongoose schemas in [models/](models).
+* Put shared TypeScript contracts in [types/](types).
 
 ## Getting Started
 
