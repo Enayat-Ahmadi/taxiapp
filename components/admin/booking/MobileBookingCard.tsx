@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui";
+import { formatPrice } from "@/lib/utils";
 import { IBooking } from "@/types/booking";
 import { Trash2 } from "lucide-react";
 
@@ -54,7 +55,7 @@ export default function MobileBookingCard({
         <div>
           <p className="text-xs text-gray-500 uppercase tracking-wide">Price</p>
           <p className="text-sm font-medium text-gray-900">
-            ${booking.estimatedPrice}
+            {formatPrice(booking.estimatedPrice)}
           </p>
         </div>
       </div>

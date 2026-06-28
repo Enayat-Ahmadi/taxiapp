@@ -84,7 +84,7 @@ export default function DriverPage() {
         onRequestDelete={deleteModal.requestDelete}
       />
       <ConfirmModal
-        title="Delete DRiver?"
+        title="Delete Driver?"
         description="This driver will be permanently removed."
         confirmText="Delete"
         isOpen={deleteModal.isOpen}

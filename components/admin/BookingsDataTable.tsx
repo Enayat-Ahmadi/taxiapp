@@ -5,15 +5,13 @@ import { Card } from "@/components/ui";
 import StatusSelect from "./booking/StatusSelect";
 import MobileBookingCard from "./booking/MobileBookingCard";
 import BookingTableRow, { BookingTableHeader } from "./booking/BookingTable";
-import { ConfirmModal } from "../ui/DeleteConfirmModal";
-import { useState } from "react";
 
 interface BookingsDataTableProps {
   bookings: IBooking[];
   updatingId: string | null;
   error: string | null;
   onStatusChange: (bookingId: string, newStatus: BookingStatus) => void;
-  onDeleteBooking: (bookingId: string) => Promise<void>;
+  onDeleteBooking: (id: string) => void;
 }
 
 export function BookingsDataTable({
@@ -23,33 +21,6 @@ export function BookingsDataTable({
   onStatusChange,
   onDeleteBooking,
 }: BookingsDataTableProps) {
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [selectedBookingId, setSelectedBookingId] = useState<string | null>(
-    null,
-  );
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const handleRequestDelete = (bookingId: string) => {
-    setSelectedBookingId(bookingId);
-    setDeleteModalOpen(true);
-  };
-
-  const handleConfirmDelete = async (bookingId: string) => {
-    setIsDeleting(true);
-    try {
-      await onDeleteBooking(bookingId);
-      setDeleteModalOpen(false);
-      setSelectedBookingId(null);
-    } finally {
-      setIsDeleting(false);
-    }
-  };
-
-  const handleCancelDelete = () => {
-    setDeleteModalOpen(false);
-    setSelectedBookingId(null);
-  };
-
   if (bookings.length === 0) {
     return (
       <Card className="p-6">
@@ -70,7 +41,7 @@ export function BookingsDataTable({
         {bookings.map((booking) => (
           <MobileBookingCard
             key={booking._id}
-            onRequestDelete={handleRequestDelete}
+            onRequestDelete={onDeleteBooking}
             booking={booking}
           >
             <StatusSelect
@@ -93,7 +64,7 @@ export function BookingsDataTable({
               <BookingTableRow
                 key={booking._id}
                 booking={booking}
-                onDelete={handleRequestDelete}
+                onDelete={onDeleteBooking}
               >
                 <StatusSelect
                   booking={booking}
@@ -105,19 +76,6 @@ export function BookingsDataTable({
           </tbody>
         </table>
       </div>
-
-      <ConfirmModal
-        title="Delete Booking?"
-        description="Are you sure you want to delete this booking?"
-        confirmText="Delete"
-        isOpen={deleteModalOpen}
-        isLoading={isDeleting}
-        onConfirm={async () => {
-          if (!selectedBookingId) return;
-          await handleConfirmDelete(selectedBookingId);
-        }}
-        onCancel={handleCancelDelete}
-      />
     </Card>
   );
 }

@@ -11,6 +11,9 @@ import {
 } from "@/actions/bookings.action";
 import { cn } from "@/lib/utils";
 import Spinner from "@/components/ui/Spinner";
+import { ConfirmModal } from "@/components/ui/DeleteConfirmModal";
+import useDeleteModal from "@/hooks/useDeleteModal";
+import { toast } from "sonner";
 
 const BOOKINGS_STATUS = [
   "all",
@@ -83,19 +86,16 @@ export default function AdminBookingsPage() {
     [],
   );
 
-  const handleDeleteBooking = useCallback(async (bookingId: string) => {
-    try {
-      const result = await deleteBookingAction(bookingId);
-      if (!result.success) {
-        console.error(result.error);
-      }
-      setBookings((prev) => prev.filter((b) => b._id !== bookingId));
-    } catch (error) {
-      console.error(error);
-      throw error;
+  const deleteModal = useDeleteModal<string>(async (id) => {
+    const res = await deleteBookingAction(id);
+    if (!res.success) {
+      toast.error(res.error ?? "Failed to delete booking");
+      return;
     }
-  }, []);
-
+    setBookings((prev) => prev.filter((b) => b._id !== id));
+    toast.success("Booking deleted successfully");
+  });
+  
   return (
     <div className="space-y-6">
       <Card>
@@ -128,11 +128,20 @@ export default function AdminBookingsPage() {
         <BookingsDataTable
           bookings={bookings}
           onStatusChange={handleStatusChange}
-          onDeleteBooking={handleDeleteBooking}
+          onDeleteBooking={deleteModal.requestDelete}
           error={error}
           updatingId={updatingId}
         />
       )}
+      <ConfirmModal
+        title="Delete Booking?"
+        description="This booking will be permanently removed."
+        confirmText="Delete"
+        isOpen={deleteModal.isOpen}
+        isLoading={deleteModal.isDeleting}
+        onCancel={deleteModal.cancelDelete}
+        onConfirm={deleteModal.confirmDelete}
+      />
     </div>
   );
 }
