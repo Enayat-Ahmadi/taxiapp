@@ -11,14 +11,12 @@ import { useCallback, useEffect, useState } from "react";
 import { DriverDto } from "@/types/driver";
 import DriverTable from "./DriverList";
 import { ConfirmModal } from "@/components/ui/DeleteConfirmModal";
+import useDeleteModal from "@/hooks/useDeleteModal";
 
 export default function DriverPage() {
   const [showForm, setShowForm] = useState(false);
   const [drivers, setDrivers] = useState<DriverDto[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [seletedDriverId, setSelectedDriverId] = useState<string | null>(null);
 
   const fetchDrivers = useCallback(async () => {
     try {
@@ -53,37 +51,20 @@ export default function DriverPage() {
     }
   };
 
-  const handleRequestDelete = async (driverId: string) => {
-    setSelectedDriverId(driverId);
-    setDeleteModalOpen(true);
-  };
-
-  const handleConfirmDeleteDiver = async (id: string) => {
-    setIsDeleting(true);
-
-    try {
-      const res = await deleteDriverAction(id);
-      if (!res.success) {
-        toast.error(res.error || "Failed to delete driver");
-        return;
-      }
-      setDrivers((prev) => prev.filter((driver) => driver.id !== id));
-      setDeleteModalOpen(false);
-      setSelectedDriverId(null);
-      toast.success("Driver deleted successfully");
-    } finally {
-      setIsDeleting(false);
+  const deleteModal = useDeleteModal<string>(async (id) => {
+    const res = await deleteDriverAction(id);
+    if (!res.success) {
+      toast.error(res.error || "Failed to delete driver");
+      return;
     }
-  };
+    setDrivers((prev) => prev.filter((driver) => driver.id !== id));
+    toast.success("Driver successfully deleted");
+  });
 
   if (loading) {
     return <div>Loading drivers...</div>;
   }
 
-  const handleCancelDelete = () => {
-    setDeleteModalOpen(false);
-    setSelectedDriverId(null);
-  };
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -98,18 +79,18 @@ export default function DriverPage() {
         </Button>
       </div>
       {showForm && <DriverForm onSubmit={handleCreateDriver} />}
-      <DriverTable drivers={drivers} onRequestDelete={handleRequestDelete} />
+      <DriverTable
+        drivers={drivers}
+        onRequestDelete={deleteModal.requestDelete}
+      />
       <ConfirmModal
-        title="Delete DRiver?"
+        title="Delete Driver?"
         description="This driver will be permanently removed."
         confirmText="Delete"
-        isOpen={deleteModalOpen}
-        isLoading={isDeleting}
-        onCancel={handleCancelDelete}
-        onConfirm={async () => {
-          if (!seletedDriverId) return;
-          await handleConfirmDeleteDiver(seletedDriverId);
-        }}
+        isOpen={deleteModal.isOpen}
+        isLoading={deleteModal.isDeleting}
+        onCancel={deleteModal.cancelDelete}
+        onConfirm={deleteModal.confirmDelete}
       />
     </div>
   );
