@@ -16,27 +16,21 @@ import { VehicleDto } from "@/types/vehicle";
 
 import { ConfirmModal } from "@/components/ui/DeleteConfirmModal";
 import Spinner from "@/components/ui/Spinner";
+import useDeleteModal from "@/hooks/useDeleteModal";
 
 export default function Vehicles() {
   const [showForm, setShowForm] = useState(false);
   const [vehicels, setVehicles] = useState<VehicleDto[]>([]);
   const [loading, setLoading] = useState(true);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(
-    null,
-  );
-  const [isDeleting, setIsDeleting] = useState(false);
 
   const loadVehicles = useCallback(async () => {
     try {
       setLoading(true);
-
       const result = await getVehiclesAction();
       if (!result.success) {
         toast.error(result.error);
         return;
       }
-
       setVehicles(result.data ?? []);
     } finally {
       setLoading(false);
@@ -62,35 +56,14 @@ export default function Vehicles() {
     }
   };
 
-  const handleRequestDelete = (vehicleId: string) => {
-    setSelectedVehicleId(vehicleId);
-    setDeleteModalOpen(true);
-  };
-
-  const handleConfirmDelete = async (vehicleId: string) => {
-    setIsDeleting(true);
-    try {
-      const result = await deleteVehicleAction(vehicleId);
-      if (!result.success) {
-        toast.error(result.error ?? "Failed to delete vehicle");
-        return;
-      }
-      setVehicles((prev) => prev.filter((v) => v._id !== vehicleId));
-      setDeleteModalOpen(false);
-      setSelectedVehicleId(null);
-      toast.success("Vehicle deleted successfully");
-    } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong");
-    } finally {
-      setIsDeleting(false);
+  const deleteModal = useDeleteModal<string>(async (id) => {
+    const res = await deleteVehicleAction(id);
+    if (!res.success) {
+      toast.error(res.error ?? "Failed to delete vehicle");
     }
-  };
-
-  const handleCancelDelete = () => {
-    setDeleteModalOpen(false);
-    setSelectedVehicleId(null);
-  };
+    setVehicles((prev) => prev.filter((vehicel) => vehicel._id !== id));
+    toast.success("Vehicle deleted successfully");
+  });
 
   if (loading) {
     return <Spinner size="lg" text="Loading vehicles..." />;
@@ -109,19 +82,19 @@ export default function Vehicles() {
         </Button>
       </div>
       {showForm && <VehicleForm onSubmit={handleCreateVehicle} />}
-      <VehicleTable vehicles={vehicels} onRequestDelete={handleRequestDelete} />
+      <VehicleTable
+        vehicles={vehicels}
+        onRequestDelete={deleteModal.requestDelete}
+      />
 
       <ConfirmModal
-        isOpen={deleteModalOpen}
         title="Delete Vehicle?"
         description="This vehicle will be permanently removed."
         confirmText="Delete"
-        isLoading={isDeleting}
-        onConfirm={async () => {
-          if (!selectedVehicleId) return;
-          await handleConfirmDelete(selectedVehicleId);
-        }}
-        onCancel={handleCancelDelete}
+        isOpen={deleteModal.isOpen}
+        isLoading={deleteModal.isDeleting}
+        onCancel={deleteModal.cancelDelete}
+        onConfirm={deleteModal.confirmDelete}
       />
     </div>
   );
