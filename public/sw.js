@@ -1,85 +1,109 @@
-const CACHE_NAME = 'eidsvoll-taxi-v1';
+const CACHE_NAME = "eidsvoll-taxi-v1";
+const STATIC_CACHE = "eidsvoll-taxi-static-v1";
+const IMAGE_CACHE = "eidsvoll-taxi-images-v1";
+const API_CACHE = "eidsvoll-taxi-api-v1";
+
 const urlsToCache = [
-  '/',
-  '/booking',
-  '/admin',
-  '/manifest.json',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png',
+  "/",
+  "/booking",
+  "/manifest.json",
+  "/icons/icon-192.png",
+  "/icons/icon-512.png",
 ];
 
-// Install event
-self.addEventListener('install', (event) => {
+// Install event – pre-cache shell routes
+self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(urlsToCache).catch(() => {
-        // Ignore errors from failing to cache resources
-        return null;
-      });
-    })
+      return cache.addAll(urlsToCache).catch(() => null);
+    }),
   );
   self.skipWaiting();
 });
 
-// Activate event
-self.addEventListener('activate', (event) => {
+// Activate event – clean up old caches
+self.addEventListener("activate", (event) => {
+  const currentCaches = [CACHE_NAME, STATIC_CACHE, IMAGE_CACHE, API_CACHE];
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    caches
+      .keys()
+      .then((cacheNames) =>
+        Promise.all(
+          cacheNames
+            .filter((name) => !currentCaches.includes(name))
+            .map((name) => caches.delete(name)),
+        ),
+      ),
   );
   self.clients.claim();
 });
 
-// Fetch event - Network First strategy
-self.addEventListener('fetch', (event) => {
-  // Skip non-GET requests
-  if (event.request.method !== 'GET') {
-    return;
-  }
+// Fetch event
+self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return;
 
-  // Skip API calls (let them go to network first)
-  if (event.request.url.includes('/api/')) {
+  const url = new URL(event.request.url);
+
+  // Skip chrome-extension and non-http(s) requests
+  if (!url.protocol.startsWith("http")) return;
+
+  // Next.js static assets (_next/static) – Cache First
+  if (url.pathname.startsWith("/_next/static/")) {
     event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          return caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, response.clone());
-            return response;
-          });
-        })
-        .catch(() => {
-          return caches.match(event.request);
-        })
+      caches.open(STATIC_CACHE).then(async (cache) => {
+        const cached = await cache.match(event.request);
+        if (cached) return cached;
+        const response = await fetch(event.request);
+        if (response.ok) cache.put(event.request, response.clone());
+        return response;
+      }),
     );
     return;
   }
 
-  // For other requests, use Cache First strategy
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      if (response) {
+  // Images – Cache First (24h expiry handled on next load)
+  if (/\.(png|gif|jpg|jpeg|svg|webp|ico)$/i.test(url.pathname)) {
+    event.respondWith(
+      caches.open(IMAGE_CACHE).then(async (cache) => {
+        const cached = await cache.match(event.request);
+        if (cached) return cached;
+        const response = await fetch(event.request);
+        if (response.ok) cache.put(event.request, response.clone());
         return response;
-      }
+      }),
+    );
+    return;
+  }
 
-      return fetch(event.request).then((response) => {
-        if (!response || response.status !== 200 || response.type !== 'basic') {
+  // API routes and external APIs – Network First, fallback to cache
+  if (
+    url.pathname.startsWith("/api/") ||
+    url.hostname.includes("openrouteservice.org")
+  ) {
+    event.respondWith(
+      fetch(event.request)
+        .then(async (response) => {
+          if (response.ok) {
+            const cache = await caches.open(API_CACHE);
+            cache.put(event.request, response.clone());
+          }
           return response;
+        })
+        .catch(() => caches.match(event.request)),
+    );
+    return;
+  }
+
+  // HTML pages – Network First, fallback to cache, then offline page
+  event.respondWith(
+    fetch(event.request)
+      .then(async (response) => {
+        if (response.ok) {
+          const cache = await caches.open(CACHE_NAME);
+          cache.put(event.request, response.clone());
         }
-
-        const responseToCache = response.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseToCache);
-        });
-
         return response;
-      });
-    })
+      })
+      .catch(() => caches.match(event.request)),
   );
 });
