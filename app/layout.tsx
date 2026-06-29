@@ -1,11 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
+import { PWAInstall } from "@/components/PWAInstall";
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  themeColor: "#000000",
 };
 
 export const metadata: Metadata = {
@@ -22,6 +24,16 @@ export const metadata: Metadata = {
   ],
   icons: {
     icon: "/favicon.ico",
+    apple: "/icons/icon-192.png",
+  },
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "EidsvollTaxi",
+  },
+  formatDetection: {
+    telephone: true,
   },
 };
 export default function RootLayout({
@@ -37,6 +49,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="bg-sky text-foreground antialiased">
+        <PWAInstall />
         <div className="min-h-screen flex flex-col">
           {children}
           <Toaster richColors position="top-right" />

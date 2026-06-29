@@ -13,8 +13,8 @@ export default function MobileMenu() {
   return (
     <>
       {/* Mobile Header */}
-      <div className="lg:hidden border-b border-slate-700 sticky top-0 z-40">
-        <div className="flex items-center justify-between p-4">
+      <div className="lg:hidden bg-sky border-b border-slate-700 sticky top-0 z-40 safe-top">
+        <div className="flex items-center justify-between p-4 safe-x">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-teal rounded-lg flex items-center justify-center">
               <span className="text-ink font-bold text-lg">T</span>
@@ -49,7 +49,7 @@ export default function MobileMenu() {
       {/* Mobile Menu Overlay */}
       <div
         className={cn(
-          "lg:hidden fixed top-15 right-0 h-[calc(100vh-57px)] w-64 bg-teal/60 border-l border-slate-700 z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto",
+          "lg:hidden bg-sky fixed top-15 right-0 h-[calc(100vh-57px)] w-64  border-l border-slate-700 z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto",
           mobileMenuOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
