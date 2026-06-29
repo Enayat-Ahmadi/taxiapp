@@ -1,11 +1,9 @@
-const CACHE_NAME = "eidsvoll-taxi-v1";
-const STATIC_CACHE = "eidsvoll-taxi-static-v1";
-const IMAGE_CACHE = "eidsvoll-taxi-images-v1";
-const API_CACHE = "eidsvoll-taxi-api-v1";
+const CACHE_NAME = 'eidsvoll-taxi-v2';
+const STATIC_CACHE = 'eidsvoll-taxi-static-v2';
+const IMAGE_CACHE = 'eidsvoll-taxi-images-v2';
+const API_CACHE = 'eidsvoll-taxi-api-v2';
 
 const urlsToCache = [
-  "/",
-  "/booking",
   "/manifest.json",
   "/icons/icon-192.png",
   "/icons/icon-512.png",
@@ -94,16 +92,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // HTML pages – Network First, fallback to cache, then offline page
-  event.respondWith(
-    fetch(event.request)
-      .then(async (response) => {
-        if (response.ok) {
-          const cache = await caches.open(CACHE_NAME);
-          cache.put(event.request, response.clone());
-        }
-        return response;
-      })
-      .catch(() => caches.match(event.request)),
-  );
+  // HTML pages – Network Only (Server Action IDs are embedded in HTML and
+  // change on every build; caching HTML causes "action not found" errors)
+  event.respondWith(fetch(event.request));
 });
