@@ -12,6 +12,7 @@ import { DriverDto } from "@/types/driver";
 import DriverTable from "./DriverList";
 import { ConfirmModal } from "@/components/ui/DeleteConfirmModal";
 import useDeleteModal from "@/hooks/useDeleteModal";
+import Spinner from "@/components/ui/Spinner";
 
 export default function DriverPage() {
   const [showForm, setShowForm] = useState(false);
@@ -62,7 +63,7 @@ export default function DriverPage() {
   });
 
   if (loading) {
-    return <div>Loading drivers...</div>;
+    return <Spinner text="Loading driver..." />;
   }
 
   return (
