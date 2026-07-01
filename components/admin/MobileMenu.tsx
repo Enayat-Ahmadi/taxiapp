@@ -1,62 +1,63 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { BarChart3, FileText, Settings, Car, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
-import AdminNav from "./AdminNav";
-import { Button } from "../ui";
+import { motion } from "framer-motion";
+
+const ADMIN_NAV_ITEMS = [
+  { href: "/admin", label: "Dashboard", icon: BarChart3 },
+  { href: "/admin/bookings", label: "Bookings", icon: FileText },
+  { href: "/admin/vehicles", label: "Vehicles", icon: Car },
+  { href: "/admin/drivers", label: "Drivers", icon: Users },
+  { href: "/admin/settings", label: "Settings", icon: Settings },
+];
 
 export default function MobileMenu() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
-    <>
-      {/* Mobile Header */}
-      <div className="lg:hidden bg-sky border-b border-slate-700 sticky top-0 z-40 safe-top">
-        <div className="flex items-center justify-between p-4 safe-x">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-teal rounded-lg flex items-center justify-center">
-              <span className="text-ink font-bold text-lg">T</span>
-            </div>
-            <span className="font-bold text-ink text-sm sm:text-base">
-              Eidsvoll Taxi
-            </span>
-          </Link>
-          <Button
-            variant="ghost"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6 text-ink" />
-            ) : (
-              <Menu className="w-6 h-6 text-ink" />
-            )}
-          </Button>
-        </div>
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-sky border-t border-slate-700">
+      <div className="flex items-center justify-around px-2 py-1">
+        {ADMIN_NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+          const isActive =
+            pathname === href ||
+            (href !== "/admin" && pathname.startsWith(href));
+          return (
+            <Link
+              key={href}
+              href={href}
+              className="relative flex flex-col items-center gap-1 py-2 px-3 flex-1"
+            >
+              {isActive && (
+                <motion.div
+                  layoutId="active-tab-pill"
+                  className="absolute inset-0 rounded-lg bg-success/80"
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
+              <motion.div
+                animate={{ scale: isActive ? 1.1 : 1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                className="relative z-10"
+              >
+                <Icon
+                  className={cn("w-5 h-5", isActive ? "text-cloud-light" : "")}
+                />
+              </motion.div>
+              <span
+                className={cn(
+                  "text-[10px] leading-none relative z-10",
+                  isActive ? "text-cloud-light font-medium" : "",
+                )}
+              >
+                {label}
+              </span>
+            </Link>
+          );
+        })}
       </div>
-
-      {/* Backdrop Overlay */}
-      {mobileMenuOpen && (
-        <div
-          className="lg:hidden fixed inset-0 bg-black/50 z-40 top-15"
-          onClick={() => setMobileMenuOpen(false)}
-        />
-      )}
-
-      {/* Mobile Menu Overlay */}
-      <div
-        className={cn(
-          "lg:hidden bg-sky fixed top-15 right-0 h-[calc(100vh-57px)] w-64  border-l border-slate-700 z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto",
-          mobileMenuOpen ? "translate-x-0" : "translate-x-full",
-        )}
-      >
-        <div className="p-4">
-          <AdminNav onClick={() => setMobileMenuOpen(false)} />
-        </div>
-      </div>
-    </>
+    </nav>
   );
 }
