@@ -1,7 +1,7 @@
 import type { NextAuthConfig } from "next-auth";
 
 const AUTH_ROUTES = ["/login", "/register"];
-const PROTECTED_ROUTES = ["/dashboard"];
+const PROTECTED_ROUTES = ["/admin"];
 
 export const authConfig = {
   pages: {
@@ -22,7 +22,7 @@ export const authConfig = {
       );
 
       if (isAuthRoute && isAuthenticated) {
-        return Response.redirect(new URL("/dashboard", nextUrl));
+        return Response.redirect(new URL("/admin", nextUrl));
       }
 
       if (isProtectedRoute) {
