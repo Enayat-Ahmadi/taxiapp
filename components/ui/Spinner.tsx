@@ -9,7 +9,7 @@ interface SpinnerProps {
 
 export default function Spinner({
   size = "md",
-  text,
+  text = "Loading...",
   className,
 }: SpinnerProps) {
   const sizes = {
