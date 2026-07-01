@@ -2,34 +2,42 @@ import NextAuth from "next-auth";
 import { authConfig } from "./auth.config";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
-import { loginSchema } from "./lib/validations/auth";
-import { connectDB } from "./lib/db";
-import bcrypt from "bcryptjs";
-import { User } from "./models/user";
+import { registerSchema } from "./lib/validations/auth";
+import {
+  createUser,
+  findUserByEmail,
+  verifyPassword,
+} from "./services/user.service";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
+  trustHost: true,
   providers: [
     Google,
+
     Credentials({
       async authorize(credentials) {
-        const parsed = loginSchema.safeParse(credentials);
-        if (!parsed.data) return null;
-        const { email, password } = parsed.data;
+        try {
+          const parsed = registerSchema.safeParse(credentials);
+          if (!parsed.success) return null;
+          const { email, password } = parsed.data;
 
-        await connectDB();
-        const user = await User.findOne({ email });
-        if (!user || !user.password) return null;
+          const user = await findUserByEmail(email);
+          if (!user || !user.password) return null;
 
-        const passwordMatch = await bcrypt.compare(password, user.password);
-        if (!passwordMatch) return null;
+          const passwordMatch = await verifyPassword(password, user.password);
+          if (!passwordMatch) return null;
 
-        return {
-          id: user._id.toString(),
-          name: user.name,
-          email: user.email,
-          role: user.role,
-        };
+          return {
+            id: user._id.toString(),
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          };
+        } catch (err) {
+          console.error("authorize() error:", err);
+          return null;
+        }
       },
     }),
   ],
@@ -39,6 +47,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
   callbacks: {
     ...authConfig.callbacks,
+
+    async signIn({ user, account }) {
+      if (account?.provider === "google") {
+        const existing = await findUserByEmail(user.email!);
+        if (!existing) {
+          await createUser({
+            email: user.email!,
+            name: user.name ?? undefined,
+          });
+        }
+      }
+      return true;
+    },
 
     async jwt({ token, user }) {
       if (user) {
