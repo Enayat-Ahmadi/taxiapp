@@ -24,7 +24,7 @@ export default function AdminHeader() {
   const title = getPageTitle(pathname);
 
   return (
-    <header className="sticky top-0 z-40 bg-sky border-b border-slate-700 h-14 flex items-center px-4 sm:px-6 gap-4">
+    <header className="sticky top-0 z-40 bg-sky border-b border-slate-700 min-h-14 flex items-center px-4 sm:px-6 gap-4 safe-top">
       {/* Logo — visible only on mobile (desktop sidebar already shows it) */}
       <Link href="/" className="flex items-center gap-2 lg:hidden shrink-0">
         <div className="w-7 h-7 bg-teal rounded-lg flex items-center justify-center">
