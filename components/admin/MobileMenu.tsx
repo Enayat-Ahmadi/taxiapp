@@ -18,7 +18,7 @@ export default function MobileMenu() {
   const pathname = usePathname();
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-sky border-t border-slate-700">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-sky border-t border-slate-700 safe-bottom">
       <div className="flex items-center justify-around px-2 py-1">
         {ADMIN_NAV_ITEMS.map(({ href, label, icon: Icon }) => {
           const isActive =
