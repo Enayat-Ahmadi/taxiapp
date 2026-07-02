@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import { authConfig } from "./auth.config";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
-import { registerSchema } from "./lib/validations/auth";
+import { loginSchema } from "./lib/validations/auth";
 import {
   createUser,
   findUserByEmail,
@@ -18,7 +18,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Credentials({
       async authorize(credentials) {
         try {
-          const parsed = registerSchema.safeParse(credentials);
+          const parsed = loginSchema.safeParse(credentials);
           if (!parsed.success) return null;
           const { email, password } = parsed.data;
 
@@ -54,7 +54,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (!existing) {
           await createUser({
             email: user.email!,
-            name: user.name ?? undefined,
+            fullName: user.name!,
           });
         }
       }

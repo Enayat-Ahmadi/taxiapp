@@ -7,7 +7,6 @@ import { RegisterInput, registerSchema } from "@/lib/validations/auth";
 import { findUserByEmail, createUser } from "@/services/user.service";
 import { LoginInput } from "@/lib/validations/auth";
 
-
 type AuthState = { success: true } | { success: false; error: string };
 
 // ---- Register ----
@@ -39,11 +38,15 @@ export async function loginAction(data: LoginInput): Promise<AuthState> {
     await signIn("credentials", {
       email: data.email,
       password: data.password,
-      redirectTo: "/admin",
+      redirect: false,
     });
     return { success: true };
   } catch (error) {
-    if (error instanceof AuthError) {
+    console.log(error);
+    if (
+      error instanceof AuthError ||
+      (error as { type?: string })?.type === "CredentialsSignin"
+    ) {
       return { success: false, error: "Invalid email or password" };
     }
     throw error;
