@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 type FormData = {
   email: string;
   password?: string;
-  name?: string;
+  fullName: string;
 };
 
 export async function findUserByEmail(email: string) {
@@ -13,14 +13,14 @@ export async function findUserByEmail(email: string) {
   return User.findOne({ email });
 }
 
-export async function createUser({ email, name, password }: FormData) {
+export async function createUser({ email, fullName, password }: FormData) {
   await connectDB();
   const hashedPassword = password ? await bcrypt.hash(password, 10) : undefined;
 
   return User.create({
     email,
     password: hashedPassword,
-    name,
+    fullName,
   });
 }
 
