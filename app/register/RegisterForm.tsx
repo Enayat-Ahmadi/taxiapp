@@ -72,7 +72,7 @@ export default function RegisterForm() {
         </Button>
       </form>
 
-      <p className="text-center text-sm text-gray-500">
+      <p className="text-center text-sm text-ink">
         Already have an account?{" "}
         <Link href="/login" className="underline">
           Sign in
