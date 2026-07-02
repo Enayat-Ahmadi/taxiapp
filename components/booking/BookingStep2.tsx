@@ -11,7 +11,7 @@ import VehicelCard from "./VehicleCard";
 interface Step2Props {
   pickupLocation?: string;
   destination?: string;
-  onNext: (VehicleType: VehicleType, price: number) => void;
+  onNext: (vehicleType: VehicleType, price: number, distance: number, duration: number) => void;
   isLoading?: boolean;
   onPrevious: () => void;
   initialVehicleType?: VehicleType;
@@ -68,7 +68,7 @@ export default function BookingStep2({
 
   const handleContinue = () => {
     if (selectedVehicle && distance !== null) {
-      onNext(selectedVehicle, vehiclePrices[selectedVehicle] ?? 0);
+      onNext(selectedVehicle, vehiclePrices[selectedVehicle] ?? 0, distance, duration);
     }
   };
 

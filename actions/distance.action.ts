@@ -10,6 +10,7 @@ type ActionResult =
   | { success: true; data: RouteInfo }
   | { success: false; error: string };
 
+const MAX_CACHE_SIZE = 500;
 const routeCache = new Map<string, RouteInfo>();
 
 export async function getDistanceAction(
@@ -36,6 +37,10 @@ export async function getDistanceAction(
     );
 
     const data = { distance, duration, estimatedTime };
+    if (routeCache.size >= MAX_CACHE_SIZE) {
+      const firstKey = routeCache.keys().next().value!;
+      routeCache.delete(firstKey);
+    }
     routeCache.set(cacheKey, data);
     return { success: true, data };
   } catch (error: unknown) {

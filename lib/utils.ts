@@ -34,7 +34,7 @@ export function calculateEstimatedPrice(
     distanceKm * vehicle.basePricePerKm +
     durationMins * vehicle.pricePerMinute;
 
-  return Number(price);
+  return Math.round(price * 100) / 100;
 }
 export const PASSENGER_OPTIONS = Array.from({ length: 4 }, (_, i) => ({
   value: i + 1,

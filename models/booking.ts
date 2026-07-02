@@ -3,6 +3,11 @@ import type { IBooking } from "@/types/booking";
 
 const BookingSchema = new Schema<IBooking>(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
     pickupLocation: {
       type: String,
       required: [true, "Pickup location is required"],
@@ -10,7 +15,7 @@ const BookingSchema = new Schema<IBooking>(
     },
     destination: {
       type: String,
-      required: [true, "Destionation is required"],
+      required: [true, "Destination is required"],
       trim: true,
     },
     date: {

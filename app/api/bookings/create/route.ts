@@ -1,10 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createBooking } from "@/services/booking.service";
+import { BookingSchema } from "@/lib/validations/bookings";
+
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const result = await createBooking(body);
+    const parsed = BookingSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Invalid data",
+        },
+        { status: 400 },
+      );
+    }
+    const result = await createBooking(parsed.data);
 
     return NextResponse.json(
       {

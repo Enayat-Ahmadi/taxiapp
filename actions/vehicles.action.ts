@@ -10,12 +10,15 @@ import {
 import { revalidatePath } from "next/cache";
 import { VehicleDto } from "@/types/vehicle";
 import { errorResponse } from "@/lib/errors";
+import { requireAdmin } from "@/lib/auth-guard";
 
 type ActionResult<T> =
   | { success: true; data?: T }
   | { success: false; error: string };
 
-function validateVehicleInput(data: VehicleFormData):
+function validateVehicleInput(
+  data: VehicleFormData,
+):
   | { success: true; data: VehicleFormData }
   | { success: false; error: string } {
   const validatedResult = vehicleSchema.safeParse(data);
@@ -52,6 +55,8 @@ export async function addVehicleAction(
   }
 
   try {
+    await requireAdmin();
+
     const vehicle = await addVehicle(validatedResult.data);
     revalidatePath("/admin/vehicles");
     return {
@@ -74,6 +79,8 @@ export async function updateVehicleAction(
   }
 
   try {
+    await requireAdmin();
+
     const vehicle = await updateVehicle(id, validatedResult.data);
     revalidatePath("/admin/vehicles");
     revalidatePath(`/admin/vehicles/${id}`);
@@ -91,6 +98,7 @@ export async function deleteVehicleAction(
   id: string,
 ): Promise<ActionResult<void>> {
   try {
+    await requireAdmin();
     await deleteVehicle(id);
     revalidatePath("/admin/vehicles");
     return {

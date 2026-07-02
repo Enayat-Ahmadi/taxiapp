@@ -19,7 +19,7 @@ export async function updateSettings(data: SettingsFormData) {
     runValidators: true,
     upsert: true,
   });
-  if (!updateSettings) throw new Error("Failed to update settings");
+  if (!updatedSettings) throw new Error("Failed to update settings");
 
   return {
     ...updatedSettings.toObject(),

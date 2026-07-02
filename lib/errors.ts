@@ -2,10 +2,13 @@ import { ApiResponse } from "@/types/booking";
 
 export function errorResponse<T>(
   error: unknown,
-  fallbackMessage = "Somthing went wrong",
+  fallbackMessage = "Something went wrong",
 ): ApiResponse<T> {
+  if (process.env.NODE_ENV === "development" && error instanceof Error) {
+    console.error(error);
+  }
   return {
     success: false,
-    error: error instanceof Error ? error.message : fallbackMessage,
+    error: fallbackMessage,
   };
 }

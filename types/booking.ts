@@ -4,6 +4,7 @@ export type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled";
 
 export interface IBooking {
   _id: string;
+  userId?: string;
   pickupLocation: string;
   destination: string;
   date: string;
@@ -34,6 +35,8 @@ export interface StepData {
   step2?: {
     vehicleType: VehicleType;
     estimatedPrice: number;
+    distance: number;
+    duration: number;
   };
 }
 export type FormFields = {
