@@ -5,11 +5,13 @@ import { AuthError } from "next-auth";
 import { signIn, signOut } from "@/auth";
 import { registerSchema } from "@/lib/validations/auth";
 import { findUserByEmail, createUser } from "@/services/user.service";
+import { LoginInput } from "@/lib/validations/auth";
 
 export type AuthState = {
   error?: string;
   success?: boolean;
 };
+
 
 // ---- Register ----
 export async function registerAction(
@@ -38,14 +40,11 @@ export async function registerAction(
 }
 
 // ---- Login (credentials) ----
-export async function loginAction(
-  _prevState: AuthState,
-  formData: FormData,
-): Promise<AuthState> {
+export async function loginAction(data: LoginInput): Promise<AuthState> {
   try {
     await signIn("credentials", {
-      email: formData.get("email"),
-      password: formData.get("password"),
+      email: data.email,
+      password: data.password,
       redirectTo: "/admin",
     });
     return { success: true };
