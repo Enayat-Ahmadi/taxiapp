@@ -24,7 +24,10 @@ export async function registerAction(data: RegisterInput): Promise<AuthState> {
 
   const existing = await findUserByEmail(email);
   if (existing) {
-    return { success: false, error: "User already exists" };
+    return {
+      success: false,
+      error: "An account with this email already exists. Please log in.",
+    };
   }
 
   await createUser({ email, password, fullName });

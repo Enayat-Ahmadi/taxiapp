@@ -22,7 +22,8 @@ export const authConfig = {
       );
 
       if (isAuthRoute && isAuthenticated) {
-        return Response.redirect(new URL("/admin", nextUrl));
+        const isAdmin = auth?.user?.role === "admin";
+        return Response.redirect(new URL(isAdmin ? "/admin" : "/", nextUrl));
       }
 
       if (isProtectedRoute) {

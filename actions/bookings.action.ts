@@ -19,6 +19,7 @@ import { revalidatePath } from "next/cache";
 import { errorResponse } from "@/lib/errors";
 import { requireAdmin } from "@/lib/auth-guard";
 import { auth } from "@/auth";
+import { calculateServerPrice } from "@/lib/constants/vehicles";
 
 /**
  * Server action for creating a booking.
@@ -39,7 +40,17 @@ export async function createBookingAction(
   try {
     const session = await auth();
     const userId = session?.user?.id ?? undefined;
-    const result = await createBooking({ ...validatedResult.data, userId });
+    const { vehicleType, distance, estimatedTime } = validatedResult.data;
+    const estimatedPrice = calculateServerPrice(
+      vehicleType,
+      distance ?? 0,
+      estimatedTime ?? 0,
+    );
+    const result = await createBooking({
+      ...validatedResult.data,
+      estimatedPrice,
+      userId,
+    });
 
     return {
       success: true,

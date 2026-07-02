@@ -11,7 +11,7 @@ import {
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
-  trustHost: true,
+  trustHost: process.env.NODE_ENV === "development",
   providers: [
     Google,
 
@@ -65,6 +65,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (user) {
         token.id = user.id;
         token.role = user.role;
+      }
+      // OAuth providers don't supply role — fetch it from DB
+      if (!token.role && token.email) {
+        const dbUser = await findUserByEmail(token.email as string);
+        if (dbUser) {
+          token.id = (dbUser._id as { toString(): string }).toString();
+          token.role = dbUser.role;
+        }
       }
       return token;
     },
