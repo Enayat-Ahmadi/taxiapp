@@ -10,14 +10,15 @@ import {
 import { revalidatePath } from "next/cache";
 import { DriverDto } from "@/types/driver";
 import { errorResponse } from "@/lib/errors";
+import { requireAdmin } from "@/lib/auth-guard";
 
 type ActionResult<T = void> =
   | { success: true; data?: T }
   | { success: false; error: string };
 
-function validateDriverInput(data: DriverFormData):
-  | { success: true; data: DriverFormData }
-  | { success: false; error: string } {
+function validateDriverInput(
+  data: DriverFormData,
+): { success: true; data: DriverFormData } | { success: false; error: string } {
   const validatedResult = driverSchema.safeParse(data);
   if (!validatedResult.success) {
     return {
@@ -34,6 +35,7 @@ function validateDriverInput(data: DriverFormData):
 
 export async function getDriversAction(): Promise<ActionResult<DriverDto[]>> {
   try {
+    await requireAdmin();
     const drivers = await getDrivers();
     return {
       success: true,
@@ -53,6 +55,8 @@ export async function addDriverAction(
   }
 
   try {
+    await requireAdmin();
+
     const result = await addDriver(validatedResult.data);
     revalidatePath("/admin/drivers");
 
@@ -75,6 +79,8 @@ export async function updateDriverAction(
   }
 
   try {
+    await requireAdmin();
+
     const driver = await updateDriver(id, validatedResult.data);
     revalidatePath("/admin/drivers");
     return {
@@ -90,6 +96,8 @@ export async function deleteDriverAction(
   id: string,
 ): Promise<ActionResult<void>> {
   try {
+    await requireAdmin();
+
     await deleteDriver(id);
     revalidatePath("/admin/drivers");
     return {

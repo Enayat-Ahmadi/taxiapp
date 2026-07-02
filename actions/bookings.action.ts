@@ -17,6 +17,7 @@ import {
 } from "@/services/booking.service";
 import { revalidatePath } from "next/cache";
 import { errorResponse } from "@/lib/errors";
+import { requireAdmin } from "@/lib/auth-guard";
 
 /**
  * Server action for creating a booking.
@@ -30,8 +31,7 @@ export async function createBookingAction(
   if (!validatedResult.success) {
     return {
       success: false,
-      error:
-        validatedResult.error.issues[0]?.message ?? "Invalid booking data",
+      error: validatedResult.error.issues[0]?.message ?? "Invalid booking data",
     };
   }
 
@@ -52,6 +52,8 @@ export async function updateBookingStatusAction(
   status: BookingStatus,
 ): Promise<ApiResponse<IBooking>> {
   try {
+    await requireAdmin();
+
     const result = await updateBookingStatus(bookingId, status);
     revalidatePath("/admin/bookings");
     return {
@@ -67,6 +69,8 @@ export async function getAllBookingsAction(
   status?: BookingStatus | "all",
 ): Promise<ApiResponse<IBooking[]>> {
   try {
+    await requireAdmin();
+
     const data = await getAllBookings(status);
     return { success: true, data };
   } catch (error) {
@@ -78,6 +82,8 @@ export async function deleteBookingAction(
   bookingId: string,
 ): Promise<ApiResponse<void>> {
   try {
+    await requireAdmin();
+
     await deleteBooking(bookingId);
     revalidatePath("/admin/bookings");
 
@@ -93,8 +99,9 @@ export async function getBookingStatsAction(): Promise<
   ApiResponse<BookingStats>
 > {
   try {
-    const stats = await getBookingStats();
+    await requireAdmin();
 
+    const stats = await getBookingStats();
     return {
       success: true,
       data: stats,

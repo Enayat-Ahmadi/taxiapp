@@ -4,6 +4,7 @@ import { updateSettings } from "@/services/settings.service";
 import { SettingsFormData, settingsSchema } from "@/lib/validations/settings";
 import { getSettings } from "@/services/settings.service";
 import { ISettings } from "@/models/settings";
+import { requireAdmin } from "@/lib/auth-guard";
 
 type ActionResponse<T> =
   | { success: true; data: T }
@@ -13,6 +14,8 @@ export async function getSettingsAction(): Promise<
   ActionResponse<ISettings | null>
 > {
   try {
+    await requireAdmin();
+
     const result = await getSettings();
 
     return {
@@ -33,6 +36,8 @@ export async function updateSettingsAction(
   data: SettingsFormData,
 ): Promise<ActionResponse<SettingsFormData>> {
   try {
+    await requireAdmin();
+
     const validated = settingsSchema.parse(data);
     const result = await updateSettings(validated);
 
