@@ -38,7 +38,12 @@ export default function LoginForm() {
     <Card className="mx-auto max-w-sm space-y-6 p-6">
       <h1 className="text-xl font-semibold">Sign in</h1>
 
-     
+      {/* Google sign-in */}
+      <form action={googleSignInAction}>
+        <Button type="submit" variant="teal" size="md" className="w-full">
+          Continue with Google
+        </Button>
+      </form>
 
       <div className="flex items-center gap-2 text-xs text-gray-400">
         <div className="h-px flex-1 bg-gray-200" />
