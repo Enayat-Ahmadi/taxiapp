@@ -11,7 +11,7 @@ import {
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
-  trustHost: process.env.NODE_ENV === "development",
+  trustHost: process.env.NODE_ENV === "development" || !!process.env.VERCEL,
   providers: [
     Google,
 
