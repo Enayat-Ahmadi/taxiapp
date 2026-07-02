@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+[data-sonner-toaster][data-x-position="right"] {
+  top: calc(env(safe-area-inset-top) + 16px) !important;
+}
+
 :root {
   /* Default App Theme Fallbacks */
   --background: #ffffff;

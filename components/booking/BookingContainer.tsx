@@ -4,12 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import BookingStep1 from "./BookingStep1";
 import BookingStep2 from "./BookingStep2";
 import BookingStep3 from "./BookingStep3";
-import {
-  BookingStatus,
-  FormFields,
-  IBooking,
-  StepData,
-} from "@/types/booking";
+import { BookingStatus, FormFields, IBooking, StepData } from "@/types/booking";
 import { VehicleType } from "@/types/vehicle";
 import { createBookingAction } from "@/actions/bookings.action";
 import BookingSuccess from "./BookingSuccess";
@@ -30,7 +25,12 @@ export default function BookingContainer() {
   }, []);
 
   const handleStep2Submit = useCallback(
-    (vehicleType: VehicleType, estimatedPrice: number, distance: number, duration: number) => {
+    (
+      vehicleType: VehicleType,
+      estimatedPrice: number,
+      distance: number,
+      duration: number,
+    ) => {
       setStepData((prev) => ({
         ...prev,
         step2: {
@@ -82,7 +82,7 @@ export default function BookingContainer() {
   if (successMessage) return <BookingSuccess />;
 
   return (
-    <div className="min-h-screen py-8 md:px-4">
+    <div className="flex-1 py-8 md:px-4">
       <div className="max-w-2xl mx-auto">
         {errorMessage && (
           <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">

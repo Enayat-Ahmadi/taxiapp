@@ -6,7 +6,7 @@ import { buttonVariants } from "@/lib/buttonVariants";
 
 export default function BookingSuccess() {
   return (
-    <div className="min-h-screen flex flex-col gap-4  items-center justify-center py-8 md:px-4">
+    <div className="flex-1 flex flex-col gap-4 items-center justify-center py-8 md:px-4">
       <div className="max-w-2xl mx-auto text-center">
         <h1 className="text-3xl font-bold text-green-600">
           Booking Created Successfully!

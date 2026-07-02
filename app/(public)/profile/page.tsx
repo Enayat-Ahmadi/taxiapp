@@ -18,7 +18,7 @@ export default async function ProfilePage() {
   const isAdmin = user.role === "admin";
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="flex-1 flex items-center justify-center px-4">
       <Card className="w-full max-w-sm space-y-6 p-6">
         {/* Avatar */}
         <div className="flex flex-col items-center gap-3">
