@@ -1,11 +1,14 @@
-"use client";
+// "use client";
 
 import Link from "next/link";
 import { buttonVariants } from "@/lib/buttonVariants";
 import { ROUTES } from "@/lib/routes";
+import { User } from "lucide-react";
+import { auth } from "@/auth";
 
-const liknStyles = buttonVariants("teal", "sm");
-export function Navbar() {
+export async function Navbar() {
+  const session = await auth();
+  console.log(session);
   return (
     <nav className="sticky top-0 z-50 bg-sky backdrop-blur-md border-b border-slate-700/30 safe-top">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 safe-x">
@@ -20,11 +23,11 @@ export function Navbar() {
             </span>
           </Link>
           <div className="flex gap-2">
-            <Link href={ROUTES.booking} className={liknStyles}>
-              Book Now
-            </Link>
-            <Link href={ROUTES.admin} className={liknStyles}>
-              Bookings
+            <Link
+              href={session ? ROUTES.profile : ROUTES.login}
+              className={buttonVariants("outline", "sm")}
+            >
+              <User />
             </Link>
           </div>
         </div>
