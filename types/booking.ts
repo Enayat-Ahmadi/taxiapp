@@ -35,6 +35,8 @@ export interface StepData {
   step2?: {
     vehicleType: VehicleType;
     estimatedPrice: number;
+    distance: number;
+    duration: number;
   };
 }
 export type FormFields = {

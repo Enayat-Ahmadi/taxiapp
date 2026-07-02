@@ -30,12 +30,14 @@ export default function BookingContainer() {
   }, []);
 
   const handleStep2Submit = useCallback(
-    (vehicleType: VehicleType, estimatedPrice: number) => {
+    (vehicleType: VehicleType, estimatedPrice: number, distance: number, duration: number) => {
       setStepData((prev) => ({
         ...prev,
         step2: {
           vehicleType,
           estimatedPrice,
+          distance,
+          duration,
         },
       }));
       setCurrentStep(3);
@@ -53,6 +55,8 @@ export default function BookingContainer() {
       ...stepData.step1,
       vehicleType: stepData.step2.vehicleType,
       estimatedPrice: stepData.step2.estimatedPrice,
+      distance: stepData.step2.distance,
+      estimatedTime: stepData.step2.duration,
       status: "pending" as BookingStatus,
     };
   }, [stepData]);

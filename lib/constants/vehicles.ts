@@ -38,9 +38,9 @@ export function calculateServerPrice(
   durationMins: number,
 ): number {
   const vehicle = VEHICLES[vehicleType];
-  return Number(
+  const price =
     vehicle.baseFare +
-      distanceKm * vehicle.basePricePerKm +
-      durationMins * vehicle.pricePerMinute,
-  );
+    distanceKm * vehicle.basePricePerKm +
+    durationMins * vehicle.pricePerMinute;
+  return Math.round(price * 100) / 100;
 }
