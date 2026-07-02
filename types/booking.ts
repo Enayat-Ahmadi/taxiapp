@@ -4,6 +4,7 @@ export type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled";
 
 export interface IBooking {
   _id: string;
+  userId?: string;
   pickupLocation: string;
   destination: string;
   date: string;

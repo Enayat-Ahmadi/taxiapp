@@ -18,6 +18,7 @@ import {
 import { revalidatePath } from "next/cache";
 import { errorResponse } from "@/lib/errors";
 import { requireAdmin } from "@/lib/auth-guard";
+import { auth } from "@/auth";
 
 /**
  * Server action for creating a booking.
@@ -36,7 +37,9 @@ export async function createBookingAction(
   }
 
   try {
-    const result = await createBooking(validatedResult.data);
+    const session = await auth();
+    const userId = session?.user?.id ?? undefined;
+    const result = await createBooking({ ...validatedResult.data, userId });
 
     return {
       success: true,
