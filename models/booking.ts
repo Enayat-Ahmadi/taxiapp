@@ -15,7 +15,7 @@ const BookingSchema = new Schema<IBooking>(
     },
     destination: {
       type: String,
-      required: [true, "Destionation is required"],
+      required: [true, "Destination is required"],
       trim: true,
     },
     date: {
